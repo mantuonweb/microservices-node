@@ -1,0 +1,21 @@
+{
+  "name": "microservices",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "npm install && npm run install-services",
+    "install-services": "cd product-service && npm install && cd ../customer-service && npm install  &&  cd ../inventory-service && npm install && cd ../order-service && npm install&& cd ../payment-service && npm install && cd ../api-gateway && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "install-all": "^1.1.0",
+    "jest": "^29.7.0",
+    "mongoose": "^8.13.0",
+    "supertest": "^7.1.0"
+  }
+}
