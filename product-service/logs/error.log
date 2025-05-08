@@ -1,0 +1,4 @@
+2025-05-07T18:16:57.885Z error: MongoDB connection error: connection <monitor> to [::1]:27027 closed
+2025-05-07T18:23:31.026Z error: MongoDB connection error: connection <monitor> to [::1]:27027 closed
+2025-05-07T23:54:15.795Z error: Failed to connect to RabbitMQ: read ECONNRESET
+2025-05-07T23:54:20.817Z error: Failed to connect to RabbitMQ: Socket closed abruptly during opening handshake

@@ -33,7 +33,8 @@ if (CONSUL_ENABLED) {
 // Get configured Express app and PORT
 
 // Start Server
-const server = app.listen(PORT, () => {
+
+const server = app.listen(PORT, '::', () => {
   if (CONSUL_ENABLED && consul) {
     registerService();
   } else {
@@ -41,7 +42,8 @@ const server = app.listen(PORT, () => {
       'Skipping Consul registration - Consul client not available or disabled'
     );
   }
-  logger.info(`Product Service running on port ${PORT}`);
+
+  logger.info(`Product Service running on port ${PORT} (IPv4 and IPv6)`);
 });
 
 // Graceful shutdown

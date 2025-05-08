@@ -1,0 +1,2 @@
+2025-05-07T19:03:47.318Z error: MongoDB connection error: Authentication failed.
+2025-05-07T19:04:31.708Z error: RabbitMQ connection error: Channel closed by server: 404 (NOT-FOUND) with message "NOT_FOUND - no exchange 'product' in vhost '/'"

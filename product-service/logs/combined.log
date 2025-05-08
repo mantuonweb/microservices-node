@@ -1,0 +1,57 @@
+2025-05-07T18:16:27.871Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T18:16:27.877Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T18:16:27.882Z info: Product Service running on port 3001
+2025-05-07T18:16:27.990Z info: Successfully connected to RabbitMQ
+2025-05-07T18:16:57.883Z warn: MongoDB disconnected
+2025-05-07T18:23:01.016Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T18:23:01.031Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T18:23:01.040Z info: Product Service running on port 3001
+2025-05-07T18:23:01.154Z info: Successfully connected to RabbitMQ
+2025-05-07T18:23:31.023Z warn: MongoDB disconnected
+2025-05-07T18:36:47.668Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T18:36:47.674Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T18:36:47.678Z info: Product Service running on port 3001
+2025-05-07T18:36:47.793Z info: MongoDB connected successfully
+2025-05-07T18:36:47.805Z info: Successfully connected to RabbitMQ
+2025-05-07T18:42:50.799Z info: Starting graceful shutdown...
+2025-05-07T18:42:50.812Z info: HTTP server closed
+2025-05-07T18:42:59.335Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T18:42:59.341Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T18:42:59.345Z info: Product Service running on port 3001
+2025-05-07T18:42:59.401Z info: MongoDB connected successfully
+2025-05-07T18:42:59.433Z info: Successfully connected to RabbitMQ
+2025-05-07T18:51:49.510Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T18:51:49.517Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T18:51:49.521Z info: Product Service running on port 3001
+2025-05-07T18:51:49.577Z info: MongoDB connected successfully
+2025-05-07T18:51:49.601Z info: Successfully connected to RabbitMQ
+2025-05-07T18:52:57.797Z info: Products retrieved successfully
+2025-05-07T18:52:57.802Z info: Circuit Breaker: Request successful
+2025-05-07T19:00:51.824Z info: Starting graceful shutdown...
+2025-05-07T19:00:51.836Z info: HTTP server closed
+2025-05-07T19:00:56.673Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T19:00:56.680Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T19:00:56.687Z info: Product Service running on port 3001
+2025-05-07T19:00:56.744Z info: MongoDB connected successfully
+2025-05-07T19:00:56.764Z info: Successfully connected to RabbitMQ
+2025-05-07T19:02:10.671Z info: Starting graceful shutdown...
+2025-05-07T19:02:10.676Z info: HTTP server closed
+2025-05-07T19:02:15.695Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T19:02:15.701Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T19:02:15.706Z info: Product Service running on port 3001
+2025-05-07T19:02:15.754Z info: MongoDB connected successfully
+2025-05-07T19:02:15.782Z info: Successfully connected to RabbitMQ
+2025-05-07T23:54:15.601Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T23:54:15.619Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T23:54:15.630Z info: Product Service running on port 3001
+2025-05-07T23:54:15.795Z error: Failed to connect to RabbitMQ: read ECONNRESET
+2025-05-07T23:54:15.843Z info: MongoDB connected successfully
+2025-05-07T23:54:20.817Z error: Failed to connect to RabbitMQ: Socket closed abruptly during opening handshake
+2025-05-07T23:54:25.904Z info: Successfully connected to RabbitMQ
+2025-05-07T23:59:23.952Z info: Starting graceful shutdown...
+2025-05-07T23:59:23.965Z info: HTTP server closed
+2025-05-07T23:59:31.550Z info: Consul client initialized with host: localhost, port: 8500
+2025-05-07T23:59:31.558Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"localhost","port":3001,"tags":["microservice","product"],"check":{"http":"http://localhost:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-07T23:59:31.569Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-07T23:59:31.662Z info: MongoDB connected successfully
+2025-05-07T23:59:31.696Z info: Successfully connected to RabbitMQ

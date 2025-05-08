@@ -4,7 +4,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const Consul = require('consul');
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 
 // Store multiple instances for each service
 let serviceRegistry = {

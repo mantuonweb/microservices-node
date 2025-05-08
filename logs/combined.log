@@ -1,0 +1,17 @@
+2025-05-07T19:03:47.248Z info: Consul client initialized
+2025-05-07T19:03:47.254Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"localhost","port":3003,"tags":["microservice","order"],"check":{"http":"http://localhost:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-07T19:03:47.258Z info: Product Service running on port 3003
+2025-05-07T19:03:47.316Z warn: MongoDB disconnected
+2025-05-07T19:04:31.558Z info: Consul client initialized
+2025-05-07T19:04:31.572Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"localhost","port":3003,"tags":["microservice","order"],"check":{"http":"http://localhost:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-07T19:04:31.583Z info: Product Service running on port 3003
+2025-05-07T19:04:31.641Z info: MongoDB connected successfully
+2025-05-07T19:04:31.670Z info: Successfully connected to RabbitMQ
+2025-05-07T19:04:31.674Z info: Successfully connected to RabbitMQ
+2025-05-07T19:04:31.708Z error: RabbitMQ connection error: Channel closed by server: 404 (NOT-FOUND) with message "NOT_FOUND - no exchange 'product' in vhost '/'"
+2025-05-07T23:56:09.979Z info: Consul client initialized
+2025-05-07T23:56:09.993Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"localhost","port":3003,"tags":["microservice","order"],"check":{"http":"http://localhost:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-07T23:56:10.005Z info: Product Service running on port 3003
+2025-05-07T23:56:10.081Z info: MongoDB connected successfully
+2025-05-07T23:56:10.120Z info: Successfully connected to RabbitMQ
+2025-05-07T23:56:10.121Z info: Successfully connected to RabbitMQ
