@@ -3,14 +3,21 @@ version: '3.8'
 services:
   consul:
     image: hashicorp/consul:latest
+    container_name: ms-consul
     ports:
       - "8500:8500"
-    environment:
-      - CONSUL_BIND_INTERFACE=eth0
-    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+      - "8600:8600/udp"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - microservice-network
 
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: ms-rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -22,9 +29,12 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - microservice-network
 
   mongodb:
     image: mongo:latest
+    container_name: ms-mongodb
     ports:
       - "27017:27017"
     volumes:
@@ -38,6 +48,44 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    networks:
+      - microservice-network
 
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    container_name: ms-product-service
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./product-service:/usr/src/app
+    restart: unless-stopped
+    networks:
+      - microservice-network
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: ms-gateway-service
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./api-gateway:/usr/src/app
+    restart: unless-stopped
+    networks:
+      - microservice-network
 volumes:
   mongodb_data:
+
+networks:
+  microservice-network:
+    driver: bridge
+
+
+
+# docker-compose restart product-service     

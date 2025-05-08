@@ -5,7 +5,8 @@ class RabbitMQClient {
   constructor() {
     this.connection = null;
     this.channel = null;
-    this.uri = process.env.RABBITMQ_URI || 'amqp://localhost';
+    this.uri = process.env.RABBITMQ_URL || 'amqp://localhost';
+    console.log('RabbitMQ URI:', this.uri);
   }
 
   async connect() {

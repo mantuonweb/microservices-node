@@ -1,10 +1,11 @@
+require('dotenv').config({ path: './api-gateway.env' });
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const Consul = require('consul');
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 3000;
 
 // Store multiple instances for each service
 let serviceRegistry = {
