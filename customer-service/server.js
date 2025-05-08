@@ -31,7 +31,7 @@ if (CONSUL_ENABLED) {
 
 app.use(express.json());
 app.use(cors());
-const MONGODB_URI = process.env.MONGODB_URL 
+const MONGODB_URI = process.env.MONGODB_URL
 // MongoDB connection
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGODB_URI, {
@@ -63,11 +63,10 @@ function registerService() {
         name: SERVICE_NAME,
         address: process.env.SERVICE_HOST || 'localhost',
         port: parseInt(PORT),
-        tags: ['microservice', 'customer'],
+        tags: ['microservice','customer'],
         check: {
-          http: `http://${
-            process.env.SERVICE_HOST || 'localhost'
-          }:${PORT}/health`,
+          http: `http://${process.env.SERVICE_HOST || 'localhost'
+            }:${PORT}/health`,
           interval: '15s',
           timeout: '5s',
         },

@@ -8,8 +8,7 @@ const { listenProductUpdates } = require('../listeners/productEventListener');
 
 const configureApp = () => {
   const app = express();
-  const PORT = process.env.PORT || 3003;
-  console.log(process.env.PORT, 'process.env.PORT');
+  const PORT = process.env.PORT || 3006;
   // Configure middleware
   app.use(express.json());
   app.use(cors());

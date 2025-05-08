@@ -5,7 +5,7 @@ class RabbitMQClient {
   constructor(config = {}) {
     this.connection = null;
     this.channel = null;
-    this.uri = config.url || process.env.RABBITMQ_URI || 'amqp://localhost';
+    this.uri = config.url || process.env.RABBITMQ_URL || 'amqp://localhost';
     this.exchange =
       config.exchange || process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product';
     this.exchangeType =
@@ -123,7 +123,7 @@ class RabbitMQClient {
 }
 
 module.exports = new RabbitMQClient({
-  url: process.env.RABBITMQ_URI || 'amqp://localhost',
+  url: process.env.RABBITMQ_URL || 'amqp://localhost',
   exchange: process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product_message',
   exchangeType: process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic', // Changed from 'fanout' to 'topic' to be consistent
   exchangeOptions: { durable: true },

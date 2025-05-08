@@ -1,0 +1,2 @@
+2025-05-08T10:55:47.873Z error: Error creating customer: E11000 duplicate key error collection: customer-service.customers index: email_1 dup key: { email: "alice@example.com" }
+2025-05-08T10:56:07.654Z error: Error creating customer: E11000 duplicate key error collection: customer-service.customers index: email_1 dup key: { email: "mantu@example.com" }

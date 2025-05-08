@@ -67,6 +67,13 @@ services:
     volumes:
       - ./product-service:/usr/src/app
     restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
     networks:
       - microservice-network
   order-service:
@@ -81,6 +88,13 @@ services:
     volumes:
       - ./order-service:/usr/src/app
     restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
     networks:
       - microservice-network
   
@@ -96,6 +110,35 @@ services:
     volumes:
       - ./customer-service:/usr/src/app
     restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - microservice-network
+
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    container_name: ms-inventory-service
+    ports:
+      - "3006:3006"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./inventory-service:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
     networks:
       - microservice-network
 
@@ -111,6 +154,11 @@ services:
     volumes:
       - ./api-gateway:/usr/src/app
     restart: unless-stopped
+    depends_on:
+      - product-service
+      - order-service
+      - customer-service
+      - inventory-service
     networks:
       - microservice-network
 volumes:
@@ -121,7 +169,3 @@ volumes:
 networks:
   microservice-network:
     driver: bridge
-
-
-
-# docker-compose restart product-service     

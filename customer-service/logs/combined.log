@@ -18,3 +18,32 @@
 2025-05-08T09:56:45.143Z info: Circuit Breaker: Operation successful
 2025-05-08T10:52:53.068Z info: SIGTERM signal received: shutting down...
 2025-05-08T10:52:53.079Z info: HTTP server closed
+2025-05-08T10:53:23.646Z info: Consul client initialized
+2025-05-08T10:53:23.694Z info: Customer Service running on port 3002
+2025-05-08T10:53:23.800Z info: MongoDB connected successfully
+2025-05-08T10:54:32.729Z info: Customers retrieved successfully
+2025-05-08T10:54:32.730Z info: Circuit Breaker: Operation successful
+2025-05-08T10:55:47.873Z error: Error creating customer: E11000 duplicate key error collection: customer-service.customers index: email_1 dup key: { email: "alice@example.com" }
+2025-05-08T10:55:47.875Z info: Circuit Breaker: Operation successful
+2025-05-08T10:55:58.288Z info: New customer created:
+2025-05-08T10:55:58.291Z info: Circuit Breaker: Operation successful
+2025-05-08T10:56:07.654Z error: Error creating customer: E11000 duplicate key error collection: customer-service.customers index: email_1 dup key: { email: "mantu@example.com" }
+2025-05-08T10:56:07.657Z info: Circuit Breaker: Operation successful
+2025-05-08T10:56:14.467Z info: Customers retrieved successfully
+2025-05-08T10:56:14.469Z info: Circuit Breaker: Operation successful
+2025-05-08T10:56:22.531Z info: Customers retrieved successfully
+2025-05-08T10:56:22.533Z info: Circuit Breaker: Operation successful
+2025-05-08T11:13:42.030Z info: SIGTERM signal received: shutting down...
+2025-05-08T11:13:42.035Z info: HTTP server closed
+2025-05-08T11:13:42.057Z info: MongoDB connection closed
+2025-05-08T11:14:07.539Z info: Consul client initialized
+2025-05-08T11:14:07.596Z info: Customer Service running on port 3002
+2025-05-08T11:14:07.700Z info: MongoDB connected successfully
+2025-05-08T11:17:02.616Z info: SIGTERM signal received: shutting down...
+2025-05-08T11:17:02.622Z info: HTTP server closed
+2025-05-08T11:17:59.154Z info: Consul client initialized
+2025-05-08T11:17:59.211Z info: Customer Service running on port 3002
+2025-05-08T11:17:59.301Z info: MongoDB connected successfully
+2025-05-08T11:20:14.815Z info: SIGTERM signal received: shutting down...
+2025-05-08T11:20:14.818Z info: HTTP server closed
+2025-05-08T11:20:14.829Z info: MongoDB connection closed

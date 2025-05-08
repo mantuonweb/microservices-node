@@ -482,3 +482,29 @@
 2025-05-08T10:52:53.121Z info: HTTP server closed
 2025-05-08T10:52:53.128Z error: RabbitMQ connection error: write ECONNRESET
 2025-05-08T10:52:53.131Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-08T10:53:29.946Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-08T10:53:29.953Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-08T10:53:29.960Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-08T10:53:29.986Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.2:5672
+2025-05-08T10:53:23.871Z info: MongoDB connected successfully
+2025-05-08T10:53:28.826Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.2:5672
+2025-05-08T10:53:33.408Z info: Successfully connected to RabbitMQ
+2025-05-08T10:54:24.083Z info: Products retrieved successfully
+2025-05-08T10:54:24.085Z info: Circuit Breaker: Request successful
+2025-05-08T10:56:45.767Z info: Message published to product_message:product.created
+2025-05-08T10:56:45.767Z info: Product created successfully
+2025-05-08T10:56:45.769Z info: Circuit Breaker: Request successful
+2025-05-08T11:13:42.043Z info: Starting graceful shutdown...
+2025-05-08T11:13:42.054Z info: HTTP server closed
+2025-05-08T11:13:42.070Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-08T11:14:08.697Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-08T11:14:08.711Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-08T11:14:08.720Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-08T11:14:08.762Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.3:5672
+2025-05-08T11:14:08.831Z info: MongoDB connected successfully
+2025-05-08T11:14:13.276Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.3:5672
+2025-05-08T11:14:17.771Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.3:5672
+2025-05-08T11:14:22.359Z info: Successfully connected to RabbitMQ
+2025-05-08T11:17:02.536Z warn: MongoDB disconnected
+2025-05-08T11:17:02.580Z info: Starting graceful shutdown...
+2025-05-08T11:17:02.584Z info: HTTP server closed

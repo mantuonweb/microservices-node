@@ -12,6 +12,7 @@ let serviceRegistry = {
   'product-service': [],
   'order-service': [],
   'customer-service': [],
+  'inventory-service': [],
 };
 
 // Keep track of the current instance index for round-robin load balancing
@@ -19,6 +20,7 @@ const serviceIndices = {
   'product-service': 0,
   'order-service': 0,
   'customer-service': 0,
+  'inventory-service': 0,
 };
 
 const consul = new Consul({
@@ -158,6 +160,7 @@ app.get('/health', (req, res) => {
       'product-service': serviceRegistry['product-service'].length,
       'order-service': serviceRegistry['order-service'].length,
       'customer-service': serviceRegistry['customer-service'].length,
+      'inventory-service': serviceRegistry['inventory-service'].length,
     },
   });
 });
@@ -184,7 +187,8 @@ async function discoverServices() {
       if (
         serviceName === 'product-service' ||
         serviceName === 'order-service' ||
-        serviceName === 'customer-service'
+        serviceName === 'customer-service' ||
+        serviceName === 'inventory-service'
       ) {
         const serviceDetails = await consul.catalog.service.nodes(serviceName);
         if (serviceDetails && serviceDetails.length > 0) {
