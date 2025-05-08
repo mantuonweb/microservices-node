@@ -1,0 +1,13 @@
+2025-05-08T09:49:07.554Z info: Consul client initialized
+2025-05-08T09:49:07.592Z info: Customer Service running on port 3002
+2025-05-08T09:49:07.654Z info: MongoDB connected successfully
+2025-05-08T09:49:50.321Z info: Customers retrieved successfully
+2025-05-08T09:49:50.332Z info: Circuit Breaker: Operation successful
+2025-05-08T09:50:01.577Z info: New customer created:
+2025-05-08T09:50:01.578Z info: Circuit Breaker: Operation successful
+2025-05-08T09:50:06.063Z info: Customers retrieved successfully
+2025-05-08T09:50:06.066Z info: Circuit Breaker: Operation successful
+2025-05-08T09:50:23.278Z info: Customers retrieved successfully
+2025-05-08T09:50:23.281Z info: Circuit Breaker: Operation successful
+2025-05-08T09:51:18.148Z info: SIGTERM signal received: shutting down...
+2025-05-08T09:51:18.167Z info: HTTP server closed

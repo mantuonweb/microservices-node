@@ -2,10 +2,14 @@ const amqp = require('amqplib');
 const logger = require('./logger');
 
 class RabbitMQClient {
-  constructor() {
+  constructor(config = {}) {
     this.connection = null;
     this.channel = null;
-    this.uri = process.env.RABBITMQ_URI || 'amqp://localhost';
+    this.uri = config.url || process.env.RABBITMQ_URL || 'amqp://localhost';
+    this.exchange = config.exchange || process.env.RABBITMQ_EXCHANGE || 'product';
+    this.exchangeType = config.exchangeType || process.env.RABBITMQ_EXCHANGE_TYPE || 'topic';
+    this.exchangeOptions = config.exchangeOptions || { durable: true };
+    this.passiveExchange = config.passiveExchange || false;
   }
 
   async connect() {
@@ -14,11 +18,15 @@ class RabbitMQClient {
       this.channel = await this.connection.createChannel();
 
       // Create the exchange if it doesn't exist
-      await this.channel.assertExchange(
-        process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product',
-        process.env.RABBITMQ_EXCHANGE_TYPE || 'topic',
-        { durable: true }
-      );
+      if (this.passiveExchange) {
+        await this.channel.checkExchange(this.exchange);
+      } else {
+        await this.channel.assertExchange(
+          this.exchange,
+          this.exchangeType,
+          this.exchangeOptions
+        );
+      }
 
       logger.info('Successfully connected to RabbitMQ');
 
@@ -109,8 +117,8 @@ class RabbitMQClient {
 
 module.exports = new RabbitMQClient({
   url: process.env.RABBITMQ_URL,
-  exchange: process.env.RABBITMQ_EXCHANGE,
-  exchangeType: process.env.RABBITMQ_EXCHANGE_TYPE || 'fanout', // Match the existing exchange type
+  exchange: process.env.RABBITMQ_EXCHANGE || 'product',
+  exchangeType: process.env.RABBITMQ_EXCHANGE_TYPE || 'topic',
   exchangeOptions: { durable: true },
-  passiveExchange: true,
+  passiveExchange: false  // Change to false to create the exchange if it doesn't exist
 });

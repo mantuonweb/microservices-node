@@ -1,3 +1,4 @@
+require('dotenv').config({ path: './customer-service.env' });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -30,11 +31,10 @@ if (CONSUL_ENABLED) {
 
 app.use(express.json());
 app.use(cors());
-const MONGODB_URI =
-  'mongodb://root:Global%40123@localhost:27017/customer-service?authSource=admin';
+const MONGODB_URI = process.env.MONGODB_URL 
 // MongoDB connection
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.MONGODB_URI || MONGODB_URI, {
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

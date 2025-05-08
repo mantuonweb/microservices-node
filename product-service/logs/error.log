@@ -298,3 +298,4 @@
 2025-05-08T07:14:24.051Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED ::1:5672
 2025-05-08T07:14:28.328Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED ::1:5672
 2025-05-08T07:14:33.082Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED ::1:5672
+2025-05-08T09:49:00.966Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.21.0.8:5672

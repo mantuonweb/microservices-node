@@ -436,3 +436,39 @@
 2025-05-08T07:14:46.924Z info: Successfully connected to RabbitMQ
 2025-05-08T07:18:33.207Z info: Starting graceful shutdown...
 2025-05-08T07:18:33.210Z info: HTTP server closed
+2025-05-08T07:18:45.111Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-08T07:18:45.119Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-08T07:18:45.125Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-08T07:18:45.186Z info: MongoDB connected successfully
+2025-05-08T07:18:45.213Z info: Successfully connected to RabbitMQ
+2025-05-08T08:46:01.982Z info: Products retrieved successfully
+2025-05-08T08:46:01.983Z info: Circuit Breaker: Request successful
+2025-05-08T08:46:04.712Z info: Products retrieved successfully
+2025-05-08T08:46:04.715Z info: Circuit Breaker: Request successful
+2025-05-08T08:46:05.430Z info: Products retrieved successfully
+2025-05-08T08:46:05.431Z info: Circuit Breaker: Request successful
+2025-05-08T08:46:05.695Z info: Products retrieved successfully
+2025-05-08T08:46:05.695Z info: Circuit Breaker: Request successful
+2025-05-08T09:23:28.721Z info: Products retrieved successfully
+2025-05-08T09:23:28.722Z info: Circuit Breaker: Request successful
+2025-05-08T09:31:04.507Z info: Products retrieved successfully
+2025-05-08T09:31:04.508Z info: Circuit Breaker: Request successful
+2025-05-08T09:32:20.801Z info: Message published to product:product.created
+2025-05-08T09:32:20.802Z info: Product created successfully
+2025-05-08T09:32:20.803Z info: Circuit Breaker: Request successful
+2025-05-08T09:32:30.432Z info: Products retrieved successfully
+2025-05-08T09:32:30.433Z info: Circuit Breaker: Request successful
+2025-05-08T09:34:11.957Z info: Products retrieved successfully
+2025-05-08T09:34:11.959Z info: Circuit Breaker: Request successful
+2025-05-08T09:48:42.341Z info: Starting graceful shutdown...
+2025-05-08T09:48:42.357Z info: HTTP server closed
+2025-05-08T09:48:42.367Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-08T09:49:00.925Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-08T09:49:00.934Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-08T09:49:00.942Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-08T09:49:00.966Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.21.0.8:5672
+2025-05-08T09:49:01.022Z info: MongoDB connected successfully
+2025-05-08T09:49:05.466Z info: Successfully connected to RabbitMQ
+2025-05-08T09:51:18.099Z warn: MongoDB disconnected
+2025-05-08T09:51:18.134Z info: Starting graceful shutdown...
+2025-05-08T09:51:18.152Z info: HTTP server closed
