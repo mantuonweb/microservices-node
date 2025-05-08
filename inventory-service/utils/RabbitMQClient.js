@@ -5,9 +5,11 @@ class RabbitMQClient {
   constructor(config = {}) {
     this.connection = null;
     this.channel = null;
-    this.uri = config.url || process.env.RABBITMQ_URL || 'amqp://localhost';
-    this.exchange = config.exchange || process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product_message';
-    this.exchangeType = config.exchangeType || process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic';
+    this.uri = config.url || process.env.RABBITMQ_URI || 'amqp://localhost';
+    this.exchange =
+      config.exchange || process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product';
+    this.exchangeType =
+      config.exchangeType || process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic';
     this.exchangeOptions = config.exchangeOptions || { durable: true };
     this.passiveExchange = config.passiveExchange || false;
   }
@@ -18,17 +20,15 @@ class RabbitMQClient {
       this.channel = await this.connection.createChannel();
 
       // Create the exchange if it doesn't exist
-      if (this.passiveExchange) {
-        await this.channel.checkExchange(this.exchange);
-      } else {
-        await this.channel.assertExchange(
-          this.exchange,
-          this.exchangeType,
-          this.exchangeOptions
-        );
-      }
+      await this.channel.assertExchange(
+        this.exchange,
+        this.exchangeType,
+        this.exchangeOptions
+      );
 
-      logger.info('Successfully connected to RabbitMQ');
+      logger.info(
+        `Successfully connected to RabbitMQ and created exchange ${this.exchange}`
+      );
 
       // Handle connection errors
       this.connection.on('error', (err) => {
@@ -73,6 +73,13 @@ class RabbitMQClient {
         await this.connect();
       }
 
+      // Make sure the exchange exists
+      await this.channel.assertExchange(
+        exchange,
+        this.exchangeType,
+        this.exchangeOptions
+      );
+
       // Assert the queue
       await this.channel.assertQueue(queueName, { durable: true });
 
@@ -116,9 +123,9 @@ class RabbitMQClient {
 }
 
 module.exports = new RabbitMQClient({
-  url: process.env.RABBITMQ_URL,
-  exchange: process.env.RABBITMQ_EXCHANGE || 'product',
-  exchangeType: process.env.RABBITMQ_EXCHANGE_TYPE || 'topic',
+  url: process.env.RABBITMQ_URI || 'amqp://localhost',
+  exchange: process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product_message',
+  exchangeType: process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic', // Changed from 'fanout' to 'topic' to be consistent
   exchangeOptions: { durable: true },
-  passiveExchange: false  // Change to false to create the exchange if it doesn't exist
+  passiveExchange: false,
 });
