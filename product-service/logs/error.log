@@ -306,3 +306,14 @@
 2025-05-08T11:14:08.762Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.3:5672
 2025-05-08T11:14:13.276Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.3:5672
 2025-05-08T11:14:17.771Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.20.0.3:5672
+2025-05-09T17:35:38.559Z error: Failed to connect to RabbitMQ: getaddrinfo ENOTFOUND ms-rabbitmq
+2025-05-09T17:36:20.882Z error: Failed to connect to RabbitMQ: getaddrinfo ENOTFOUND ms-rabbitmq
+2025-05-09T17:36:48.118Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
+2025-05-09T17:46:23.966Z error: Failed to connect to RabbitMQ: getaddrinfo ENOTFOUND ms-rabbitmq
+2025-05-09T17:47:28.822Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
+2025-05-09T17:48:47.132Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
+2025-05-09T17:49:45.793Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
+2025-05-09T17:50:35.737Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
+2025-05-09T17:51:16.230Z error: Failed to connect to RabbitMQ: getaddrinfo ENOTFOUND ms-rabbitmq
+2025-05-09T17:51:55.032Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
+2025-05-09T17:52:32.630Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq

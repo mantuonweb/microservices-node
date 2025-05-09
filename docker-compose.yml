@@ -53,6 +53,24 @@ services:
       start_period: 40s
     networks:
       - microservice-network
+  config-service:
+    build:
+      context: ./config-service
+      dockerfile: Dockerfile
+    container_name: ms-config-service
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=dev
+      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+    volumes:
+      - ./config-service:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+    networks:
+      - microservice-network
 
   product-service:
     build:
@@ -74,6 +92,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      config-service:
+        condition: service_started
     networks:
       - microservice-network
   order-service:
@@ -95,6 +115,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      config-service:
+        condition: service_started
     networks:
       - microservice-network
   
@@ -117,6 +139,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      config-service:
+        condition: service_started
     networks:
       - microservice-network
 
@@ -139,6 +163,8 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_healthy
+      config-service:
+        condition: service_started
     networks:
       - microservice-network
 
@@ -155,6 +181,7 @@ services:
       - ./api-gateway:/usr/src/app
     restart: unless-stopped
     depends_on:
+      - config-service
       - product-service
       - order-service
       - customer-service

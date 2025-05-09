@@ -47,3 +47,68 @@
 2025-05-08T11:20:14.815Z info: SIGTERM signal received: shutting down...
 2025-05-08T11:20:14.818Z info: HTTP server closed
 2025-05-08T11:20:14.829Z info: MongoDB connection closed
+2025-05-08T11:20:32.811Z info: Consul client initialized
+2025-05-08T11:20:32.838Z info: Customer Service running on port 3002
+2025-05-08T11:20:32.891Z info: MongoDB connected successfully
+2025-05-08T11:29:38.365Z info: Consul client initialized
+2025-05-08T11:29:38.427Z info: Customer Service running on port 3002
+2025-05-08T11:29:38.543Z info: MongoDB connected successfully
+2025-05-09T17:35:36.779Z info: Consul client initialized
+2025-05-09T17:35:36.834Z info: Customer Service running on port 3002
+2025-05-09T17:36:06.809Z info: Consul client initialized
+2025-05-09T17:36:06.859Z info: Customer Service running on port 3002
+2025-05-09T17:36:36.230Z info: Consul client initialized
+2025-05-09T17:36:36.285Z info: Customer Service running on port 3002
+2025-05-09T17:37:10.774Z info: Consul client initialized
+2025-05-09T17:37:10.857Z info: Customer Service running on port 3002
+2025-05-09T17:39:15.708Z info: Consul client initialized
+2025-05-09T17:39:15.773Z info: Customer Service running on port 3002
+2025-05-09T17:39:15.910Z info: MongoDB connected successfully
+2025-05-09T17:46:22.699Z info: Consul client initialized
+2025-05-09T17:46:22.727Z info: Customer Service running on port 3002
+2025-05-09T17:46:58.307Z info: Consul client initialized
+2025-05-09T17:46:58.425Z info: Customer Service running on port 3002
+2025-05-09T17:48:41.478Z info: Consul client initialized
+2025-05-09T17:48:41.537Z info: Customer Service running on port 3002
+2025-05-09T17:49:06.859Z info: Consul client initialized
+2025-05-09T17:49:06.912Z info: Customer Service running on port 3002
+2025-05-09T17:50:20.167Z info: Consul client initialized
+2025-05-09T17:50:20.261Z info: Customer Service running on port 3002
+2025-05-09T17:50:58.052Z info: Consul client initialized
+2025-05-09T17:50:58.153Z info: Customer Service running on port 3002
+2025-05-09T17:51:33.333Z info: Consul client initialized
+2025-05-09T17:51:33.435Z info: Customer Service running on port 3002
+2025-05-09T17:52:05.588Z info: Consul client initialized
+2025-05-09T17:52:05.619Z info: Customer Service running on port 3002
+2025-05-09T17:52:35.234Z info: Consul client initialized
+2025-05-09T17:52:35.340Z info: Customer Service running on port 3002
+2025-05-09T17:53:52.883Z info: Consul client initialized
+2025-05-09T17:53:52.968Z info: Customer Service running on port 3002
+2025-05-09T17:53:53.118Z info: MongoDB connected successfully
+2025-05-09T17:58:15.420Z info: SIGTERM signal received: shutting down...
+2025-05-09T17:58:15.428Z info: HTTP server closed
+2025-05-09T17:59:57.375Z info: Consul client initialized
+2025-05-09T17:59:57.438Z info: Customer Service running on port 3002
+2025-05-09T17:59:57.513Z info: MongoDB connected successfully
+2025-05-09T18:25:41.714Z info: SIGTERM signal received: shutting down...
+2025-05-09T18:25:41.719Z info: HTTP server closed
+2025-05-09T18:27:03.075Z info: Consul client initialized
+2025-05-09T18:27:03.138Z info: Customer Service running on port 3002
+2025-05-09T18:27:03.256Z info: MongoDB connected successfully
+2025-05-09T18:30:35.332Z info: SIGTERM signal received: shutting down...
+2025-05-09T18:30:35.347Z info: HTTP server closed
+2025-05-09T18:31:48.413Z info: Consul client initialized
+2025-05-09T18:31:48.458Z info: Customer Service running on port 3002
+2025-05-09T18:31:48.543Z info: MongoDB connected successfully
+2025-05-09T18:32:07.631Z info: SIGTERM signal received: shutting down...
+2025-05-09T18:32:07.634Z info: HTTP server closed
+2025-05-09T18:32:07.650Z info: MongoDB connection closed
+2025-05-09T18:33:16.648Z info: Consul client initialized
+2025-05-09T18:33:16.708Z info: Customer Service running on port 3002
+2025-05-09T18:33:16.806Z info: MongoDB connected successfully
+2025-05-09T18:36:58.723Z info: SIGTERM signal received: shutting down...
+2025-05-09T18:36:58.731Z info: HTTP server closed
+2025-05-09T18:36:58.745Z info: MongoDB connection closed
+2025-05-09T18:38:10.098Z info: Consul client initialized
+2025-05-09T18:38:03.739Z info: Customer Service running on port 3002
+2025-05-09T18:38:03.823Z info: MongoDB connected successfully
