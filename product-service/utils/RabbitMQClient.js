@@ -2,11 +2,18 @@ const amqp = require('amqplib');
 const logger = require('./logger');
 
 class RabbitMQClient {
+  static instance = null;
   constructor() {
     this.connection = null;
     this.channel = null;
     this.uri = process.env.RABBITMQ_URL || 'amqp://localhost';
-    console.log('RabbitMQ URI:', this.uri);
+  }
+
+  static getInstance() {
+    if (!RabbitMQClient.instance) {
+      RabbitMQClient.instance = new RabbitMQClient();
+    }
+    return RabbitMQClient.instance;
   }
 
   async connect() {
@@ -72,10 +79,4 @@ class RabbitMQClient {
   }
 }
 
-module.exports = new RabbitMQClient({
-  url: process.env.RABBITMQ_URL,
-  exchange: process.env.RABBITMQ_EXCHANGE,
-  exchangeType: process.env.RABBITMQ_EXCHANGE_TYPE || 'fanout', // Match the existing exchange type
-  exchangeOptions: { durable: true },
-  passiveExchange: true,
-});
+module.exports = RabbitMQClient;

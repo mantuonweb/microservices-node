@@ -80,7 +80,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=dev
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
     volumes:
       - ./product-service:/usr/src/app

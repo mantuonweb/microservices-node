@@ -612,3 +612,102 @@
 2025-05-09T18:36:58.733Z info: Starting graceful shutdown...
 2025-05-09T18:36:58.743Z info: HTTP server closed
 2025-05-09T18:36:58.752Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-09T18:38:04.749Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T18:38:04.767Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-09T18:38:04.778Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T18:38:04.918Z info: MongoDB connected successfully
+2025-05-09T18:38:04.937Z info: Successfully connected to RabbitMQ
+2025-05-09T18:52:26.310Z info: Starting graceful shutdown...
+2025-05-09T18:52:26.314Z info: HTTP server closed
+2025-05-09T18:56:09.150Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T18:56:09.158Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-09T18:56:09.166Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T18:56:09.240Z info: MongoDB connected successfully
+2025-05-09T18:56:09.262Z info: Successfully connected to RabbitMQ
+2025-05-09T19:05:52.521Z info: Starting graceful shutdown...
+2025-05-09T19:05:52.524Z info: HTTP server closed
+2025-05-09T19:05:52.528Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-09T19:17:31.477Z error: Failed to load config from server: ENVIRONMENT is not defined ENVIRONMENT is not defined
+2025-05-09T19:17:31.481Z info: Falling back to local environment variables
+2025-05-09T19:17:31.514Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:17:31.521Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:17:31.521Z info: Service will run without Consul registration
+2025-05-09T19:17:31.522Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:17:31.592Z info: MongoDB connected successfully
+2025-05-09T19:17:31.618Z info: Successfully connected to RabbitMQ
+2025-05-09T19:19:12.131Z info: Starting graceful shutdown...
+2025-05-09T19:19:24.705Z info: Loading configuration from ms-config-service:4000/config/product-service/development
+2025-05-09T19:19:24.709Z error: Failed to load config from server: axios is not defined axios is not defined
+2025-05-09T19:19:24.710Z info: Falling back to local environment variables
+2025-05-09T19:19:24.779Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:19:24.791Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:19:24.792Z info: Service will run without Consul registration
+2025-05-09T19:19:24.793Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:19:24.919Z info: MongoDB connected successfully
+2025-05-09T19:19:24.947Z info: Successfully connected to RabbitMQ
+2025-05-09T19:20:21.773Z info: Starting graceful shutdown...
+2025-05-09T19:20:34.164Z info: Loading configuration from ms-config-service:4000/config/product-service/development
+2025-05-09T19:20:34.167Z error: Failed to load config from server: axios is not defined axios is not defined
+2025-05-09T19:20:34.168Z info: Falling back to local environment variables
+2025-05-09T19:20:34.210Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:20:34.218Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:20:34.219Z info: Service will run without Consul registration
+2025-05-09T19:20:34.222Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:20:34.298Z info: MongoDB connected successfully
+2025-05-09T19:20:34.326Z info: Successfully connected to RabbitMQ
+2025-05-09T19:21:33.399Z info: Loading configuration from ms-config-service:4000/config/product-service/development
+2025-05-09T19:21:33.402Z error: Failed to load config from server: axios is not defined axios is not defined
+2025-05-09T19:21:33.402Z info: Falling back to local environment variables
+2025-05-09T19:21:33.438Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:21:33.442Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:21:33.443Z info: Service will run without Consul registration
+2025-05-09T19:21:33.443Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:21:33.507Z info: MongoDB connected successfully
+2025-05-09T19:21:33.543Z info: Successfully connected to RabbitMQ
+2025-05-09T19:22:54.505Z info: Starting graceful shutdown...
+2025-05-09T19:23:08.371Z info: Loading configuration from ms-config-service:4000/config/product-service/development
+2025-05-09T19:23:08.380Z error: Failed to load config from server: Unsupported protocol ms-config-service: Unsupported protocol ms-config-service:
+2025-05-09T19:23:08.381Z info: Falling back to local environment variables
+2025-05-09T19:23:08.411Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:23:08.417Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:23:08.418Z info: Service will run without Consul registration
+2025-05-09T19:23:08.418Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:23:08.514Z info: MongoDB connected successfully
+2025-05-09T19:23:08.544Z info: Successfully connected to RabbitMQ
+2025-05-09T19:28:33.727Z info: Starting graceful shutdown...
+2025-05-09T19:30:49.217Z info: Loading configuration from ms-config-service:4000/config/product-service/dev
+2025-05-09T19:30:49.232Z error: Failed to load config from server: Unsupported protocol ms-config-service: Unsupported protocol ms-config-service:
+2025-05-09T19:30:49.233Z info: Falling back to local environment variables
+2025-05-09T19:30:49.275Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:30:49.282Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:30:49.282Z info: Service will run without Consul registration
+2025-05-09T19:30:49.283Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:30:49.349Z info: MongoDB connected successfully
+2025-05-09T19:30:49.372Z info: Successfully connected to RabbitMQ
+2025-05-09T19:38:10.108Z info: Starting graceful shutdown...
+2025-05-09T19:38:23.849Z info: Loading configuration from ms-config-service:4000/config/product-service/dev
+2025-05-09T19:38:23.858Z error: Failed to load config from server: Unsupported protocol ms-config-service: Unsupported protocol ms-config-service:
+2025-05-09T19:38:23.859Z info: Falling back to local environment variables
+2025-05-09T19:38:23.898Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:38:23.903Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:38:23.903Z info: Service will run without Consul registration
+2025-05-09T19:38:23.904Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:38:23.978Z info: MongoDB connected successfully
+2025-05-09T19:38:24.002Z info: Successfully connected to RabbitMQ
+2025-05-09T19:39:43.090Z info: Starting graceful shutdown...
+2025-05-09T19:39:56.271Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-09T19:39:56.406Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:39:56.414Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:39:56.414Z info: Service will run without Consul registration
+2025-05-09T19:39:56.414Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:39:56.490Z info: MongoDB connected successfully
+2025-05-09T19:39:56.526Z info: Successfully connected to RabbitMQ
+2025-05-09T19:41:32.589Z info: Starting graceful shutdown...
+2025-05-09T19:41:46.395Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-09T19:41:46.494Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:41:46.499Z error: Error connecting to Consul: PORT is not defined PORT is not defined
+2025-05-09T19:41:46.500Z info: Service will run without Consul registration
+2025-05-09T19:41:46.500Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:41:46.554Z info: MongoDB connected successfully
+2025-05-09T19:41:46.580Z info: Successfully connected to RabbitMQ
+2025-05-09T19:44:33.947Z info: Starting graceful shutdown...

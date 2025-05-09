@@ -317,3 +317,19 @@
 2025-05-09T17:51:16.230Z error: Failed to connect to RabbitMQ: getaddrinfo ENOTFOUND ms-rabbitmq
 2025-05-09T17:51:55.032Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
 2025-05-09T17:52:32.630Z error: Failed to connect to RabbitMQ: getaddrinfo EAI_AGAIN ms-rabbitmq
+2025-05-09T19:17:31.477Z error: Failed to load config from server: ENVIRONMENT is not defined ENVIRONMENT is not defined
+2025-05-09T19:17:31.521Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:19:24.709Z error: Failed to load config from server: axios is not defined axios is not defined
+2025-05-09T19:19:24.791Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:20:34.167Z error: Failed to load config from server: axios is not defined axios is not defined
+2025-05-09T19:20:34.218Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:21:33.402Z error: Failed to load config from server: axios is not defined axios is not defined
+2025-05-09T19:21:33.442Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:23:08.380Z error: Failed to load config from server: Unsupported protocol ms-config-service: Unsupported protocol ms-config-service:
+2025-05-09T19:23:08.417Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:30:49.232Z error: Failed to load config from server: Unsupported protocol ms-config-service: Unsupported protocol ms-config-service:
+2025-05-09T19:30:49.282Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:38:23.858Z error: Failed to load config from server: Unsupported protocol ms-config-service: Unsupported protocol ms-config-service:
+2025-05-09T19:38:23.903Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:39:56.414Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
+2025-05-09T19:41:46.499Z error: Error connecting to Consul: PORT is not defined PORT is not defined
