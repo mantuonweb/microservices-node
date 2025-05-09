@@ -10,13 +10,6 @@ const SERVICE_NAME = 'product-service';
 const ENVIRONMENT = process.env.NODE_ENV || 'dev';
 const CONFIG_SERVER_URL = process.env.CONFIG_SERVER_URL || 'http://ms-config-service:4000';
 
-// Global variables
-let app;
-let server;
-let PORT;
-let SERVICE_ID;
-let consul = null;
-
 /**
  * Loads configuration from config server or falls back to local env vars
  */
@@ -69,8 +62,11 @@ function initializeConsul() {
 
 /**
  * Registers service with Consul
+ * @param {Object} consul - Consul client
+ * @param {string} serviceId - Service ID
+ * @param {number} port - Service port
  */
-function registerService() {
+function registerService(consul, serviceId, port) {
   if (!consul) {
     logger.warn('Cannot register service: Consul client is not initialized');
     return;
@@ -79,13 +75,13 @@ function registerService() {
   const serviceHost = process.env.SERVICE_HOST || 'localhost';
   
   const serviceDetails = {
-    id: SERVICE_ID,
+    id: serviceId,
     name: SERVICE_NAME,
     address: serviceHost,
-    port: parseInt(PORT),
+    port: parseInt(port),
     tags: ['microservice', 'product'],
     check: {
-      http: `http://${serviceHost}:${PORT}/health`,
+      http: `http://${serviceHost}:${port}/health`,
       interval: '15s',
       timeout: '5s',
     },
@@ -95,7 +91,7 @@ function registerService() {
 
   consul.agent.service.register(serviceDetails)
     .then(() => {
-      logger.info(`Service registered with Consul: ${SERVICE_ID}`);
+      logger.info(`Service registered with Consul: ${serviceId}`);
     })
     .catch((err) => {
       logger.error(`Failed to register service with Consul: ${err.message}`);
@@ -104,41 +100,48 @@ function registerService() {
 
 /**
  * Deregisters service from Consul
+ * @param {Object} consul - Consul client
+ * @param {string} serviceId - Service ID
  */
-async function deregisterService() {
+async function deregisterService(consul, serviceId) {
   if (!consul) {
     return;
   }
 
   try {
-    await consul.agent.service.deregister(SERVICE_ID);
-    logger.info(`Service deregistered from Consul: ${SERVICE_ID}`);
+    await consul.agent.service.deregister(serviceId);
+    logger.info(`Service deregistered from Consul: ${serviceId}`);
   } catch (err) {
     logger.error(`Failed to deregister service from Consul: ${err.message}`);
   }
 }
 
 /**
- * Handles graceful shutdown
+ * Creates a graceful shutdown handler
+ * @param {Object} server - HTTP server
+ * @param {Object} consul - Consul client
+ * @param {string} serviceId - Service ID
  */
-async function gracefulShutdown() {
-  logger.info('Starting graceful shutdown...');
-  
-  try {
-    await deregisterService();
+function createShutdownHandler(server, consul, serviceId) {
+  return async function gracefulShutdown() {
+    logger.info('Starting graceful shutdown...');
     
-    server.close(() => {
-      logger.info('HTTP server closed');
-    });
+    try {
+      await deregisterService(consul, serviceId);
+      
+      server.close(() => {
+        logger.info('HTTP server closed');
+      });
 
-    await rabbitMQClient.getInstance().close();
-    logger.info('RabbitMQ connection closed');
-    
-    process.exit(0);
-  } catch (error) {
-    logger.error('Error during shutdown:', error);
-    process.exit(1);
-  }
+      await rabbitMQClient.getInstance().close();
+      logger.info('RabbitMQ connection closed');
+      
+      process.exit(0);
+    } catch (error) {
+      logger.error('Error during shutdown:', error);
+      process.exit(1);
+    }
+  };
 }
 
 /**
@@ -151,29 +154,30 @@ async function initializeApp() {
     
     // Configure Express app
     const configApp = configureApp();
-    PORT = configApp.PORT;
-    app = configApp.app;
-    SERVICE_ID = `${SERVICE_NAME}-${PORT}`;
+    const port = configApp.PORT;
+    const app = configApp.app;
+    const serviceId = `${SERVICE_NAME}-${port}`;
     
     // Initialize Consul
-    consul = initializeConsul();
+    const consul = initializeConsul();
     
     // Start server
-    server = app.listen(PORT, '::', () => {
-      logger.info(`Product Service running on port ${PORT} (IPv4 and IPv6)`);
+    const server = app.listen(port, '::', () => {
+      logger.info(`Product Service running on port ${port} (IPv4 and IPv6)`);
       
       if (consul) {
-        registerService();
+        registerService(consul, serviceId, port);
       } else {
         logger.info('Skipping Consul registration - Consul client not available or disabled');
       }
     });
     
     // Setup graceful shutdown
-    process.on('SIGTERM', gracefulShutdown);
-    process.on('SIGINT', gracefulShutdown);
+    const shutdownHandler = createShutdownHandler(server, consul, serviceId);
+    process.on('SIGTERM', shutdownHandler);
+    process.on('SIGINT', shutdownHandler);
     
-    return { server, consul, SERVICE_ID };
+    return { server, consul, serviceId };
   } catch (error) {
     logger.error('Failed to initialize application:', error);
     throw error;
