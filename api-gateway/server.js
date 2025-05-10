@@ -9,22 +9,24 @@ class ApiGateway {
     this.app = express();
     this.PORT = process.env.PORT || 3000;
 
-    // Define supported services
-    this.supportedServices = [
-      'product-service',
-      'order-service',
-      'customer-service',
-      'inventory-service'
-    ];
+    // Service configuration object
+    this.serviceConfig = {
+      'product-service': {
+        path: '/api/products'
+      },
+      'order-service': {
+        path: '/api/orders'
+      },
+      'customer-service': {
+        path: '/api/customers'
+      },
+      'inventory-service': {
+        path: '/api/inventories'
+      }
+    };
 
-    // Initialize service registry and indices
-    this.serviceRegistry = {};
-    this.serviceIndices = {};
-
-    this.supportedServices.forEach(service => {
-      this.serviceRegistry[service] = [];
-      this.serviceIndices[service] = 0;
-    });
+    // Derive the arrays/objects as needed
+    this.supportedServices = Object.keys(this.serviceConfig);
 
     this.consul = new Consul({
       host: process.env.CONSUL_HOST || 'localhost',
@@ -40,6 +42,9 @@ class ApiGateway {
       legacyHeaders: false,
     });
 
+    // Cache for proxy instances
+    this.proxyCache = {};
+
     // Handle graceful shutdown
     process.on('SIGTERM', () => this.shutdown());
     process.on('SIGINT', () => this.shutdown());
@@ -48,10 +53,46 @@ class ApiGateway {
   }
 
   init() {
+    // Initialize service registry and indices
+    this.serviceRegistry = {};
+    this.serviceIndices = {};
+
+    this.supportedServices.forEach(service => {
+      this.serviceRegistry[service] = [];
+      this.serviceIndices[service] = 0;
+    });
+
+    // Add request logging middleware
+    this.setupLoggingMiddleware();
+    
     this.setupHealthEndpoint();
     this.discoverServices();
     this.setupServiceDiscoveryInterval();
   }
+  
+  setupLoggingMiddleware() {
+    this.app.use((req, res, next) => {
+      const start = Date.now();
+      
+      // Capture response data
+      const originalEnd = res.end;
+      res.end = function(...args) {
+        const duration = Date.now() - start;
+        console.log({
+          method: req.method,
+          path: req.path,
+          statusCode: res.statusCode,
+          duration: `${duration}ms`
+        });
+        
+        // Call the original end method
+        return originalEnd.apply(this, args);
+      };
+      
+      next();
+    });
+  }
+
   shutdown() {
     console.log('Received shutdown signal, closing server gracefully...');
 
@@ -93,6 +134,8 @@ class ApiGateway {
 
       res.status(200).json({
         status: 'OK',
+        uptime: process.uptime(),
+        timestamp: Date.now(),
         services: serviceStatus
       });
     });
@@ -137,30 +180,35 @@ class ApiGateway {
 
       console.log(`Routing to ${serviceName} instance: ${target}`);
 
-      const proxy = createProxyMiddleware({
-        target,
-        changeOrigin: true,
-        pathRewrite: {
-          [`^${pathPrefix}`]: pathPrefix,
-        },
-      });
+      // Use cached proxy or create new one
+      const cacheKey = `${serviceName}-${target}`;
+      if (!this.proxyCache[cacheKey]) {
+        this.proxyCache[cacheKey] = createProxyMiddleware({
+          target,
+          changeOrigin: true,
+          pathRewrite: {
+            [`^${pathPrefix}`]: pathPrefix,
+          },
+          onProxyReq: (proxyReq, req, res) => {
+            // Add request ID or other headers
+            proxyReq.setHeader('X-Gateway-Request-ID', Date.now().toString());
+          },
+          onError: (err, req, res) => {
+            res.status(500).json({ error: `Service ${serviceName} error: ${err.message}` });
+          }
+        });
+      }
 
-      return proxy(req, res, next);
+      return this.proxyCache[cacheKey](req, res, next);
     };
   }
 
   // Define proxy routes
   setupProxyRoutes() {
-    // Map of service routes
-    const serviceRoutes = {
-      'product-service': '/api/products',
-      'order-service': '/api/orders',
-      'customer-service': '/api/customers',
-      'inventory-service': '/api/inventories'
-    };
+    // Set up routes for each service using the config
+    this.supportedServices.forEach(service => {
+      const path = this.serviceConfig[service].path;
 
-    // Set up routes for each service
-    Object.entries(serviceRoutes).forEach(([service, path]) => {
       this.app.use(
         path,
         this.checkServiceAvailability(service),
@@ -175,28 +223,37 @@ class ApiGateway {
       // Get services from Consul
       const services = await this.consul.catalog.service.list();
 
-      // Reset service registry for clean update
-      this.supportedServices.forEach(service => {
-        this.serviceRegistry[service] = [];
-      });
-
       // Process only supported services
       const discoveryPromises = this.supportedServices
         .filter(service => services[service])
         .map(async (serviceName) => {
-          const serviceDetails = await this.consul.catalog.service.nodes(serviceName);
-          if (serviceDetails?.length) {
-            // Add all instances to the registry
-            this.serviceRegistry[serviceName] = serviceDetails.map(
-              service => `http://${service.ServiceAddress}:${service.ServicePort}`
-            );
-
-            console.log(`Discovered ${serviceDetails.length} instances of ${serviceName}`);
+          try {
+            const serviceDetails = await this.consul.catalog.service.nodes(serviceName);
+            if (serviceDetails?.length) {
+              // Create new instances array
+              const newInstances = serviceDetails.map(
+                service => `http://${service.ServiceAddress}:${service.ServicePort}`
+              );
+              
+              // Only update if instances have changed
+              const currentInstances = JSON.stringify(this.serviceRegistry[serviceName]);
+              const updatedInstances = JSON.stringify(newInstances);
+              
+              if (currentInstances !== updatedInstances) {
+                this.serviceRegistry[serviceName] = newInstances;
+                console.log(`Updated ${serviceDetails.length} instances of ${serviceName}`);
+              }
+            } else if (this.serviceRegistry[serviceName].length > 0) {
+              // Service has no instances but we had some before
+              console.log(`Service ${serviceName} has no instances available`);
+              this.serviceRegistry[serviceName] = [];
+            }
+          } catch (error) {
+            console.error(`Error discovering service ${serviceName}:`, error);
           }
         });
 
       await Promise.all(discoveryPromises);
-      console.log('Service registry updated');
     } catch (error) {
       console.error('Error discovering services:', error);
     }
