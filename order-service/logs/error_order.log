@@ -1,2 +1,78 @@
 2025-05-10T03:26:05.169Z error: Failed to load config from server: Request failed with status code 404
 2025-05-10T05:48:29.571Z error: RabbitMQ connection error: Channel closed by server: 404 (NOT-FOUND) with message "NOT_FOUND - no exchange 'product_message' in vhost '/'"
+2025-05-10T06:29:59.640Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:15.190Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:29.690Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:44.466Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:58.168Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:31:12.788Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:31:28.602Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:31:44.315Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:32:01.190Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:32:16.767Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:32:30.725Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:32:46.592Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:02.182Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:17.297Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:32.454Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:47.726Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:02.456Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:18.094Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:33.937Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:49.796Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:35:05.751Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:36:36.486Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:36:52.069Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:38:20.756Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:38:34.893Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:38:48.233Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:02.583Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:16.021Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:29.972Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:43.492Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:57.780Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:40:11.587Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:40:25.047Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:40:38.610Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:40:51.883Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:41:07.850Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:41:22.966Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:41:39.169Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:42:11.504Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:42:24.511Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:42:38.365Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:42:51.596Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:05.037Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:18.476Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:31.407Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:44.947Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:57.304Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:11.314Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:24.273Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:37.311Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:51.101Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:04.201Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:18.212Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:30.752Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:44.116Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:57.236Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:46:10.648Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:46:24.237Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:46:37.668Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:46:51.289Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:04.328Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:18.803Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:31.416Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:44.750Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:58.057Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:48:11.030Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:52:10.475Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:52:33.725Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:52:48.717Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:53:06.193Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:53:22.632Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:53:38.342Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:53:54.884Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:54:17.957Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:54:31.307Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:56:29.974Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'

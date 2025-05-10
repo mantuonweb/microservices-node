@@ -14,11 +14,11 @@ const configureApp = () => {
   app.use(express.json());
   app.use(cors());
   // Initialize MongoDB connection
-  mongoClient.connect();
+  mongoClient.getInstance().connect();
 
   // Initialize RabbitMQ connection - without using Promise chaining
   try {
-    rabbitMQClient.connect();
+    rabbitMQClient.getInstance().connect();
   } catch (err) {
     logger.error('Failed to initialize RabbitMQ:', err);
   }

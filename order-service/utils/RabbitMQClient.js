@@ -2,17 +2,29 @@ const amqp = require('amqplib');
 const logger = require('./logger');
 
 class RabbitMQClient {
-  constructor(config = {}) {
+  static instance = null;
+  constructor() {
+    console.log('RabbitMQClient constructor called', process.env.RABBITMQ_EXCHANGE_PRODUCT);
     this.connection = null;
     this.channel = null;
-    this.uri = config.url || process.env.RABBITMQ_URL || 'amqp://localhost';
-    this.exchange = config.exchange || process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product_message';
-    this.exchangeType = config.exchangeType || process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic';
-    this.exchangeOptions = config.exchangeOptions || { durable: true };
-    this.passiveExchange = config.passiveExchange || false;
+    this.uri = process.env.RABBITMQ_URL || 'amqp://localhost';
+    this.exchange =
+      process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product-message';
+    this.exchangeType =
+      process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic';
+    this.exchangeOptions = { durable: true };
+    this.passiveExchange = false;
+  }
+
+  static getInstance() {
+    if (!RabbitMQClient.instance) {
+      RabbitMQClient.instance = new RabbitMQClient();
+    }
+    return RabbitMQClient.instance;
   }
 
   async connect() {
+    console.log(this.exchange, process.env.RABBITMQ_EXCHANGE_PRODUCT , 'process.env.RABBITMQ_EXCHANGE_PRODUCT');
     try {
       this.connection = await amqp.connect(this.uri);
       this.channel = await this.connection.createChannel();
@@ -115,10 +127,4 @@ class RabbitMQClient {
   }
 }
 
-module.exports = new RabbitMQClient({
-  url: process.env.RABBITMQ_URL,
-  exchange: process.env.RABBITMQ_EXCHANGE || 'product',
-  exchangeType: process.env.RABBITMQ_EXCHANGE_TYPE || 'topic',
-  exchangeOptions: { durable: true },
-  passiveExchange: false  // Change to false to create the exchange if it doesn't exist
-});
+module.exports = RabbitMQClient;

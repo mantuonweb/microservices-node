@@ -2,7 +2,6 @@ const Consul = require('consul');
 const axios = require('axios');
 const logger = require('./utils/logger');
 const configureApp = require('./config/App');
-const rabbitMQClient = require('./utils/RabbitMQClient');
 
 class OrderService {
   constructor() {
@@ -77,7 +76,6 @@ class OrderService {
     }
 
     try {
-      await rabbitMQClient.close();
       process.exit(0);
     } catch (error) {
       logger.error('Error during shutdown:', error);

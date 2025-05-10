@@ -251,3 +251,431 @@
 2025-05-10T06:28:10.364Z info: Consul client initialized
 2025-05-10T06:28:26.251Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
 2025-05-10T06:28:26.294Z info: Consul client initialized
+2025-05-10T06:28:44.111Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:28:44.185Z info: Consul client initialized
+2025-05-10T06:28:58.144Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:28:58.188Z info: Consul client initialized
+2025-05-10T06:29:13.038Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:29:13.086Z info: Consul client initialized
+2025-05-10T06:29:28.068Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:29:28.115Z info: Consul client initialized
+2025-05-10T06:29:44.649Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:29:44.694Z info: Consul client initialized
+2025-05-10T06:29:59.604Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:29:59.640Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:15.140Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:30:15.190Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:29.630Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:30:29.690Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:44.419Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:30:44.466Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:30:58.109Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:30:58.168Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:31:12.750Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:31:12.788Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:31:28.560Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:31:28.602Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:31:44.276Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:31:44.315Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:32:01.079Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:32:01.190Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:32:16.726Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:32:16.767Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:32:30.664Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:32:46.553Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:32:46.592Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:02.134Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:33:02.182Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:17.240Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:33:17.297Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:32.398Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:33:32.454Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:33:47.685Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:33:47.726Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:02.416Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:34:02.456Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:18.033Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:34:18.094Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:33.883Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:34:33.937Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:34:49.755Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:34:49.796Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:35:05.684Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:35:05.751Z error: Failed to initialize application: mongoClient.connect is not a function
+2025-05-10T06:35:20.753Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:35:20.816Z info: Consul client initialized
+2025-05-10T06:35:37.172Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:35:37.336Z info: Consul client initialized
+2025-05-10T06:35:52.953Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:35:53.000Z info: Consul client initialized
+2025-05-10T06:36:21.196Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:36:21.275Z info: Consul client initialized
+2025-05-10T06:36:36.281Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:36:36.350Z info: Consul client initialized
+2025-05-10T06:36:36.355Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:36:36.443Z info: MongoDB connected successfully
+2025-05-10T06:36:36.467Z info: Successfully connected to RabbitMQ
+2025-05-10T06:36:36.475Z info: Successfully connected to RabbitMQ
+2025-05-10T06:36:36.486Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:36:51.865Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:36:51.952Z info: Consul client initialized
+2025-05-10T06:36:51.957Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:36:52.036Z info: MongoDB connected successfully
+2025-05-10T06:36:52.063Z info: Successfully connected to RabbitMQ
+2025-05-10T06:36:52.065Z info: Successfully connected to RabbitMQ
+2025-05-10T06:36:52.069Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:38:20.542Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:38:20.618Z info: Consul client initialized
+2025-05-10T06:38:20.622Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:38:20.705Z info: MongoDB connected successfully
+2025-05-10T06:38:20.737Z info: Successfully connected to RabbitMQ
+2025-05-10T06:38:20.740Z info: Successfully connected to RabbitMQ
+2025-05-10T06:38:20.756Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:38:34.721Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:38:34.790Z info: Consul client initialized
+2025-05-10T06:38:34.794Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:38:34.851Z info: MongoDB connected successfully
+2025-05-10T06:38:34.873Z info: Successfully connected to RabbitMQ
+2025-05-10T06:38:34.890Z info: Successfully connected to RabbitMQ
+2025-05-10T06:38:34.893Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:38:48.083Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:38:48.143Z info: Consul client initialized
+2025-05-10T06:38:48.146Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:38:48.196Z info: MongoDB connected successfully
+2025-05-10T06:38:48.229Z info: Successfully connected to RabbitMQ
+2025-05-10T06:38:48.230Z info: Successfully connected to RabbitMQ
+2025-05-10T06:38:48.233Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:02.432Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:39:02.488Z info: Consul client initialized
+2025-05-10T06:39:02.492Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:39:02.543Z info: MongoDB connected successfully
+2025-05-10T06:39:02.578Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:02.579Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:02.583Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:15.877Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:39:15.936Z info: Consul client initialized
+2025-05-10T06:39:15.939Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:39:15.990Z info: MongoDB connected successfully
+2025-05-10T06:39:16.018Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:16.019Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:29.829Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:39:29.890Z info: Consul client initialized
+2025-05-10T06:39:29.894Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:39:29.945Z info: MongoDB connected successfully
+2025-05-10T06:39:29.968Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:29.969Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:29.972Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:43.339Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:39:43.399Z info: Consul client initialized
+2025-05-10T06:39:43.403Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:39:43.457Z info: MongoDB connected successfully
+2025-05-10T06:39:43.488Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:43.489Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:43.492Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:39:57.619Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:39:57.681Z info: Consul client initialized
+2025-05-10T06:39:57.685Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:39:57.736Z info: MongoDB connected successfully
+2025-05-10T06:39:57.762Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:57.777Z info: Successfully connected to RabbitMQ
+2025-05-10T06:39:57.780Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:40:11.397Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:40:11.477Z info: Consul client initialized
+2025-05-10T06:40:11.482Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:40:11.555Z info: MongoDB connected successfully
+2025-05-10T06:40:11.583Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:11.584Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:11.587Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:40:24.853Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:40:24.925Z info: Consul client initialized
+2025-05-10T06:40:24.931Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:40:25.007Z info: MongoDB connected successfully
+2025-05-10T06:40:25.025Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:25.043Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:25.047Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:40:38.464Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:40:38.520Z info: Consul client initialized
+2025-05-10T06:40:38.523Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:40:38.576Z info: MongoDB connected successfully
+2025-05-10T06:40:38.606Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:38.607Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:51.669Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:40:51.779Z info: Consul client initialized
+2025-05-10T06:40:51.785Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:40:51.848Z info: MongoDB connected successfully
+2025-05-10T06:40:51.877Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:51.878Z info: Successfully connected to RabbitMQ
+2025-05-10T06:40:51.883Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:41:07.629Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:41:07.713Z info: Consul client initialized
+2025-05-10T06:41:07.718Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:41:07.824Z info: MongoDB connected successfully
+2025-05-10T06:41:07.842Z info: Successfully connected to RabbitMQ
+2025-05-10T06:41:07.845Z info: Successfully connected to RabbitMQ
+2025-05-10T06:41:07.850Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:41:22.791Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:41:22.860Z info: Consul client initialized
+2025-05-10T06:41:22.864Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:41:22.928Z info: MongoDB connected successfully
+2025-05-10T06:41:22.963Z info: Successfully connected to RabbitMQ
+2025-05-10T06:41:22.966Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:41:38.993Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:41:39.064Z info: Consul client initialized
+2025-05-10T06:41:39.069Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:41:39.134Z info: MongoDB connected successfully
+2025-05-10T06:41:39.164Z info: Successfully connected to RabbitMQ
+2025-05-10T06:41:39.165Z info: Successfully connected to RabbitMQ
+2025-05-10T06:41:39.169Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:42:11.343Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:42:11.405Z info: Consul client initialized
+2025-05-10T06:42:11.409Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:42:11.460Z info: MongoDB connected successfully
+2025-05-10T06:42:11.499Z info: Successfully connected to RabbitMQ
+2025-05-10T06:42:11.501Z info: Successfully connected to RabbitMQ
+2025-05-10T06:42:11.504Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:42:24.365Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:42:24.422Z info: Consul client initialized
+2025-05-10T06:42:24.425Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:42:24.478Z info: MongoDB connected successfully
+2025-05-10T06:42:24.508Z info: Successfully connected to RabbitMQ
+2025-05-10T06:42:24.508Z info: Successfully connected to RabbitMQ
+2025-05-10T06:42:38.128Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:42:38.238Z info: Consul client initialized
+2025-05-10T06:42:38.245Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:42:38.327Z info: MongoDB connected successfully
+2025-05-10T06:42:38.360Z info: Successfully connected to RabbitMQ
+2025-05-10T06:42:38.362Z info: Successfully connected to RabbitMQ
+2025-05-10T06:42:38.365Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:42:51.445Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:42:51.500Z info: Consul client initialized
+2025-05-10T06:42:51.503Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:42:51.555Z info: MongoDB connected successfully
+2025-05-10T06:42:51.591Z info: Successfully connected to RabbitMQ
+2025-05-10T06:42:51.593Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:04.779Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:43:04.903Z info: Consul client initialized
+2025-05-10T06:43:04.911Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:43:05.005Z info: MongoDB connected successfully
+2025-05-10T06:43:05.031Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:05.032Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:18.329Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:43:18.387Z info: Consul client initialized
+2025-05-10T06:43:18.391Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:43:18.441Z info: MongoDB connected successfully
+2025-05-10T06:43:18.466Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:18.473Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:18.476Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:31.262Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:43:31.315Z info: Consul client initialized
+2025-05-10T06:43:31.318Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:43:31.367Z info: MongoDB connected successfully
+2025-05-10T06:43:31.401Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:31.403Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:31.407Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:44.743Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:43:44.817Z info: Consul client initialized
+2025-05-10T06:43:44.823Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:43:44.909Z info: MongoDB connected successfully
+2025-05-10T06:43:44.941Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:44.943Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:44.947Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:43:57.133Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:43:57.199Z info: Consul client initialized
+2025-05-10T06:43:57.203Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:43:57.272Z info: MongoDB connected successfully
+2025-05-10T06:43:57.294Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:57.301Z info: Successfully connected to RabbitMQ
+2025-05-10T06:43:57.304Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:11.155Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:44:11.220Z info: Consul client initialized
+2025-05-10T06:44:11.224Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:44:11.284Z info: MongoDB connected successfully
+2025-05-10T06:44:11.304Z info: Successfully connected to RabbitMQ
+2025-05-10T06:44:11.311Z info: Successfully connected to RabbitMQ
+2025-05-10T06:44:11.314Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:24.106Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:44:24.185Z info: Consul client initialized
+2025-05-10T06:44:24.190Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:44:24.241Z info: MongoDB connected successfully
+2025-05-10T06:44:24.263Z info: Successfully connected to RabbitMQ
+2025-05-10T06:44:24.270Z info: Successfully connected to RabbitMQ
+2025-05-10T06:44:24.273Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:37.147Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:44:37.218Z info: Consul client initialized
+2025-05-10T06:44:37.225Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:44:37.278Z info: MongoDB connected successfully
+2025-05-10T06:44:37.307Z info: Successfully connected to RabbitMQ
+2025-05-10T06:44:37.308Z info: Successfully connected to RabbitMQ
+2025-05-10T06:44:37.311Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:44:50.955Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:44:51.011Z info: Consul client initialized
+2025-05-10T06:44:51.015Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:44:51.065Z info: MongoDB connected successfully
+2025-05-10T06:44:51.098Z info: Successfully connected to RabbitMQ
+2025-05-10T06:44:51.099Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:04.044Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:45:04.098Z info: Consul client initialized
+2025-05-10T06:45:04.102Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:45:04.163Z info: MongoDB connected successfully
+2025-05-10T06:45:04.198Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:04.199Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:04.201Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:17.997Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:45:18.105Z info: Consul client initialized
+2025-05-10T06:45:18.109Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:45:18.169Z info: MongoDB connected successfully
+2025-05-10T06:45:18.193Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:18.208Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:18.212Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:30.588Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:45:30.653Z info: Consul client initialized
+2025-05-10T06:45:30.657Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:45:30.715Z info: MongoDB connected successfully
+2025-05-10T06:45:30.743Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:30.748Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:30.752Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:43.904Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:45:43.995Z info: Consul client initialized
+2025-05-10T06:45:44.001Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:45:44.082Z info: MongoDB connected successfully
+2025-05-10T06:45:44.112Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:44.113Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:44.116Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:45:57.083Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:45:57.137Z info: Consul client initialized
+2025-05-10T06:45:57.144Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:45:57.201Z info: MongoDB connected successfully
+2025-05-10T06:45:57.232Z info: Successfully connected to RabbitMQ
+2025-05-10T06:45:57.233Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:10.482Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:46:10.551Z info: Consul client initialized
+2025-05-10T06:46:10.556Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:46:10.616Z info: MongoDB connected successfully
+2025-05-10T06:46:10.644Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:10.645Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:24.062Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:46:24.125Z info: Consul client initialized
+2025-05-10T06:46:24.130Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:46:24.200Z info: MongoDB connected successfully
+2025-05-10T06:46:24.233Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:24.234Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:37.511Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:46:37.571Z info: Consul client initialized
+2025-05-10T06:46:37.574Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:46:37.626Z info: MongoDB connected successfully
+2025-05-10T06:46:37.664Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:37.665Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:37.668Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:46:51.126Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:46:51.197Z info: Consul client initialized
+2025-05-10T06:46:51.201Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:46:51.254Z info: MongoDB connected successfully
+2025-05-10T06:46:51.285Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:51.286Z info: Successfully connected to RabbitMQ
+2025-05-10T06:46:51.289Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:04.177Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:47:04.236Z info: Consul client initialized
+2025-05-10T06:47:04.240Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:47:04.289Z info: MongoDB connected successfully
+2025-05-10T06:47:04.325Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:04.326Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:04.328Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:18.665Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:47:18.723Z info: Consul client initialized
+2025-05-10T06:47:18.727Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:47:18.776Z info: MongoDB connected successfully
+2025-05-10T06:47:18.794Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:18.801Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:18.803Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:31.261Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:47:31.319Z info: Consul client initialized
+2025-05-10T06:47:31.323Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:47:31.373Z info: MongoDB connected successfully
+2025-05-10T06:47:31.394Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:31.412Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:31.416Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:44.551Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:47:44.640Z info: Consul client initialized
+2025-05-10T06:47:44.646Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:47:44.715Z info: MongoDB connected successfully
+2025-05-10T06:47:44.745Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:44.747Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:44.750Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:47:57.868Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:47:57.927Z info: Consul client initialized
+2025-05-10T06:47:57.932Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:47:58.001Z info: MongoDB connected successfully
+2025-05-10T06:47:58.051Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:58.052Z info: Successfully connected to RabbitMQ
+2025-05-10T06:47:58.057Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:48:10.886Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:48:10.941Z info: Consul client initialized
+2025-05-10T06:48:10.944Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:48:10.992Z info: MongoDB connected successfully
+2025-05-10T06:48:11.027Z info: Successfully connected to RabbitMQ
+2025-05-10T06:48:11.028Z info: Successfully connected to RabbitMQ
+2025-05-10T06:52:09.556Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:52:10.027Z info: Consul client initialized
+2025-05-10T06:52:10.047Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:52:10.402Z info: MongoDB connected successfully
+2025-05-10T06:52:10.440Z info: Successfully connected to RabbitMQ
+2025-05-10T06:52:10.453Z info: Successfully connected to RabbitMQ
+2025-05-10T06:52:33.501Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:52:33.605Z info: Consul client initialized
+2025-05-10T06:52:33.613Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:52:33.690Z info: MongoDB connected successfully
+2025-05-10T06:52:33.718Z info: Successfully connected to RabbitMQ
+2025-05-10T06:52:33.719Z info: Successfully connected to RabbitMQ
+2025-05-10T06:52:33.725Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:52:48.497Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:52:48.587Z info: Consul client initialized
+2025-05-10T06:52:48.595Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:52:48.677Z info: MongoDB connected successfully
+2025-05-10T06:52:48.704Z info: Successfully connected to RabbitMQ
+2025-05-10T06:52:48.708Z info: Successfully connected to RabbitMQ
+2025-05-10T06:52:48.717Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:53:05.830Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:53:06.005Z info: Consul client initialized
+2025-05-10T06:53:06.016Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:53:06.134Z info: MongoDB connected successfully
+2025-05-10T06:53:06.179Z info: Successfully connected to RabbitMQ
+2025-05-10T06:53:06.183Z info: Successfully connected to RabbitMQ
+2025-05-10T06:53:06.193Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:53:22.343Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:53:22.416Z info: Consul client initialized
+2025-05-10T06:53:22.422Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:53:22.587Z info: MongoDB connected successfully
+2025-05-10T06:53:22.617Z info: Successfully connected to RabbitMQ
+2025-05-10T06:53:22.621Z info: Successfully connected to RabbitMQ
+2025-05-10T06:53:22.632Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:53:38.125Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:53:38.215Z info: Consul client initialized
+2025-05-10T06:53:38.223Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:53:38.305Z info: MongoDB connected successfully
+2025-05-10T06:53:38.335Z info: Successfully connected to RabbitMQ
+2025-05-10T06:53:38.336Z info: Successfully connected to RabbitMQ
+2025-05-10T06:53:54.589Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:53:54.686Z info: Consul client initialized
+2025-05-10T06:53:54.691Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:53:54.829Z info: MongoDB connected successfully
+2025-05-10T06:53:54.858Z info: Successfully connected to RabbitMQ
+2025-05-10T06:54:17.782Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:54:17.854Z info: Consul client initialized
+2025-05-10T06:54:17.860Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:54:17.925Z info: MongoDB connected successfully
+2025-05-10T06:54:17.952Z info: Successfully connected to RabbitMQ
+2025-05-10T06:54:17.953Z info: Successfully connected to RabbitMQ
+2025-05-10T06:54:17.957Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:54:31.051Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:54:31.146Z info: Consul client initialized
+2025-05-10T06:54:31.154Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:54:31.268Z info: MongoDB connected successfully
+2025-05-10T06:54:31.301Z info: Successfully connected to RabbitMQ
+2025-05-10T06:54:31.303Z info: Successfully connected to RabbitMQ
+2025-05-10T06:56:29.795Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:56:29.859Z info: Consul client initialized
+2025-05-10T06:56:29.864Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:56:29.942Z info: MongoDB connected successfully
+2025-05-10T06:56:29.969Z info: Successfully connected to RabbitMQ
+2025-05-10T06:56:29.971Z info: Successfully connected to RabbitMQ
+2025-05-10T06:56:29.974Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
