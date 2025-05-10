@@ -4,11 +4,7 @@ const Inventory = require('../models/Inventory');
 exports.getAllInventory = async (req, res) => {
   try {
     const inventoryItems = await Inventory.find();
-    res.status(200).json({
-      success: true,
-      count: inventoryItems.length,
-      data: inventoryItems,
-    });
+    res.status(200).json(inventoryItems);
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -32,10 +28,7 @@ exports.getInventoryByProductId = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      data: inventory,
-    });
+    res.status(200).json(inventory);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -49,10 +42,7 @@ exports.createInventory = async (req, res) => {
   try {
     const inventory = await Inventory.create(req.body);
 
-    res.status(201).json({
-      success: true,
-      data: inventory,
-    });
+    res.status(201).json(inventory);
   } catch (error) {
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map((val) => val.message);
@@ -85,10 +75,7 @@ exports.updateInventory = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      success: true,
-      data: inventory,
-    });
+    res.status(200).json(inventory);
   } catch (error) {
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map((val) => val.message);
@@ -121,7 +108,6 @@ exports.deleteInventory = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: {},
     });
   } catch (error) {
     res.status(500).json({

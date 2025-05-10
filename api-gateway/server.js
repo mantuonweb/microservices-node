@@ -4,209 +4,217 @@ const rateLimit = require('express-rate-limit');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const Consul = require('consul');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+class ApiGateway {
+  constructor() {
+    this.app = express();
+    this.PORT = process.env.PORT || 3000;
 
-// Store multiple instances for each service
-let serviceRegistry = {
-  'product-service': [],
-  'order-service': [],
-  'customer-service': [],
-  'inventory-service': [],
-};
+    // Define supported services
+    this.supportedServices = [
+      'product-service',
+      'order-service',
+      'customer-service',
+      'inventory-service'
+    ];
 
-// Keep track of the current instance index for round-robin load balancing
-const serviceIndices = {
-  'product-service': 0,
-  'order-service': 0,
-  'customer-service': 0,
-  'inventory-service': 0,
-};
+    // Initialize service registry and indices
+    this.serviceRegistry = {};
+    this.serviceIndices = {};
 
-const consul = new Consul({
-  host: process.env.CONSUL_HOST || 'localhost',
-  port: process.env.CONSUL_PORT || '8500',
-  promisify: true,
-});
+    this.supportedServices.forEach(service => {
+      this.serviceRegistry[service] = [];
+      this.serviceIndices[service] = 0;
+    });
 
-// Rate limiting
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+    this.consul = new Consul({
+      host: process.env.CONSUL_HOST || 'localhost',
+      port: process.env.CONSUL_PORT || '8500',
+      promisify: true,
+    });
 
-// Middleware to check if service is available
-const checkServiceAvailability = (serviceName) => {
-  return (req, res, next) => {
-    if (
-      !serviceRegistry[serviceName] ||
-      serviceRegistry[serviceName].length === 0
-    ) {
-      return res
-        .status(503)
-        .json({ error: `Service ${serviceName} is currently unavailable` });
-    }
-    next();
-  };
-};
+    // Rate limiting
+    this.apiLimiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+      standardHeaders: true,
+      legacyHeaders: false,
+    });
 
-// Simple round-robin load balancer
-function getNextServiceInstance(serviceName) {
-  const instances = serviceRegistry[serviceName];
-  if (!instances || instances.length === 0) {
-    return null;
+    // Handle graceful shutdown
+    process.on('SIGTERM', () => this.shutdown());
+    process.on('SIGINT', () => this.shutdown());
+
+    this.init();
   }
 
-  // Get the next instance in round-robin fashion
-  const index = serviceIndices[serviceName] % instances.length;
-  serviceIndices[serviceName] =
-    (serviceIndices[serviceName] + 1) % instances.length;
+  init() {
+    this.setupHealthEndpoint();
+    this.discoverServices();
+    this.setupServiceDiscoveryInterval();
+  }
+  shutdown() {
+    console.log('Received shutdown signal, closing server gracefully...');
 
-  return instances[index];
-}
+    // Clear the service discovery interval if it exists
+    if (this.discoveryInterval) {
+      clearInterval(this.discoveryInterval);
+      console.log('Service discovery interval cleared');
+    }
 
-// Discover services initially
-discoverServices();
+    // Close the HTTP server
+    if (this.server) {
+      this.server.close(() => {
+        console.log('HTTP server closed');
 
-// Set up periodic service discovery (every 30 seconds)
-setInterval(discoverServices, 30000);
+        // Close any other resources (database connections, etc.)
 
-// Define proxy routes
-function setupProxyRoutes() {
-  // Product service proxy
-  app.use(
-    '/api/products',
-    checkServiceAvailability('product-service'),
-    apiLimiter,
-    (req, res, next) => {
-      const target = getNextServiceInstance('product-service');
+        // Exit process after cleanup
+        console.log('Graceful shutdown completed');
+        process.exit(0);
+      });
+
+      // Set a timeout to force exit if graceful shutdown takes too long
+      setTimeout(() => {
+        console.error('Forced shutdown after timeout');
+        process.exit(1);
+      }, 10000); // 10 seconds timeout
+    } else {
+      console.log('No server to close');
+      process.exit(0);
+    }
+  }
+
+  setupHealthEndpoint() {
+    this.app.get('/health', (req, res) => {
+      const serviceStatus = {};
+      this.supportedServices.forEach(service => {
+        serviceStatus[service] = this.serviceRegistry[service].length;
+      });
+
+      res.status(200).json({
+        status: 'OK',
+        services: serviceStatus
+      });
+    });
+  }
+
+  setupServiceDiscoveryInterval() {
+    // Store the interval ID so we can clear it during shutdown
+    this.discoveryInterval = setInterval(() => this.discoverServices(), 30000);
+  }
+
+  // Middleware to check if service is available
+  checkServiceAvailability(serviceName) {
+    return (req, res, next) => {
+      if (!this.serviceRegistry[serviceName]?.length) {
+        return res
+          .status(503)
+          .json({ error: `Service ${serviceName} is currently unavailable` });
+      }
+      next();
+    };
+  }
+
+  // Simple round-robin load balancer
+  getNextServiceInstance(serviceName) {
+    const instances = this.serviceRegistry[serviceName];
+    if (!instances?.length) return null;
+
+    // Get the next instance in round-robin fashion
+    const index = this.serviceIndices[serviceName] % instances.length;
+    this.serviceIndices[serviceName] = (this.serviceIndices[serviceName] + 1) % instances.length;
+
+    return instances[index];
+  }
+
+  // Create a proxy handler for a service
+  createProxyHandler(serviceName, pathPrefix) {
+    return (req, res, next) => {
+      const target = this.getNextServiceInstance(serviceName);
       if (!target) {
-        return res.status(503).json({ error: 'Product service unavailable' });
+        return res.status(503).json({ error: `${serviceName} unavailable` });
       }
 
-      console.log(`Routing to product-service instance: ${target}`);
+      console.log(`Routing to ${serviceName} instance: ${target}`);
 
-      // Create a new proxy for each request with the current target
       const proxy = createProxyMiddleware({
         target,
         changeOrigin: true,
         pathRewrite: {
-          '^/api/products': '/api/products',
+          [`^${pathPrefix}`]: pathPrefix,
         },
       });
 
       return proxy(req, res, next);
-    }
-  );
+    };
+  }
 
-  // Order service proxy
-  app.use(
-    '/api/orders',
-    checkServiceAvailability('order-service'),
-    apiLimiter,
-    (req, res, next) => {
-      const target = getNextServiceInstance('order-service');
-      if (!target) {
-        return res.status(503).json({ error: 'Order service unavailable' });
-      }
+  // Define proxy routes
+  setupProxyRoutes() {
+    // Map of service routes
+    const serviceRoutes = {
+      'product-service': '/api/products',
+      'order-service': '/api/orders',
+      'customer-service': '/api/customers',
+      'inventory-service': '/api/inventories'
+    };
 
-      console.log(`Routing to order-service instance: ${target}`);
+    // Set up routes for each service
+    Object.entries(serviceRoutes).forEach(([service, path]) => {
+      this.app.use(
+        path,
+        this.checkServiceAvailability(service),
+        this.apiLimiter,
+        this.createProxyHandler(service, path)
+      );
+    });
+  }
 
-      const proxy = createProxyMiddleware({
-        target,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api/orders': '/api/orders',
-        },
+  async discoverServices() {
+    try {
+      // Get services from Consul
+      const services = await this.consul.catalog.service.list();
+
+      // Reset service registry for clean update
+      this.supportedServices.forEach(service => {
+        this.serviceRegistry[service] = [];
       });
 
-      return proxy(req, res, next);
+      // Process only supported services
+      const discoveryPromises = this.supportedServices
+        .filter(service => services[service])
+        .map(async (serviceName) => {
+          const serviceDetails = await this.consul.catalog.service.nodes(serviceName);
+          if (serviceDetails?.length) {
+            // Add all instances to the registry
+            this.serviceRegistry[serviceName] = serviceDetails.map(
+              service => `http://${service.ServiceAddress}:${service.ServicePort}`
+            );
+
+            console.log(`Discovered ${serviceDetails.length} instances of ${serviceName}`);
+          }
+        });
+
+      await Promise.all(discoveryPromises);
+      console.log('Service registry updated');
+    } catch (error) {
+      console.error('Error discovering services:', error);
     }
-  );
+  }
 
-  // Customer service proxy
-  app.use(
-    '/api/customers',
-    checkServiceAvailability('customer-service'),
-    apiLimiter,
-    (req, res, next) => {
-      const target = getNextServiceInstance('customer-service');
-      if (!target) {
-        return res.status(503).json({ error: 'Customer service unavailable' });
-      }
+  start() {
+    // Start the server and store the server instance
+    this.server = this.app.listen(this.PORT, () => {
+      console.log(`API Gateway running on http://localhost:${this.PORT}`);
+      // Set up proxy routes after server starts
+      this.setupProxyRoutes();
+    });
 
-      console.log(`Routing to customer-service instance: ${target}`);
-
-      const proxy = createProxyMiddleware({
-        target,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api/customers': '/api/customers',
-        },
-      });
-
-      return proxy(req, res, next);
-    }
-  );
-}
-
-// Add a simple health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    services: {
-      'product-service': serviceRegistry['product-service'].length,
-      'order-service': serviceRegistry['order-service'].length,
-      'customer-service': serviceRegistry['customer-service'].length,
-      'inventory-service': serviceRegistry['inventory-service'].length,
-    },
-  });
-});
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`API Gateway running on http://localhost:${PORT}`);
-  // Set up proxy routes after server starts
-  setupProxyRoutes();
-});
-
-async function discoverServices() {
-  try {
-    // Get services from Consul
-    const services = await consul.catalog.service.list();
-
-    // Reset service registry for clean update
-    for (const serviceName in serviceRegistry) {
-      serviceRegistry[serviceName] = [];
-    }
-
-    // Update service registry with all instances
-    for (const serviceName in services) {
-      if (
-        serviceName === 'product-service' ||
-        serviceName === 'order-service' ||
-        serviceName === 'customer-service' ||
-        serviceName === 'inventory-service'
-      ) {
-        const serviceDetails = await consul.catalog.service.nodes(serviceName);
-        if (serviceDetails && serviceDetails.length > 0) {
-          // Add all instances to the registry
-          serviceRegistry[serviceName] = serviceDetails.map(
-            (service) =>
-              `http://${service.ServiceAddress}:${service.ServicePort}`
-          );
-
-          console.log(
-            `Discovered ${serviceDetails.length} instances of ${serviceName}`
-          );
-        }
-      }
-    }
-
-    console.log('Service registry updated:', serviceRegistry);
-  } catch (error) {
-    console.error('Error discovering services:', error);
+    // Return the server instance for testing purposes
+    return this.server;
   }
 }
+
+// Create and start the API Gateway
+const gateway = new ApiGateway();
+gateway.start();
