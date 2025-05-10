@@ -1,0 +1,35 @@
+2025-05-10T07:41:16.690Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T07:41:16.799Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T07:41:16.808Z info: customer-service running on port 3002 (IPv4 and IPv6)
+2025-05-10T07:41:16.809Z info: Registering service with Consul: {"id":"customer-service-3002","name":"customer-service","address":"ms-customer-service","port":3002,"tags":["microservice","customer"],"check":{"http":"http://ms-customer-service:3002/health","interval":"15s","timeout":"5s"}}
+2025-05-10T07:41:16.846Z info: Service registered with Consul: customer-service-3002
+2025-05-10T07:41:16.886Z info: MongoDB connected successfully
+2025-05-10T07:41:52.850Z info: Customers retrieved successfully
+2025-05-10T07:41:52.852Z info: Circuit Breaker: Operation successful
+2025-05-10T10:41:30.539Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T10:41:30.636Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T10:41:30.639Z info: customer-service running on port 3002 (IPv4 and IPv6)
+2025-05-10T10:41:30.639Z info: Registering service with Consul: {"id":"customer-service-3002","name":"customer-service","address":"ms-customer-service","port":3002,"tags":["microservice","customer"],"check":{"http":"http://ms-customer-service:3002/health","interval":"15s","timeout":"5s"}}
+2025-05-10T10:41:34.526Z error: Failed to register service with Consul: getaddrinfo ENOTFOUND ms-consul
+2025-05-10T10:42:00.739Z warn: MongoDB disconnected
+2025-05-10T10:42:27.994Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T10:43:53.586Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T10:43:53.701Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T10:43:53.708Z info: customer-service running on port 3002 (IPv4 and IPv6)
+2025-05-10T10:43:53.708Z info: Registering service with Consul: {"id":"customer-service-3002","name":"customer-service","address":"ms-customer-service","port":3002,"tags":["microservice","customer"],"check":{"http":"http://ms-customer-service:3002/health","interval":"15s","timeout":"5s"}}
+2025-05-10T10:43:57.607Z error: Failed to register service with Consul: getaddrinfo ENOTFOUND ms-consul
+2025-05-10T10:44:18.350Z info: MongoDB connected successfully
+2025-05-10T11:34:10.228Z info: Starting graceful shutdown...
+2025-05-10T11:34:10.240Z info: Service deregistered from Consul: customer-service-3002
+2025-05-10T11:35:31.158Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T11:35:31.240Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T11:35:31.244Z info: customer-service running on port 3002 (IPv4 and IPv6)
+2025-05-10T11:35:31.245Z info: Registering service with Consul: {"id":"customer-service-3002","name":"customer-service","address":"ms-customer-service","port":3002,"tags":["microservice","customer"],"check":{"http":"http://ms-customer-service:3002/health","interval":"15s","timeout":"5s"}}
+2025-05-10T11:35:31.269Z info: Service registered with Consul: customer-service-3002
+2025-05-10T11:35:31.298Z info: MongoDB connected successfully
+2025-05-10T11:37:01.540Z info: Starting graceful shutdown...
+2025-05-10T11:37:01.545Z info: Service deregistered from Consul: customer-service-3002

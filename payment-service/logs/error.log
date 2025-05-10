@@ -1,0 +1,4 @@
+2025-05-10T11:33:10.999Z error: Failed to load config from server: getaddrinfo ENOTFOUND ms-config-service
+2025-05-10T11:39:00.387Z error: Failed to register service with Consul: getaddrinfo ENOTFOUND ms-consul
+2025-05-10T11:39:27.694Z error: MongoDB connection error: getaddrinfo ENOTFOUND ms-mongodb
+2025-05-10T11:40:15.595Z error: Failed to load config from server: Request failed with status code 404

@@ -1,0 +1,29 @@
+2025-05-10T11:33:09.729Z info: Loading configuration from http://ms-config-service:4000/config/payment-service/dev
+2025-05-10T11:33:10.999Z error: Failed to load config from server: getaddrinfo ENOTFOUND ms-config-service
+2025-05-10T11:37:46.176Z info: Loading configuration from http://localhost:4000/config/payment-service/dev
+2025-05-10T11:37:46.310Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T11:38:57.599Z info: Loading configuration from http://localhost:4000/config/payment-service/dev
+2025-05-10T11:38:57.691Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T11:38:57.696Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T11:38:57.696Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"ms-payment-service","port":3007,"tags":["microservice","payment"],"check":{"http":"http://ms-payment-service:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T11:39:00.387Z error: Failed to register service with Consul: getaddrinfo ENOTFOUND ms-consul
+2025-05-10T11:39:27.692Z warn: MongoDB disconnected
+2025-05-10T11:40:15.536Z info: Loading configuration from http://localhost:4000/config/payment-service/localhost
+2025-05-10T11:40:15.595Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T11:51:57.578Z info: Loading configuration from http://localhost:4000/config/payment-service/local
+2025-05-10T11:51:57.648Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T11:51:57.655Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T11:51:57.656Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"localhost","port":3007,"tags":["microservice","payment"],"check":{"http":"http://localhost:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T11:51:57.701Z info: Service registered with Consul: payment-service-3007
+2025-05-10T11:51:57.751Z info: MongoDB connected successfully
+2025-05-10T11:53:42.102Z info: Starting graceful shutdown...
+2025-05-10T12:06:41.372Z info: Loading configuration from http://localhost:4000/config/payment-service/local
+2025-05-10T12:06:41.469Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T12:06:41.474Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T12:06:41.475Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"localhost","port":3007,"tags":["microservice","payment"],"check":{"http":"http://localhost:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T12:06:41.509Z info: Service registered with Consul: payment-service-3007
+2025-05-10T12:06:41.556Z info: MongoDB connected successfully

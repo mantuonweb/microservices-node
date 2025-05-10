@@ -1,0 +1,45 @@
+2025-05-10T11:41:49.116Z info: Loading configuration from http://localhost:4000/config/payment-service/localhost
+2025-05-10T11:41:49.167Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T11:42:53.270Z info: Loading configuration from http://localhost:4000/config/payment-service/localhost
+2025-05-10T11:42:53.338Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T11:45:21.766Z info: Loading configuration from http://localhost:4000/config/payment-service/localhost
+2025-05-10T11:45:21.811Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T11:46:12.028Z info: Loading configuration from http://localhost:4000/config/payment-service/localhost
+2025-05-10T11:46:34.023Z info: Loading configuration from http://localhost:4000/config/payment-service/localhost
+2025-05-10T11:47:48.834Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T11:47:48.841Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T11:47:48.842Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"localhost","port":3007,"tags":["microservice","payment"],"check":{"http":"http://localhost:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T11:47:48.879Z info: Service registered with Consul: payment-service-3007
+2025-05-10T11:47:48.917Z info: MongoDB connected successfully
+2025-05-10T11:51:00.089Z info: Loading configuration from http://localhost:4000/config/payment-service/local
+2025-05-10T11:51:19.288Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T11:51:19.297Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T11:51:19.298Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"localhost","port":3007,"tags":["microservice","payment"],"check":{"http":"http://localhost:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T11:51:19.355Z info: Service registered with Consul: payment-service-3007
+2025-05-10T11:51:19.407Z info: MongoDB connected successfully
+2025-05-10T11:54:21.690Z info: Loading configuration from http://localhost:4000/config/payment-service/local
+2025-05-10T11:54:39.170Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T11:54:39.177Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T11:54:39.178Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"localhost","port":3007,"tags":["microservice","payment"],"check":{"http":"http://localhost:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T11:54:39.217Z info: Service registered with Consul: payment-service-3007
+2025-05-10T11:54:39.245Z info: MongoDB connected successfully
+2025-05-10T12:06:46.681Z info: Loading configuration from http://localhost:4000/config/payment-service/local
+2025-05-10T12:06:46.815Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T12:07:36.760Z info: Loading configuration from http://localhost:4000/config/payment-service/local
+2025-05-10T12:07:36.823Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T12:07:36.829Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T12:07:36.830Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"localhost","port":3007,"tags":["microservice","payment"],"check":{"http":"http://localhost:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T12:07:36.859Z info: Service registered with Consul: payment-service-3007
+2025-05-10T12:07:36.886Z info: MongoDB connected successfully
+2025-05-10T12:08:31.329Z info: Loading configuration from http://localhost:4000/config/payment-service/local
+2025-05-10T12:08:31.393Z info: Consul client initialized with host: localhost, 
+         port: 8500
+2025-05-10T12:08:31.398Z info: payment-service running on port 3007 (IPv4 and IPv6)
+2025-05-10T12:08:31.399Z info: Registering service with Consul: {"id":"payment-service-3007","name":"payment-service","address":"localhost","port":3007,"tags":["microservice","payment"],"check":{"http":"http://localhost:3007/health","interval":"15s","timeout":"5s"}}
+2025-05-10T12:08:31.425Z info: Service registered with Consul: payment-service-3007
+2025-05-10T12:08:31.449Z info: MongoDB connected successfully

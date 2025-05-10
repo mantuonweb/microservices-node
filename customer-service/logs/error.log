@@ -1,0 +1,4 @@
+2025-05-10T10:41:34.526Z error: Failed to register service with Consul: getaddrinfo ENOTFOUND ms-consul
+2025-05-10T10:42:00.742Z error: MongoDB connection error: getaddrinfo ENOTFOUND ms-mongodb
+2025-05-10T10:42:28.025Z error: Failed to load config from server: connect ECONNREFUSED 172.19.0.5:4000
+2025-05-10T10:43:57.607Z error: Failed to register service with Consul: getaddrinfo ENOTFOUND ms-consul
