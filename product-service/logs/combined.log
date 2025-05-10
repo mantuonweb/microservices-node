@@ -711,3 +711,103 @@
 2025-05-09T19:41:46.554Z info: MongoDB connected successfully
 2025-05-09T19:41:46.580Z info: Successfully connected to RabbitMQ
 2025-05-09T19:44:33.947Z info: Starting graceful shutdown...
+2025-05-09T19:44:48.016Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-09T19:44:48.104Z info: Consul client initialized with host: ms-consul, port: 8500
+2025-05-09T19:44:48.109Z info: Attempting to register service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-09T19:44:48.114Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:44:48.165Z info: MongoDB connected successfully
+2025-05-09T19:44:48.192Z info: Successfully connected to RabbitMQ
+2025-05-09T19:46:26.542Z info: Products retrieved successfully
+2025-05-09T19:46:26.546Z info: Circuit Breaker: Request successful
+2025-05-09T19:46:30.953Z info: Products retrieved successfully
+2025-05-09T19:46:30.955Z info: Circuit Breaker: Request successful
+2025-05-09T19:50:11.493Z info: Starting graceful shutdown...
+2025-05-09T19:50:24.968Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-09T19:50:25.134Z info: Consul client initialized with host: ms-consul, 
+       port: 8500
+2025-05-09T19:50:25.141Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:50:25.142Z info: Registering service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-09T19:50:25.211Z info: Service registered with Consul: product-service-3001
+2025-05-09T19:50:25.237Z info: MongoDB connected successfully
+2025-05-09T19:50:25.262Z info: Successfully connected to RabbitMQ
+2025-05-09T19:50:32.534Z info: Products retrieved successfully
+2025-05-09T19:50:32.536Z info: Circuit Breaker: Request successful
+2025-05-09T19:50:33.522Z info: Products retrieved successfully
+2025-05-09T19:50:33.524Z info: Circuit Breaker: Request successful
+2025-05-09T19:50:33.763Z info: Products retrieved successfully
+2025-05-09T19:50:33.765Z info: Circuit Breaker: Request successful
+2025-05-09T19:53:26.903Z info: Starting graceful shutdown...
+2025-05-09T19:53:26.912Z info: Service deregistered from Consul: product-service-3001
+2025-05-09T19:53:26.915Z info: HTTP server closed
+2025-05-09T19:53:26.922Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-09T19:53:40.614Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-09T19:53:40.708Z info: Consul client initialized with host: ms-consul, 
+       port: 8500
+2025-05-09T19:53:40.713Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:53:40.713Z info: Registering service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-09T19:53:40.780Z info: Service registered with Consul: product-service-3001
+2025-05-09T19:53:40.786Z info: MongoDB connected successfully
+2025-05-09T19:53:40.805Z info: Successfully connected to RabbitMQ
+2025-05-09T19:53:48.166Z info: Products retrieved successfully
+2025-05-09T19:53:48.170Z info: Circuit Breaker: Request successful
+2025-05-09T19:55:11.769Z info: Products retrieved successfully
+2025-05-09T19:55:11.772Z info: Circuit Breaker: Request successful
+2025-05-09T19:55:13.078Z info: Products retrieved successfully
+2025-05-09T19:55:13.079Z info: Circuit Breaker: Request successful
+2025-05-09T19:55:13.700Z info: Products retrieved successfully
+2025-05-09T19:55:13.701Z info: Circuit Breaker: Request successful
+2025-05-09T19:55:13.914Z info: Products retrieved successfully
+2025-05-09T19:55:13.917Z info: Circuit Breaker: Request successful
+2025-05-09T19:55:50.496Z error: Error creating product: rabbitMQClient.publishMessage is not a function
+2025-05-09T19:55:50.500Z info: Circuit Breaker: Request successful
+2025-05-09T19:57:04.291Z info: Starting graceful shutdown...
+2025-05-09T19:57:04.296Z info: Service deregistered from Consul: product-service-3001
+2025-05-09T19:57:04.298Z info: HTTP server closed
+2025-05-09T19:57:17.579Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-09T19:57:17.723Z info: Consul client initialized with host: ms-consul, 
+       port: 8500
+2025-05-09T19:57:17.730Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-09T19:57:17.730Z info: Registering service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-09T19:57:17.810Z info: Service registered with Consul: product-service-3001
+2025-05-09T19:57:17.856Z info: MongoDB connected successfully
+2025-05-09T19:57:17.882Z info: Successfully connected to RabbitMQ
+2025-05-09T19:57:24.126Z info: Message published to product_message:product.created
+2025-05-09T19:57:24.127Z info: Product created successfully
+2025-05-09T19:57:24.133Z info: Circuit Breaker: Request successful
+2025-05-09T19:57:33.487Z info: Products retrieved successfully
+2025-05-09T19:57:33.490Z info: Circuit Breaker: Request successful
+2025-05-10T02:46:59.216Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-10T02:46:59.320Z info: Consul client initialized with host: ms-consul, 
+       port: 8500
+2025-05-10T02:46:59.326Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-10T02:46:59.327Z info: Registering service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-10T02:46:59.367Z info: Service registered with Consul: product-service-3001
+2025-05-10T02:46:59.410Z info: MongoDB connected successfully
+2025-05-10T02:46:59.439Z info: Successfully connected to RabbitMQ
+2025-05-10T02:54:51.565Z info: Starting graceful shutdown...
+2025-05-10T02:54:51.569Z info: Service deregistered from Consul: product-service-3001
+2025-05-10T02:54:51.570Z info: HTTP server closed
+2025-05-10T02:55:04.737Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-10T02:55:04.810Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T02:55:04.814Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-10T02:55:04.814Z info: Registering service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-10T02:55:04.865Z info: Service registered with Consul: product-service-3001
+2025-05-10T02:55:04.869Z info: MongoDB connected successfully
+2025-05-10T02:55:04.901Z info: Successfully connected to RabbitMQ
+2025-05-10T03:02:10.099Z info: Starting graceful shutdown...
+2025-05-10T03:02:10.104Z info: Service deregistered from Consul: product-service-3001
+2025-05-10T03:02:10.106Z info: HTTP server closed
+2025-05-10T03:02:10.121Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-10T03:04:32.615Z info: Loading configuration from http://ms-config-service:4000/config/product-service/dev
+2025-05-10T03:04:32.681Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T03:04:32.685Z info: Product Service running on port 3001 (IPv4 and IPv6)
+2025-05-10T03:04:32.686Z info: Registering service with Consul: {"id":"product-service-3001","name":"product-service","address":"ms-product-service","port":3001,"tags":["microservice","product"],"check":{"http":"http://ms-product-service:3001/health","interval":"15s","timeout":"5s"}}
+2025-05-10T03:04:32.728Z info: Service registered with Consul: product-service-3001
+2025-05-10T03:04:32.748Z info: MongoDB connected successfully
+2025-05-10T03:04:32.794Z info: Successfully connected to RabbitMQ
+2025-05-10T03:31:12.052Z info: Starting graceful shutdown...
+2025-05-10T03:31:12.057Z info: Service deregistered from Consul: product-service-3001
+2025-05-10T03:31:12.059Z info: HTTP server closed
+2025-05-10T03:31:12.069Z warn: RabbitMQ connection closed, trying to reconnect...

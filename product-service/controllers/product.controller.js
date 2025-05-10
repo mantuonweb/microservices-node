@@ -49,8 +49,7 @@ class ProductController {
     try {
       const product = new Product(req.body);
       const savedProduct = await product.save();
-      rabbitMQClient
-        .publishMessage(exchange, 'product.created', {
+      rabbitMQClient.getInstance().publishMessage(exchange, 'product.created', {
           event: 'PRODUCT_CREATED',
           productId: savedProduct._id,
           data: savedProduct,

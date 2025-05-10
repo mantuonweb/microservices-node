@@ -1,0 +1,58 @@
+2025-05-09T19:30:48.814Z info: Consul client initialized
+2025-05-09T19:30:48.822Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-09T19:30:48.830Z info: Product Service running on port 3003
+2025-05-09T19:30:48.922Z info: MongoDB connected successfully
+2025-05-09T19:30:48.975Z info: Successfully connected to RabbitMQ
+2025-05-09T19:30:48.980Z info: Successfully connected to RabbitMQ
+2025-05-09T19:30:49.006Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-09T19:30:49.010Z info: Subscribed to queue order-service.product-updates
+2025-05-09T19:57:24.337Z info: Product created successfully
+2025-05-10T02:46:57.505Z info: Consul client initialized
+2025-05-10T02:46:57.514Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T02:46:57.522Z info: Product Service running on port 3003
+2025-05-10T02:46:57.596Z info: MongoDB connected successfully
+2025-05-10T02:46:57.648Z info: Successfully connected to RabbitMQ
+2025-05-10T02:46:57.652Z info: Successfully connected to RabbitMQ
+2025-05-10T02:47:12.843Z info: Consul client initialized
+2025-05-10T02:47:12.851Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T02:47:12.856Z info: Product Service running on port 3003
+2025-05-10T02:47:12.917Z info: MongoDB connected successfully
+2025-05-10T02:47:12.947Z info: Successfully connected to RabbitMQ
+2025-05-10T02:47:12.948Z info: Successfully connected to RabbitMQ
+2025-05-10T02:47:12.960Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-10T02:47:12.962Z info: Subscribed to queue order-service.product-updates
+2025-05-10T03:02:10.097Z info: Starting graceful shutdown...
+2025-05-10T03:02:10.102Z info: HTTP server closed
+2025-05-10T03:02:10.114Z warn: RabbitMQ connection closed, trying to reconnect...
+2025-05-10T03:04:32.200Z info: Consul client initialized
+2025-05-10T03:04:32.208Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T03:04:32.214Z info: Order Service running on port 3003
+2025-05-10T03:04:32.292Z info: MongoDB connected successfully
+2025-05-10T03:04:32.314Z info: Successfully connected to RabbitMQ
+2025-05-10T03:04:32.330Z info: Successfully connected to RabbitMQ
+2025-05-10T03:04:32.374Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-10T03:04:32.376Z info: Subscribed to queue order-service.product-updates
+2025-05-10T03:25:51.383Z info: Starting graceful shutdown...
+2025-05-10T03:25:51.385Z info: HTTP server closed
+2025-05-10T03:26:05.110Z info: Loading configuration from http://ms-config-service:4000/config/order-service/development
+2025-05-10T03:26:05.169Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T03:26:05.172Z info: Falling back to local environment variables
+2025-05-10T03:26:05.204Z info: Consul client initialized
+2025-05-10T03:26:05.210Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T03:26:05.277Z info: MongoDB connected successfully
+2025-05-10T03:26:05.315Z info: Successfully connected to RabbitMQ
+2025-05-10T03:26:05.317Z info: Successfully connected to RabbitMQ
+2025-05-10T03:26:05.321Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-10T03:26:05.323Z info: Subscribed to queue order-service.product-updates
+2025-05-10T03:26:57.956Z info: Orders retrieved successfully
+2025-05-10T03:26:57.959Z info: Circuit Breaker: Request successful
+2025-05-10T03:41:03.217Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T03:41:03.281Z info: Consul client initialized
+2025-05-10T03:41:03.284Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T03:41:03.331Z info: MongoDB connected successfully
+2025-05-10T03:41:03.360Z info: Successfully connected to RabbitMQ
+2025-05-10T03:41:03.367Z info: Successfully connected to RabbitMQ
+2025-05-10T03:41:03.393Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-10T03:41:03.396Z info: Subscribed to queue order-service.product-updates
+2025-05-10T03:41:44.705Z info: Orders retrieved successfully
+2025-05-10T03:41:44.706Z info: Circuit Breaker: Request successful

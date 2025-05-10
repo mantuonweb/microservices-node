@@ -333,3 +333,4 @@
 2025-05-09T19:38:23.903Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
 2025-05-09T19:39:56.414Z error: Error connecting to Consul: SERVICE_ID is not defined SERVICE_ID is not defined
 2025-05-09T19:41:46.499Z error: Error connecting to Consul: PORT is not defined PORT is not defined
+2025-05-09T19:55:50.496Z error: Error creating product: rabbitMQClient.publishMessage is not a function
