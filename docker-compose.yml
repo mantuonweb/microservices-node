@@ -79,6 +79,7 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
     volumes:
       - ./product-service:/usr/src/app
@@ -103,6 +104,7 @@ services:
       - "3003:3003"
     environment:
       - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
     volumes:
       - ./order-service:/usr/src/app
     restart: unless-stopped
@@ -127,8 +129,34 @@ services:
       - "3002:3002"
     environment:
       - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
     volumes:
       - ./customer-service:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+    networks:
+      - microservice-network
+  
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    container_name: ms-payment-service
+    ports:
+      - "3007:3007"
+    environment:
+      - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
+    volumes:
+      - ./payment-service:/usr/src/app
     restart: unless-stopped
     depends_on:
       consul:
@@ -151,6 +179,7 @@ services:
       - "3006:3006"
     environment:
       - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
     volumes:
       - ./inventory-service:/usr/src/app
     restart: unless-stopped

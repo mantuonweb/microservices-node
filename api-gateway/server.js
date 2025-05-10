@@ -22,6 +22,9 @@ class ApiGateway {
       },
       'inventory-service': {
         path: '/api/inventories'
+      },
+      'payment-service': {
+        path: '/api/payments'
       }
     };
 
@@ -64,19 +67,19 @@ class ApiGateway {
 
     // Add request logging middleware
     this.setupLoggingMiddleware();
-    
+
     this.setupHealthEndpoint();
     this.discoverServices();
     this.setupServiceDiscoveryInterval();
   }
-  
+
   setupLoggingMiddleware() {
     this.app.use((req, res, next) => {
       const start = Date.now();
-      
+
       // Capture response data
       const originalEnd = res.end;
-      res.end = function(...args) {
+      res.end = function (...args) {
         const duration = Date.now() - start;
         console.log({
           method: req.method,
@@ -84,11 +87,11 @@ class ApiGateway {
           statusCode: res.statusCode,
           duration: `${duration}ms`
         });
-        
+
         // Call the original end method
         return originalEnd.apply(this, args);
       };
-      
+
       next();
     });
   }
@@ -234,11 +237,11 @@ class ApiGateway {
               const newInstances = serviceDetails.map(
                 service => `http://${service.ServiceAddress}:${service.ServicePort}`
               );
-              
+
               // Only update if instances have changed
               const currentInstances = JSON.stringify(this.serviceRegistry[serviceName]);
               const updatedInstances = JSON.stringify(newInstances);
-              
+
               if (currentInstances !== updatedInstances) {
                 this.serviceRegistry[serviceName] = newInstances;
                 console.log(`Updated ${serviceDetails.length} instances of ${serviceName}`);
