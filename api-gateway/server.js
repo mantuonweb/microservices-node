@@ -7,7 +7,7 @@ const Consul = require('consul');
 class ApiGateway {
   constructor() {
     this.app = express();
-    this.PORT = process.env.PORT || 3000;
+    this.PORT = process.env.PORT || 9000;
 
     // Service configuration object
     this.serviceConfig = {

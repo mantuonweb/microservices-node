@@ -194,14 +194,40 @@ services:
         condition: service_started
     networks:
       - microservice-network
+  loki:
+    image: grafana/loki:latest
+    container_name: ms-loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - microservice-network
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ms-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - microservice-network
+    depends_on:
+      - payment-service
+      - product-service
+      - order-service
+      - customer-service
+      - inventory-service
   api-gateway:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
     container_name: ms-gateway-service
     ports:
-      - "3000:3000"
+      - "9000:9000"
     environment:
       - NODE_ENV=development
     volumes:
@@ -219,6 +245,7 @@ volumes:
   mongodb_data:
   rabbitmq_data:
   rabbitmq_logs:
+  grafana-storage:
 
 networks:
   microservice-network:

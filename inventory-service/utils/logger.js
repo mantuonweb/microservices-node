@@ -1,6 +1,7 @@
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, printf } = format;
-require('winston-mongodb'); // Add this line to import the MongoDB transport
+require('winston-mongodb');
+const LokiTransport = require('winston-loki');
 
 const customFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
@@ -34,6 +35,18 @@ if (isMongoLogging) {
       format: format.metadata()
     })
   );
+}
+
+// Add Loki transport for visualization
+if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'dev') {
+  logger.add(new LokiTransport({
+    host: process.env.LOKI_URL || 'http://ms-loki:3100',
+    labels: { job: 'customer-service' },
+    json: true,
+    format: format.json(),
+    replaceTimestamp: true,
+    onConnectionError: (err) => console.error(err)
+  }));
 }
 
 module.exports = logger;
