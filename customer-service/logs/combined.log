@@ -138,3 +138,20 @@
 2025-05-10T04:20:34.381Z info: Circuit Breaker: Operation successful
 2025-05-10T04:26:11.528Z info: Customers retrieved successfully
 2025-05-10T04:26:11.529Z info: Circuit Breaker: Operation successful
+2025-05-10T04:47:56.283Z info: Customers retrieved successfully
+2025-05-10T04:47:56.284Z info: Circuit Breaker: Operation successful
+2025-05-10T05:22:48.863Z info: SIGTERM signal received: shutting down...
+2025-05-10T05:22:48.871Z info: HTTP server closed
+2025-05-10T05:22:48.881Z info: MongoDB connection closed
+2025-05-10T05:24:00.453Z info: Consul client initialized
+2025-05-10T05:24:00.461Z info: Customer Service running on port 3002
+2025-05-10T05:24:00.527Z info: MongoDB connected successfully
+2025-05-10T05:24:16.784Z info: Customers retrieved successfully
+2025-05-10T05:24:16.786Z info: Circuit Breaker: Operation successful
+2025-05-10T05:24:18.015Z info: Customers retrieved successfully
+2025-05-10T05:24:18.016Z info: Circuit Breaker: Operation successful
+2025-05-10T05:24:19.230Z info: Customers retrieved successfully
+2025-05-10T05:24:19.231Z info: Circuit Breaker: Operation successful
+2025-05-10T05:28:50.078Z info: SIGTERM signal received: shutting down...
+2025-05-10T05:28:50.081Z info: HTTP server closed
+2025-05-10T05:28:50.088Z warn: MongoDB disconnected
