@@ -7,7 +7,7 @@ const customFormat = printf(({ level, message, timestamp }) => {
 });
 
 // Environment check
-const isMongoLogging = true; //process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'dev';
+const isMongoLogging = (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'dev');
 
 const logger = createLogger({
   format: combine(timestamp(), customFormat),
