@@ -1,8 +1,0 @@
-2025-05-10T10:41:36.615Z error: Failed to load config from server: getaddrinfo ENOTFOUND ms-config-service
-2025-05-10T10:42:02.423Z error: Failed to load config from server: connect ECONNREFUSED 172.19.0.5:4000
-2025-05-10T10:42:27.679Z error: Failed to load config from server: connect ECONNREFUSED 172.19.0.5:4000
-2025-05-10T10:42:56.521Z error: Failed to load config from server: connect ECONNREFUSED 172.19.0.5:4000
-2025-05-10T10:43:28.228Z error: Failed to connect to RabbitMQ: getaddrinfo ENOTFOUND ms-rabbitmq
-2025-05-10T10:43:31.817Z error: Failed to connect to RabbitMQ: getaddrinfo ENOTFOUND ms-rabbitmq
-2025-05-10T10:44:08.202Z error: Failed to load config from server: connect ECONNREFUSED 172.19.0.3:4000
-2025-05-10T10:44:35.151Z error: Failed to connect to RabbitMQ: connect ECONNREFUSED 172.19.0.9:5672
