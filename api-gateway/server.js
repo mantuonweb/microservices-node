@@ -25,6 +25,9 @@ class ApiGateway {
       },
       'payment-service': {
         path: '/api/payments'
+      },
+      'auth-service': {
+        path: '/api/auth'
       }
     };
 
@@ -193,8 +196,13 @@ class ApiGateway {
             [`^${pathPrefix}`]: pathPrefix,
           },
           onProxyReq: (proxyReq, req, res) => {
-            // Add request ID or other headers
+            // Add request ID
             proxyReq.setHeader('X-Gateway-Request-ID', Date.now().toString());
+            
+            // Forward all original headers
+            Object.keys(req.headers).forEach(header => {
+              proxyReq.setHeader(header, req.headers[header]);
+            });
           },
           onError: (err, req, res) => {
             res.status(500).json({ error: `Service ${serviceName} error: ${err.message}` });

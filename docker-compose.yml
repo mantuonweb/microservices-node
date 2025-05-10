@@ -194,6 +194,30 @@ services:
         condition: service_started
     networks:
       - microservice-network
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: ms-auth-service
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
+    volumes:
+      - ./auth-service:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+    networks:
+      - microservice-network
   loki:
     image: grafana/loki:latest
     container_name: ms-loki
