@@ -2,16 +2,24 @@ const amqp = require('amqplib');
 const logger = require('./logger');
 
 class RabbitMQClient {
-  constructor(config = {}) {
+  static instance = null;
+  constructor() {
     this.connection = null;
     this.channel = null;
-    this.uri = config.url || process.env.RABBITMQ_URL || 'amqp://localhost';
+    this.uri = process.env.RABBITMQ_URL || 'amqp://localhost';
     this.exchange =
-      config.exchange || process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product';
+      process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product';
     this.exchangeType =
-      config.exchangeType || process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic';
-    this.exchangeOptions = config.exchangeOptions || { durable: true };
-    this.passiveExchange = config.passiveExchange || false;
+      process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic';
+    this.exchangeOptions = { durable: true };
+    this.passiveExchange = false;
+  }
+
+  static getInstance() {
+    if (!RabbitMQClient.instance) {
+      RabbitMQClient.instance = new RabbitMQClient();
+    }
+    return RabbitMQClient.instance;
   }
 
   async connect() {
@@ -122,10 +130,4 @@ class RabbitMQClient {
   }
 }
 
-module.exports = new RabbitMQClient({
-  url: process.env.RABBITMQ_URL || 'amqp://localhost',
-  exchange: process.env.RABBITMQ_EXCHANGE_PRODUCT || 'product_message',
-  exchangeType: process.env.RABBITMQ_EXCHANGE_PRODUCT_TYPE || 'topic', // Changed from 'fanout' to 'topic' to be consistent
-  exchangeOptions: { durable: true },
-  passiveExchange: false,
-});
+module.exports = RabbitMQClient;

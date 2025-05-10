@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 const productController = require('../controllers/product.controller');
 
 const listenProductUpdates = async () => {
-  await rabbitMQClient.subscribeToMessages(
+  await rabbitMQClient.getInstance().subscribeToMessages(
      process.env.RABBITMQ_EXCHANGE_PRODUCT,
     'product.created',
     'inventory-service.product-updates', // queue name

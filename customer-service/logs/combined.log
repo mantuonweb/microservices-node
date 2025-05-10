@@ -155,3 +155,90 @@
 2025-05-10T05:28:50.078Z info: SIGTERM signal received: shutting down...
 2025-05-10T05:28:50.081Z info: HTTP server closed
 2025-05-10T05:28:50.088Z warn: MongoDB disconnected
+2025-05-10T05:29:06.518Z info: Consul client initialized
+2025-05-10T05:29:06.524Z info: Customer Service running on port 3002
+2025-05-10T05:29:06.576Z info: MongoDB connected successfully
+2025-05-10T05:44:16.486Z info: SIGTERM signal received: shutting down...
+2025-05-10T05:44:16.488Z info: HTTP server closed
+2025-05-10T05:44:16.497Z warn: MongoDB disconnected
+2025-05-10T05:44:30.614Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/development
+2025-05-10T05:44:30.649Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T05:44:30.650Z info: Falling back to local environment variables
+2025-05-10T05:44:30.674Z info: Consul client initialized
+2025-05-10T05:44:30.678Z info: Customer Service running on port 3002 (IPv4 and IPv6)
+2025-05-10T05:44:30.742Z info: MongoDB connected successfully
+2025-05-10T05:46:05.118Z info: SIGTERM signal received: shutting down...
+2025-05-10T05:46:16.856Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/development
+2025-05-10T05:46:16.920Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T05:46:16.920Z info: Falling back to local environment variables
+2025-05-10T05:46:16.960Z info: Consul client initialized
+2025-05-10T05:46:16.968Z info: Customer Service running on port 3002 (IPv4 and IPv6)
+2025-05-10T05:46:17.035Z info: MongoDB connected successfully
+2025-05-10T05:46:54.410Z info: SIGTERM signal received: shutting down...
+2025-05-10T05:47:06.397Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/development
+2025-05-10T05:47:06.429Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T05:47:06.431Z info: Falling back to local environment variables
+2025-05-10T05:47:06.452Z info: Consul client initialized
+2025-05-10T05:47:06.456Z info: Customer Service running on port 3002 (IPv4 and IPv6)
+2025-05-10T05:47:06.519Z info: MongoDB connected successfully
+2025-05-10T05:47:18.922Z info: SIGTERM signal received: shutting down...
+2025-05-10T05:48:28.740Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:48:28.830Z info: Consul client initialized
+2025-05-10T05:48:28.834Z info: Customer Service running on port 3002 (IPv4 and IPv6)
+2025-05-10T05:48:28.880Z info: MongoDB connected successfully
+2025-05-10T05:50:18.036Z info: Customers retrieved successfully
+2025-05-10T05:50:18.039Z info: Circuit Breaker: Operation successful
+2025-05-10T05:50:19.262Z info: Customers retrieved successfully
+2025-05-10T05:50:19.263Z info: Circuit Breaker: Operation successful
+2025-05-10T05:52:06.879Z info: SIGTERM signal received: shutting down...
+2025-05-10T05:53:13.637Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:53:13.687Z info: Consul integration disabled by configuration
+2025-05-10T05:53:33.393Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:53:33.432Z info: Consul integration disabled by configuration
+2025-05-10T05:53:52.630Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:53:52.683Z info: Consul integration disabled by configuration
+2025-05-10T05:54:12.345Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:54:12.398Z info: Consul integration disabled by configuration
+2025-05-10T05:54:31.776Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:54:31.816Z info: Consul integration disabled by configuration
+2025-05-10T05:54:50.639Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:55:12.537Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:55:12.582Z info: Consul integration disabled by configuration
+2025-05-10T05:55:34.431Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:55:34.488Z info: Consul integration disabled by configuration
+2025-05-10T05:56:07.356Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T05:56:07.443Z info: Consul integration disabled by configuration
+2025-05-10T06:00:25.368Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:00:25.404Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:00:37.195Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:00:37.231Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:00:48.949Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:00:48.984Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:01:04.640Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:01:04.678Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:01:18.568Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:01:18.623Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:01:32.175Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:01:32.216Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:01:47.373Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:01:47.412Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:02:02.966Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:02:03.001Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:02:15.837Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:02:15.870Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:02:28.910Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:02:28.949Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:02:43.872Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:02:43.907Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:02:56.765Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:02:56.796Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:03:10.912Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:03:10.953Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:03:23.976Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:03:24.007Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T06:03:53.765Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:03:53.834Z info: Consul integration disabled by configuration
+2025-05-10T06:03:53.843Z info: Customer Service running on port 3002 (IPv4 and IPv6)
+2025-05-10T06:03:53.843Z info: Skipping Consul registration - Consul client not available or disabled
+2025-05-10T06:03:53.899Z info: MongoDB connected successfully
+2025-05-10T06:05:35.358Z info: SIGTERM signal received: shutting down...

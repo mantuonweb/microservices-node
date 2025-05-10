@@ -2,13 +2,20 @@ const mongoose = require('mongoose');
 const logger = require('./logger');
 
 class MongoConnectionClient {
+  static instance = null;
   constructor() {
-    console.log(process.env.MONGODB_URI, 'process.env.MONGODB_URI');
-    this.mongoURI = process.env.MONGODB_URI;
+    this.mongoURI = process.env.MONGODB_URL;
     this.options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     };
+  }
+
+  static getInstance() {
+    if (!MongoConnectionClient.instance) {
+      MongoConnectionClient.instance = new MongoConnectionClient();
+    }
+    return MongoConnectionClient.instance;
   }
 
   connect() {
@@ -40,4 +47,4 @@ class MongoConnectionClient {
   }
 }
 
-module.exports = new MongoConnectionClient();
+module.exports = MongoConnectionClient;

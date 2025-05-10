@@ -1,4 +1,3 @@
-require('dotenv').config({ path: './order-service.env' });
 const Consul = require('consul');
 const axios = require('axios');
 const logger = require('./utils/logger');

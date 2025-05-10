@@ -1,4 +1,3 @@
-require('dotenv').config({ path: './product-service.env' });
 const axios = require('axios');
 const logger = require('./utils/logger');
 const configureApp = require('./config/App');

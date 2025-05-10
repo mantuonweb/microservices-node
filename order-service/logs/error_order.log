@@ -1,1 +1,2 @@
 2025-05-10T03:26:05.169Z error: Failed to load config from server: Request failed with status code 404
+2025-05-10T05:48:29.571Z error: RabbitMQ connection error: Channel closed by server: 404 (NOT-FOUND) with message "NOT_FOUND - no exchange 'product_message' in vhost '/'"

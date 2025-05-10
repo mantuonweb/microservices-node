@@ -1,9 +1,7 @@
-require('dotenv').config({ path: './inventory-service.env' });
 const axios = require('axios');
 const Consul = require('consul');
 const logger = require('./utils/logger');
 const configureApp = require('./config/App');
-const rabbitMQClient = require('./utils/RabbitMQClient');
 
 class InventoryService {
   constructor() {
@@ -74,7 +72,6 @@ class InventoryService {
       }
 
       try {
-        await rabbitMQClient.close();
         process.exit(0);
       } catch (error) {
         logger.error('Error during shutdown:', error);

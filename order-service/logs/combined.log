@@ -58,3 +58,196 @@
 2025-05-10T03:41:44.706Z info: Circuit Breaker: Request successful
 2025-05-10T04:26:22.064Z info: Orders retrieved successfully
 2025-05-10T04:26:22.066Z info: Circuit Breaker: Request successful
+2025-05-10T05:48:29.351Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:48:29.446Z info: Consul client initialized
+2025-05-10T05:48:29.452Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T05:48:29.524Z info: MongoDB connected successfully
+2025-05-10T05:48:29.557Z info: Successfully connected to RabbitMQ
+2025-05-10T05:48:29.558Z info: Successfully connected to RabbitMQ
+2025-05-10T05:48:29.571Z error: RabbitMQ connection error: Channel closed by server: 404 (NOT-FOUND) with message "NOT_FOUND - no exchange 'product_message' in vhost '/'"
+2025-05-10T05:48:43.726Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:48:43.797Z info: Consul client initialized
+2025-05-10T05:48:43.802Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T05:48:43.875Z info: MongoDB connected successfully
+2025-05-10T05:48:43.900Z info: Successfully connected to RabbitMQ
+2025-05-10T05:48:43.901Z info: Successfully connected to RabbitMQ
+2025-05-10T05:48:43.910Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-10T05:48:43.913Z info: Subscribed to queue order-service.product-updates
+2025-05-10T05:53:14.754Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:53:14.830Z info: Consul client initialized
+2025-05-10T05:53:35.514Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:53:35.562Z info: Consul client initialized
+2025-05-10T05:53:55.674Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:53:55.728Z info: Consul client initialized
+2025-05-10T05:54:16.142Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:54:16.188Z info: Consul client initialized
+2025-05-10T05:54:36.582Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:54:36.634Z info: Consul client initialized
+2025-05-10T05:54:57.831Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:54:57.958Z info: Consul client initialized
+2025-05-10T05:55:19.098Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:55:19.192Z info: Consul client initialized
+2025-05-10T05:55:47.267Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:55:47.345Z info: Consul client initialized
+2025-05-10T05:56:15.662Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:56:15.709Z info: Consul client initialized
+2025-05-10T05:56:32.624Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:56:32.671Z info: Consul client initialized
+2025-05-10T05:56:48.868Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:56:48.910Z info: Consul client initialized
+2025-05-10T05:57:05.625Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T05:57:05.689Z info: Consul client initialized
+2025-05-10T06:07:12.606Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:07:12.664Z info: Consul client initialized
+2025-05-10T06:07:35.785Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:07:35.888Z info: Consul client initialized
+2025-05-10T06:07:56.995Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:07:57.045Z info: Consul client initialized
+2025-05-10T06:08:14.396Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:08:14.442Z info: Consul client initialized
+2025-05-10T06:08:32.533Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:08:32.622Z info: Consul client initialized
+2025-05-10T06:08:51.826Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:08:51.876Z info: Consul client initialized
+2025-05-10T06:09:11.898Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:09:11.954Z info: Consul client initialized
+2025-05-10T06:09:30.151Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:09:30.225Z info: Consul client initialized
+2025-05-10T06:09:47.463Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:09:47.507Z info: Consul client initialized
+2025-05-10T06:10:05.014Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:10:05.073Z info: Consul client initialized
+2025-05-10T06:10:23.440Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:10:23.491Z info: Consul client initialized
+2025-05-10T06:10:44.722Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:10:44.864Z info: Consul client initialized
+2025-05-10T06:11:07.148Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:11:27.303Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:11:27.354Z info: Consul client initialized
+2025-05-10T06:11:45.998Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:11:46.080Z info: Consul client initialized
+2025-05-10T06:12:06.485Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:12:06.542Z info: Consul client initialized
+2025-05-10T06:12:24.423Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:12:24.508Z info: Consul client initialized
+2025-05-10T06:12:44.559Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:12:44.628Z info: Consul client initialized
+2025-05-10T06:13:03.350Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:13:03.407Z info: Consul client initialized
+2025-05-10T06:13:24.267Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:13:24.337Z info: Consul client initialized
+2025-05-10T06:13:44.675Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:13:44.759Z info: Consul client initialized
+2025-05-10T06:14:04.887Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:14:05.019Z info: Consul client initialized
+2025-05-10T06:14:25.700Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:14:25.779Z info: Consul client initialized
+2025-05-10T06:14:43.892Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:15:03.135Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:15:03.190Z info: Consul client initialized
+2025-05-10T06:15:19.715Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:15:19.774Z info: Consul client initialized
+2025-05-10T06:15:36.195Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:15:36.249Z info: Consul client initialized
+2025-05-10T06:15:50.435Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:15:50.525Z info: Consul client initialized
+2025-05-10T06:16:07.346Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:16:07.390Z info: Consul client initialized
+2025-05-10T06:16:24.037Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:16:24.091Z info: Consul client initialized
+2025-05-10T06:16:38.402Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:16:38.457Z info: Consul client initialized
+2025-05-10T06:16:52.218Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:16:52.280Z info: Consul client initialized
+2025-05-10T06:17:06.380Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:17:06.424Z info: Consul client initialized
+2025-05-10T06:17:21.363Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:17:21.426Z info: Consul client initialized
+2025-05-10T06:17:36.170Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:17:36.228Z info: Consul client initialized
+2025-05-10T06:17:49.920Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:17:49.975Z info: Consul client initialized
+2025-05-10T06:18:04.641Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:18:04.684Z info: Consul client initialized
+2025-05-10T06:18:19.023Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:18:19.071Z info: Consul client initialized
+2025-05-10T06:18:33.296Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:18:33.340Z info: Consul client initialized
+2025-05-10T06:18:48.570Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:18:48.645Z info: Consul client initialized
+2025-05-10T06:19:03.566Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:19:03.613Z info: Consul client initialized
+2025-05-10T06:19:17.166Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:19:17.224Z info: Consul client initialized
+2025-05-10T06:19:30.595Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:19:30.645Z info: Consul client initialized
+2025-05-10T06:19:44.298Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:19:44.363Z info: Consul client initialized
+2025-05-10T06:19:57.872Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:19:57.934Z info: Consul client initialized
+2025-05-10T06:20:12.735Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:20:12.791Z info: Consul client initialized
+2025-05-10T06:20:26.171Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:20:26.219Z info: Consul client initialized
+2025-05-10T06:20:40.248Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:20:40.302Z info: Consul client initialized
+2025-05-10T06:20:54.068Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:20:54.120Z info: Consul client initialized
+2025-05-10T06:21:08.152Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:21:08.203Z info: Consul client initialized
+2025-05-10T06:21:22.622Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:21:22.662Z info: Consul client initialized
+2025-05-10T06:21:35.687Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:21:35.750Z info: Consul client initialized
+2025-05-10T06:21:48.258Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:21:48.304Z info: Consul client initialized
+2025-05-10T06:22:02.349Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:22:02.402Z info: Consul client initialized
+2025-05-10T06:22:16.808Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:22:16.851Z info: Consul client initialized
+2025-05-10T06:22:31.309Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:22:31.371Z info: Consul client initialized
+2025-05-10T06:22:45.870Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:22:45.936Z info: Consul client initialized
+2025-05-10T06:22:59.227Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:22:59.281Z info: Consul client initialized
+2025-05-10T06:23:14.940Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:23:14.987Z info: Consul client initialized
+2025-05-10T06:23:29.917Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:23:30.000Z info: Consul client initialized
+2025-05-10T06:23:44.686Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:23:44.738Z info: Consul client initialized
+2025-05-10T06:23:59.051Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:23:59.104Z info: Consul client initialized
+2025-05-10T06:24:16.146Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:24:16.199Z info: Consul client initialized
+2025-05-10T06:24:32.878Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:24:32.926Z info: Consul client initialized
+2025-05-10T06:24:52.884Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:24:52.942Z info: Consul client initialized
+2025-05-10T06:25:12.216Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:25:12.269Z info: Consul client initialized
+2025-05-10T06:25:28.570Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:25:28.640Z info: Consul client initialized
+2025-05-10T06:25:42.148Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:25:42.192Z info: Consul client initialized
+2025-05-10T06:25:56.962Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:25:57.020Z info: Consul client initialized
+2025-05-10T06:26:20.037Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:26:20.128Z info: Consul client initialized
+2025-05-10T06:26:43.867Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:26:43.933Z info: Consul client initialized
+2025-05-10T06:26:58.831Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:26:58.890Z info: Consul client initialized
+2025-05-10T06:27:12.981Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:27:13.023Z info: Consul client initialized
+2025-05-10T06:27:28.841Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:27:28.882Z info: Consul client initialized
+2025-05-10T06:27:42.182Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:27:42.239Z info: Consul client initialized
+2025-05-10T06:27:55.295Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:27:55.335Z info: Consul client initialized
+2025-05-10T06:28:10.297Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:28:10.364Z info: Consul client initialized
+2025-05-10T06:28:26.251Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:28:26.294Z info: Consul client initialized

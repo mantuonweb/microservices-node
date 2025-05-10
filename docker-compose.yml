@@ -126,7 +126,7 @@ services:
     ports:
       - "3002:3002"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=dev
     volumes:
       - ./customer-service:/usr/src/app
     restart: unless-stopped

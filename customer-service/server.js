@@ -1,28 +1,43 @@
-require('dotenv').config({ path: './customer-service.env' });
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
 const Consul = require('consul');
+const axios = require('axios');
 const logger = require('./utils/logger');
 const configureApp = require('./config/App');
 
 class CustomerService {
   constructor() {
-    const { app, PORT } = configureApp();
-    this.app = app;
-    this.port = PORT;
+    // Constants
     this.SERVICE_NAME = 'customer-service';
-    this.serviceId = `${this.SERVICE_NAME}-${this.port}`;
-    this.consul = null;
+    this.ENVIRONMENT = process.env.NODE_ENV || 'dev';
+    this.CONFIG_SERVER_URL = process.env.CONFIG_SERVER_URL || 'http://ms-config-service:4000';
+
     this.server = null;
-    this.CONSUL_ENABLED = process.env.CONSUL_ENABLED !== 'false';
-    
-    this.initializeConsul();
-    this.configureMiddleware();
-    this.setupShutdownHandlers();
+    this.consul = null;
+    this.serviceId = null;
+    this.port = null;
+    this.app = null;
   }
 
+  /**
+   * Loads configuration from config server or falls back to local env vars
+   */
+  async loadConfig() {
+    try {
+      const configUrl = `${this.CONFIG_SERVER_URL}/config/${this.SERVICE_NAME}/${this.ENVIRONMENT}`;
+      logger.info(`Loading configuration from ${configUrl}`);
+
+      const response = await axios.get(configUrl);
+      const config = response.data;
+
+      process.env = { ...process.env, ...config };
+      return process.env;
+    } catch (error) {
+      logger.error(`Failed to load config from server: ${error.message}`);
+      logger.info('Falling back to local environment variables');
+      return process.env;
+    }
+  }
   initializeConsul() {
+    this.CONSUL_ENABLED = process.env.CONSUL_ENABLED;
     if (this.CONSUL_ENABLED) {
       try {
         this.consul = new Consul({
@@ -31,17 +46,15 @@ class CustomerService {
           promisify: true,
         });
         logger.info('Consul client initialized');
+        return this.consul;
       } catch (error) {
         logger.error('Failed to initialize Consul client:', error.message);
+        return null;
       }
     } else {
       logger.info('Consul integration disabled by configuration');
+      return null;
     }
-  }
-
-  configureMiddleware() {
-    this.app.use(express.json());
-    this.app.use(cors());
   }
 
   registerService() {
@@ -92,36 +105,67 @@ class CustomerService {
     });
   }
 
-  setupShutdownHandlers() {
-    process.on('SIGINT', () => this.shutdown('SIGINT'));
-    process.on('SIGTERM', () => this.shutdown('SIGTERM'));
-  }
 
-  shutdown(signal) {
+  setupShutdownHandlers(signal) {
     logger.info(`${signal} signal received: shutting down...`);
     this.deregisterService();
-    
+
     if (this.server) {
       this.server.close(() => {
         logger.info('HTTP server closed');
-        mongoose.connection.close(false, () => {
-          logger.info('MongoDB connection closed');
-          process.exit(0);
-        });
+        process.exit(0);
       });
     } else {
       process.exit(0);
     }
   }
+  createShutdownHandler() {
+    return (signal) => this.setupShutdownHandlers(signal);
+  }
+  /**
+ * Initializes and starts the application
+ */
+  async initialize() {
+    try {
+      // Load configuration
+      await this.loadConfig();
 
-  start() {
-    this.server = this.app.listen(this.port, () => {
-      logger.info(`Customer Service running on port ${this.port}`);
-      this.registerService();
-    });
+      // Configure Express app
+      const configApp = configureApp();
+      this.port = configApp.PORT;
+      this.app = configApp.app;
+      this.serviceId = `${this.SERVICE_NAME}-${this.port}`;
+
+      // Initialize Consul
+      this.consul = this.initializeConsul();
+
+      // Start server
+      this.server = this.app.listen(this.port, '::', () => {
+        logger.info(`Customer Service running on port ${this.port} (IPv4 and IPv6)`);
+
+        if (this.consul) {
+          this.registerService();
+        } else {
+          logger.info('Skipping Consul registration - Consul client not available or disabled');
+        }
+      });
+
+      // Setup graceful shutdown
+      const shutdownHandler = this.createShutdownHandler();
+      process.on('SIGTERM', shutdownHandler);
+      process.on('SIGINT', shutdownHandler);
+
+      return this;
+    } catch (error) {
+      logger.error('Failed to initialize application:', error);
+      throw error;
+    }
   }
 }
 
-// Create and start the service
-const customerService = new CustomerService();
-customerService.start();
+new CustomerService().initialize().catch((error) => {
+  logger.error('Failed to initialize application:', error);
+  process.exit(1);
+});
+
+module.exports = CustomerService;
