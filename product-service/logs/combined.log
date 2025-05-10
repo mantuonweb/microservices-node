@@ -898,3 +898,5 @@
 2025-05-10T07:08:57.413Z info: Message published to undefined:product.created
 2025-05-10T07:08:57.413Z info: Product created successfully
 2025-05-10T07:08:57.415Z info: Circuit Breaker: Request successful
+2025-05-10T07:34:00.961Z info: Starting graceful shutdown...
+2025-05-10T07:34:00.976Z info: Service deregistered from Consul: product-service-3001

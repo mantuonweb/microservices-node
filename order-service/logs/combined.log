@@ -702,3 +702,5 @@
 2025-05-10T07:12:52.247Z info: Circuit Breaker: Request successful
 2025-05-10T07:12:54.458Z info: Orders retrieved successfully
 2025-05-10T07:12:54.460Z info: Circuit Breaker: Request successful
+2025-05-10T07:34:00.947Z info: Starting graceful shutdown...
+2025-05-10T07:34:00.959Z info: Service deregistered from Consul: order-service-3003

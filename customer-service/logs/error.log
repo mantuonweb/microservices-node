@@ -17,3 +17,4 @@
 2025-05-10T06:02:56.796Z error: Failed to initialize application: mongoClient.getInstance is not a function
 2025-05-10T06:03:10.953Z error: Failed to initialize application: mongoClient.getInstance is not a function
 2025-05-10T06:03:24.007Z error: Failed to initialize application: mongoClient.getInstance is not a function
+2025-05-10T07:17:39.651Z error: Error creating customer: E11000 duplicate key error collection: customer-service.customers index: email_1 dup key: { email: "mantu@example.com" }

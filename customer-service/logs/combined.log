@@ -269,3 +269,5 @@
 2025-05-10T07:17:39.652Z info: Circuit Breaker: Operation successful
 2025-05-10T07:17:56.405Z info: New customer created:
 2025-05-10T07:17:56.406Z info: Circuit Breaker: Operation successful
+2025-05-10T07:34:00.956Z info: Starting graceful shutdown...
+2025-05-10T07:34:00.964Z info: Service deregistered from Consul: customer-service-3002
