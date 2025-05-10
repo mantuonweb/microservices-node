@@ -10,10 +10,10 @@ const logger = createLogger({
   transports: [
     new transports.Console(),
     new transports.File({
-      filename: 'logs/error_order.log',
+      filename: '../monitor.logs/logs/error_order.log',
       level: 'error',
     }),
-    new transports.File({ filename: 'logs/combined.log' }),
+    new transports.File({ filename: '../monitor.logs/logs/combined.log' }),
   ],
 });
 
