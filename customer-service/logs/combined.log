@@ -249,3 +249,23 @@
 2025-05-10T06:26:04.411Z info: Customers retrieved successfully
 2025-05-10T06:26:04.416Z info: Circuit Breaker: Operation successful
 2025-05-10T06:36:58.002Z info: SIGTERM signal received: shutting down...
+2025-05-10T06:38:19.840Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T06:38:19.923Z info: Consul client initialized
+2025-05-10T06:38:19.927Z info: Customer Service running on port 3002 (IPv4 and IPv6)
+2025-05-10T06:38:19.984Z info: MongoDB connected successfully
+2025-05-10T07:16:41.360Z info: SIGTERM signal received: shutting down...
+2025-05-10T07:16:59.691Z info: Loading configuration from http://ms-config-service:4000/config/customer-service/dev
+2025-05-10T07:16:59.745Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T07:16:59.748Z info: customer-service running on port 3002 (IPv4 and IPv6)
+2025-05-10T07:16:59.748Z info: Registering service with Consul: {"id":"customer-service-3002","name":"customer-service","address":"ms-customer-service","port":3002,"tags":["microservice","customer"],"check":{"http":"http://ms-customer-service:3002/health","interval":"15s","timeout":"5s"}}
+2025-05-10T07:16:59.775Z info: Service registered with Consul: customer-service-3002
+2025-05-10T07:16:59.804Z info: MongoDB connected successfully
+2025-05-10T07:17:32.604Z info: Customers retrieved successfully
+2025-05-10T07:17:32.606Z info: Circuit Breaker: Operation successful
+2025-05-10T07:17:34.453Z info: Customers retrieved successfully
+2025-05-10T07:17:34.455Z info: Circuit Breaker: Operation successful
+2025-05-10T07:17:39.651Z error: Error creating customer: E11000 duplicate key error collection: customer-service.customers index: email_1 dup key: { email: "mantu@example.com" }
+2025-05-10T07:17:39.652Z info: Circuit Breaker: Operation successful
+2025-05-10T07:17:56.405Z info: New customer created:
+2025-05-10T07:17:56.406Z info: Circuit Breaker: Operation successful

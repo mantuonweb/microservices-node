@@ -679,3 +679,26 @@
 2025-05-10T06:56:29.969Z info: Successfully connected to RabbitMQ
 2025-05-10T06:56:29.971Z info: Successfully connected to RabbitMQ
 2025-05-10T06:56:29.974Z error: Error subscribing to messages: Missing value for mandatory field 'exchange'
+2025-05-10T06:58:18.762Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T06:58:18.833Z info: Consul client initialized
+2025-05-10T06:58:18.837Z info: Attempting to register service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T06:58:18.907Z info: MongoDB connected successfully
+2025-05-10T06:58:18.948Z info: Successfully connected to RabbitMQ
+2025-05-10T06:58:18.952Z info: Successfully connected to RabbitMQ
+2025-05-10T06:58:18.962Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-10T06:58:18.965Z info: Subscribed to queue order-service.product-updates
+2025-05-10T07:12:29.119Z info: Loading configuration from http://ms-config-service:4000/config/order-service/dev
+2025-05-10T07:12:29.187Z info: Consul client initialized with host: ms-consul, 
+         port: 8500
+2025-05-10T07:12:29.191Z info: order-service running on port 3003 (IPv4 and IPv6)
+2025-05-10T07:12:29.192Z info: Registering service with Consul: {"id":"order-service-3003","name":"order-service","address":"ms-order-service","port":3003,"tags":["microservice","order"],"check":{"http":"http://ms-order-service:3003/health","interval":"15s","timeout":"5s"}}
+2025-05-10T07:12:29.249Z info: Service registered with Consul: order-service-3003
+2025-05-10T07:12:29.272Z info: MongoDB connected successfully
+2025-05-10T07:12:29.314Z info: Successfully connected to RabbitMQ
+2025-05-10T07:12:29.316Z info: Successfully connected to RabbitMQ
+2025-05-10T07:12:29.321Z info: Queue order-service.product-updates bound to product_message with routing key product.created
+2025-05-10T07:12:29.323Z info: Subscribed to queue order-service.product-updates
+2025-05-10T07:12:52.245Z info: Orders retrieved successfully
+2025-05-10T07:12:52.247Z info: Circuit Breaker: Request successful
+2025-05-10T07:12:54.458Z info: Orders retrieved successfully
+2025-05-10T07:12:54.460Z info: Circuit Breaker: Request successful
