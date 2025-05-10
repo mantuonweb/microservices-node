@@ -150,7 +150,7 @@ services:
     ports:
       - "3006:3006"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=dev
     volumes:
       - ./inventory-service:/usr/src/app
     restart: unless-stopped

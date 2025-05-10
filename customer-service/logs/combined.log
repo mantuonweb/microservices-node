@@ -132,3 +132,9 @@
 2025-05-10T03:38:38.566Z info: Consul client initialized
 2025-05-10T03:38:38.628Z info: Customer Service running on port 3002
 2025-05-10T03:38:38.703Z info: MongoDB connected successfully
+2025-05-10T04:08:41.422Z info: Customers retrieved successfully
+2025-05-10T04:08:41.426Z info: Circuit Breaker: Operation successful
+2025-05-10T04:20:34.379Z info: Customers retrieved successfully
+2025-05-10T04:20:34.381Z info: Circuit Breaker: Operation successful
+2025-05-10T04:26:11.528Z info: Customers retrieved successfully
+2025-05-10T04:26:11.529Z info: Circuit Breaker: Operation successful

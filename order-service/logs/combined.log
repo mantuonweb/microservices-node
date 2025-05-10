@@ -56,3 +56,5 @@
 2025-05-10T03:41:03.396Z info: Subscribed to queue order-service.product-updates
 2025-05-10T03:41:44.705Z info: Orders retrieved successfully
 2025-05-10T03:41:44.706Z info: Circuit Breaker: Request successful
+2025-05-10T04:26:22.064Z info: Orders retrieved successfully
+2025-05-10T04:26:22.066Z info: Circuit Breaker: Request successful

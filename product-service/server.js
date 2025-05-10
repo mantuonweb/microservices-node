@@ -187,8 +187,7 @@ class ProductService {
 }
 
 // Create and start the service
-const productService = new ProductService();
-productService.initialize().catch((error) => {
+new ProductService().initialize().catch((error) => {
   logger.error('Failed to initialize application:', error);
   process.exit(1);
 });
