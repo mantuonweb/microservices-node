@@ -1,7 +1,6 @@
 const axios = require('axios');
 const logger = require('./utils/logger');
 const configureApp = require('./config/App');
-const rabbitMQClient = require('./utils/RabbitMQClient');
 const Consul = require('consul');
 
 class ProductService {
@@ -132,10 +131,6 @@ class ProductService {
         this.server.close(() => {
           logger.info('HTTP server closed');
         });
-
-        await rabbitMQClient.getInstance().close();
-        logger.info('RabbitMQ connection closed');
-        
         process.exit(0);
       } catch (error) {
         logger.error('Error during shutdown:', error);
