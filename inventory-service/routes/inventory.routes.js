@@ -2,17 +2,16 @@ const express = require('express');
 const router = express.Router();
 const inventoryController = require('../controllers/inventory.controller');
 
-// Get all inventory and create new inventory
 router
   .route('/')
-  .get(inventoryController.getAllInventory)
-  .post(inventoryController.createInventory);
+  .get((req, res) => inventoryController.getAllInventory.fire(req, res))
+  .post((req, res) => inventoryController.createInventory.fire(req, res));
 
 // Get, update and delete inventory by product ID
 router
   .route('/:productId')
-  .get(inventoryController.getInventoryByProductId)
-  .put(inventoryController.updateInventory)
-  .delete(inventoryController.deleteInventory);
+  .get((req, res) => inventoryController.getInventoryByProductId.fire(req, res))
+  .put((req, res) => inventoryController.updateInventory.fire(req, res))
+  .delete((req, res) => inventoryController.deleteInventory.fire(req, res));
 
 module.exports = router;

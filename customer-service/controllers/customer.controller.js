@@ -1,25 +1,9 @@
 const Customer = require('../models/customer.model');
 const logger = require('../utils/logger');
 const createCircuitBreaker = require('../utils/circuitBreaker');
-
+const withCircuitBreaker = require('../lib/CircuitBreaker');
 class CustomerController {
   constructor() {
-    // Initialize circuit breakers
-    this.getAllCustomersBreaker = createCircuitBreaker(
-      this.getAllCustomers.bind(this)
-    );
-    this.createCustomerBreaker = createCircuitBreaker(
-      this.createCustomer.bind(this)
-    );
-    this.updateCustomerBreaker = createCircuitBreaker(
-      this.updateCustomer.bind(this)
-    );
-    this.deleteCustomerBreaker = createCircuitBreaker(
-      this.deleteCustomer.bind(this)
-    );
-    this.getCustomerByIdBreaker = createCircuitBreaker(
-      this.getCustomerById.bind(this)
-    );
   }
 
   async getCustomerById(req, res) {
@@ -90,4 +74,4 @@ class CustomerController {
   }
 }
 
-module.exports = new CustomerController();
+module.exports = withCircuitBreaker(CustomerController, createCircuitBreaker);
