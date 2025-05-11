@@ -68,19 +68,51 @@ class OrderController {
 
   async updateOrder(req, res) {
     try {
+      // First check if the order exists
+      const existingOrder = await Order.findById(req.params.id);
+      if (!existingOrder) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+      
+      const reqOrder = req.body;
+      const updatedProducts = [];
+      
+      // Process products if they exist in the request
+      if (reqOrder.products && reqOrder.products.length > 0) {
+        for (const product of reqOrder.products) {
+          // Verify product exists in database
+          const productExists = await Product.findById(product.id);
+          if (!productExists) {
+            return res.status(400).json({
+              message: `Product with ID ${product.id} not found`
+            });
+          }
+          
+          // Create product entry according to the schema structure
+          updatedProducts.push({
+            id: productExists._id,
+            name: productExists.name,
+            quantity: product.quantity || 1
+          });
+        }
+        // Update the products in the request body
+        req.body.products = updatedProducts;
+      }
+      // Set the updated timestamp
+      req.body.updatedAt = Date.now();
+      
+      // Update the order with all the changes
       const updatedOrder = await Order.findByIdAndUpdate(
         req.params.id,
         req.body,
         { new: true }
       );
-      if (!updatedOrder) {
-        return res.status(404).json({ message: 'Order not found' });
-      }
+      
       logger.info('Order updated successfully');
       res.json(updatedOrder);
     } catch (error) {
       logger.error('Error updating order:', error);
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: `Error in updating order ${error.message}` });
     }
   }
 
