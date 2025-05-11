@@ -23,7 +23,7 @@ class OrderController {
       res.json(orders);
     } catch (error) {
       logger.error('Error retrieving orders:', error);
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: `Error in retrieving orders: ${error.message}` });
     }
   }
   async getOrderById(req, res) {
@@ -36,7 +36,7 @@ class OrderController {
       res.json(order);
     } catch (error) {
       logger.error('Error retrieving order:', error);
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: `Error in retrieving order: ${error.message}` });
     }
   }
   async createOrder(req, res) {
@@ -62,7 +62,7 @@ class OrderController {
       res.status(201).json(savedOrder);
     } catch (error) {
       logger.error('Error creating order:', error);
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: `Error in creating order: ${error.message}` });
     }
   }
 
@@ -112,7 +112,7 @@ class OrderController {
       res.json(updatedOrder);
     } catch (error) {
       logger.error('Error updating order:', error);
-      res.status(500).json({ error: `Error in updating order ${error.message}` });
+      res.status(500).json({ error: `Error in updating order: ${error.message}` });
     }
   }
 
@@ -129,7 +129,7 @@ class OrderController {
       });
     } catch (error) {
       logger.error('Error deleting order:', error);
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: `Error in deleting order: ${error.message}` });
     }
   }
 
@@ -146,7 +146,7 @@ class OrderController {
       });
     } catch (error) {
       logger.error('Error deleting product:', error);
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: `Error in deleting product: ${error.message}` });
     }
   }
 }
