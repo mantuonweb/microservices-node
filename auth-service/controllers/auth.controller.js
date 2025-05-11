@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const logger = require('../utils/logger');
 
 class AuthController {
   // Register a new user
   static async register(req, res) {
     try {
+      logger.info('Registration attempt', { username: req.body.username, email: req.body.email });
       const { username, email, password } = req.body;
       
       // Check if user already exists
@@ -13,6 +15,11 @@ class AuthController {
       });
       
       if (existingUser) {
+        logger.warn('Registration failed: User already exists', { 
+          username, 
+          email, 
+          existingUsername: existingUser.username 
+        });
         return res.status(409).json({ 
           message: 'User already exists with that email or username' 
         });
@@ -26,6 +33,7 @@ class AuthController {
       });
       
       await user.save();
+      logger.info('User registered successfully', { userId: user._id, username });
       
       // Return user without password
       const userResponse = user.toObject();
@@ -36,6 +44,7 @@ class AuthController {
         user: userResponse
       });
     } catch (error) {
+      logger.error('Registration error', { error: error.message, stack: error.stack });
       console.error('Registration error:', error);
       res.status(500).json({ message: 'Error registering user' });
     }
@@ -44,12 +53,19 @@ class AuthController {
   // Login user
   static async login(req, res) {
     try {
+      logger.info('Login attempt', { username: req.body.username });
       const { username, password } = req.body;
       
       // Find user by username
       const user = await User.findOne({ username });
       
-      if (!user && user.password !== password) {
+      if (!user) {
+        logger.warn('Login failed: User not found', { username });
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+      
+      if (user.password !== password) {
+        logger.warn('Login failed: Invalid password', { username, userId: user._id });
         return res.status(401).json({ message: 'Invalid credentials' });
       }
       
@@ -64,11 +80,14 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       );
       
+      logger.info('Login successful', { userId: user._id, username, roles: user.roles });
+      
       res.status(200).json({
         message: 'Login successful',
         token
       });
     } catch (error) {
+      logger.error('Login error', { error: error.message, stack: error.stack });
       console.error('Login error:', error);
       res.status(500).json({ message: 'Error during login' });
     }
@@ -80,18 +99,25 @@ class AuthController {
       const token = req.body.token || req.query.token || req.headers.authorization?.split(' ')[1];
       
       if (!token) {
+        logger.warn('Token verification failed: No token provided');
         return res.status(401).json({ valid: false, message: 'No token provided' });
       }
       
+      logger.info('Verifying token');
+      
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      logger.debug('Token decoded', { userId: decoded.id, username: decoded.username });
       
       // Check if user still exists
       const user = await User.findById(decoded.id);
       
       if (!user) {
+        logger.warn('Token verification failed: User not found', { userId: decoded.id });
         return res.status(401).json({ valid: false, message: 'User not found' });
       }
+      
+      logger.info('Token verified successfully', { userId: user._id, username: user.username });
       
       // Return user info
       res.status(200).json({
@@ -103,6 +129,7 @@ class AuthController {
         }
       });
     } catch (error) {
+      logger.error('Token verification error', { error: error.message, stack: error.stack });
       console.error('Token verification error:', error);
       res.status(401).json({ valid: false, message: 'Invalid token' });
     }
@@ -114,21 +141,29 @@ class AuthController {
       const token = req.headers.authorization?.split(' ')[1];
       
       if (!token) {
+        logger.warn('Profile access denied: No token provided');
         return res.status(401).json({ message: 'Authentication required' });
       }
       
+      logger.info('Retrieving user profile');
+      
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      logger.debug('Token decoded for profile access', { userId: decoded.id });
       
       // Get user without password
       const user = await User.findById(decoded.id).select('-password');
       
       if (!user) {
+        logger.warn('Profile access failed: User not found', { userId: decoded.id });
         return res.status(404).json({ message: 'User not found' });
       }
       
+      logger.info('Profile retrieved successfully', { userId: user._id, username: user.username });
+      
       res.status(200).json({ user });
     } catch (error) {
+      logger.error('Profile access error', { error: error.message, stack: error.stack });
       console.error('Profile error:', error);
       res.status(401).json({ message: 'Invalid token' });
     }
