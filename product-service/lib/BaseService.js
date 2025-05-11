@@ -6,7 +6,7 @@ class BaseService {
   constructor(options = {}) {
     // Service identification
     this.SERVICE_NAME = options.serviceName || 'unknown-service';
-    this.ENVIRONMENT = process.env.NODE_ENV || 'dev';
+    this.ENVIRONMENT = process.env.NODE_ENV || 'local';
     this.CONFIG_SERVER_URL = process.env.CONFIG_SERVER_URL || 'http://ms-config-service:4000';
     
     // Runtime properties
