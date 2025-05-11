@@ -1,4 +1,5 @@
 const Inventory = require('../models/Inventory');
+const Product = require('../models/product.model');
 const logger = require('../utils/logger');
 const createCircuitBreaker = require('../utils/circuitBreaker');
 const withCircuitBreaker = require('../lib/CircuitBreaker');
@@ -52,6 +53,15 @@ class InventoryController {
   async createInventory(req, res) {
     logger.info('createInventory: Creating new inventory item', { data: req.body });
     try {
+      const { productId } = req.body;
+      const productExists = await Product.findById(productId);
+      if (!productExists) {
+        logger.warn(`createInventory: Product with ID ${productId} does not exist`);
+        return res.status(404).json({
+          success: false,
+          error: 'Product not found',
+        });
+      }
       const inventory = await Inventory.create(req.body);
       logger.info(`createInventory: Successfully created inventory item with ID: ${inventory._id}`);
       res.status(201).json(inventory);
@@ -95,20 +105,11 @@ class InventoryController {
       logger.info(`updateInventory: Successfully updated inventory for product ID: ${productId}`);
       res.status(200).json(inventory);
     } catch (error) {
-      if (error.name === 'ValidationError') {
-        const messages = Object.values(error.errors).map((val) => val.message);
-        logger.warn(`updateInventory: Validation error for product ID: ${productId} - ${messages.join(', ')}`, { error });
-        return res.status(400).json({
-          success: false,
-          error: messages,
-        });
-      } else {
-        logger.error(`updateInventory: Error updating inventory for product ID: ${productId} - ${error.message}`, { error });
-        res.status(500).json({
-          success: false,
-          error: 'Server Error',
-        });
-      }
+      logger.warn(`updateInventory: Validation error for product ID: ${productId} - ${error.message}`);
+      return res.status(400).json({
+        success: false,
+        error: 'Error updating inventory',
+      });
     }
   }
 
