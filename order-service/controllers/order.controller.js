@@ -1,6 +1,6 @@
 const Order = require('../models/order.model');
+const Product = require('../models/product.model');
 const logger = require('../utils/logger');
-const rabbitMQClient = require('../utils/RabbitMQClient');
 const createCircuitBreaker = require('../middleware/circuitBreaker');
 
 class OrderController {
@@ -41,17 +41,23 @@ class OrderController {
   }
   async createOrder(req, res) {
     try {
+      const products = [];
+      const reqOrder = req.body;
+      if (reqOrder.products.length > 0) {
+        for (const product of reqOrder.products) {
+          const productId = product.id;
+          const productExists = await Product.findById(productId);
+          products.push(productExists);
+          if (!productExists) {
+            return res.status(400).json({
+              message: `Product with ID ${productId} not found`
+            });
+          }
+        }
+      }
+      req.body.products = products;
       const order = new Order(req.body);
       const savedOrder = await order.save();
-      // rabbitMQClient.publishMessage(
-      //   'order',
-      //   'order.created',
-      //   {
-      //     event: 'ORDER_CREATED',
-      //     orderId: savedOrder._id,
-      //     data: savedOrder
-      //   }
-      // ).catch(err => logger.error('Failed to publish message:', err));
       logger.info('Order created successfully');
       res.status(201).json(savedOrder);
     } catch (error) {

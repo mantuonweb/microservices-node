@@ -7,8 +7,8 @@ class BaseService {
     // Service identification
     this.SERVICE_NAME = options.serviceName || 'unknown-service';
     this.ENVIRONMENT = process.env.NODE_ENV || 'local';
-    this.CONFIG_SERVER_URL = process.env.CONFIG_SERVER_URL || 'http://ms-config-service:4000';
-    
+    this.CONFIG_SERVER_URL = process.env.CONFIG_SERVER_URL || (process.env.NODE_ENV ? 'http://ms-config-service:4000' : 'http://localhost:4000');
+
     // Runtime properties
     this.server = null;
     this.consul = null;
@@ -25,10 +25,10 @@ class BaseService {
     try {
       const configUrl = `${this.CONFIG_SERVER_URL}/config/${this.SERVICE_NAME}/${this.ENVIRONMENT}`;
       logger.info(`Loading configuration from ${configUrl}`);
-      
+
       const response = await axios.get(configUrl);
       const config = response.data;
-      
+
       process.env = { ...process.env, ...config };
       return process.env;
     } catch (error) {
@@ -43,24 +43,24 @@ class BaseService {
    */
   initializeConsul() {
     const CONSUL_ENABLED = process.env.CONSUL_ENABLED !== 'false';
-    
+
     if (!CONSUL_ENABLED) {
       logger.info('Consul integration disabled by configuration');
       return null;
     }
-    
+
     try {
       const consulClient = new Consul({
         host: process.env.CONSUL_HOST || 'localhost',
         port: process.env.CONSUL_PORT || 8500,
         promisify: true,
       });
-      
+
       logger.info(
         `Consul client initialized with host: ${process.env.CONSUL_HOST || 'localhost'}, 
          port: ${process.env.CONSUL_PORT || 8500}`
       );
-      
+
       return consulClient;
     } catch (error) {
       logger.error(`Failed to initialize Consul client: ${error.message}`);
@@ -78,7 +78,7 @@ class BaseService {
     }
 
     const serviceHost = process.env.SERVICE_HOST || 'localhost';
-    
+
     const serviceDetails = {
       id: this.serviceId,
       name: this.SERVICE_NAME,
@@ -125,10 +125,10 @@ class BaseService {
   createShutdownHandler() {
     return async () => {
       logger.info('Starting graceful shutdown...');
-      
+
       try {
         await this.deregisterService();
-        
+
         this.server.close(() => {
           logger.info('HTTP server closed');
         });
@@ -154,32 +154,32 @@ class BaseService {
     try {
       // Load configuration
       await this.loadConfig();
-      
+
       // Configure Express app - this will be implemented by subclasses
       const configApp = this.configureApp();
       this.port = configApp.PORT;
       this.app = configApp.app;
       this.serviceId = `${this.SERVICE_NAME}-${this.port}`;
-      
+
       // Initialize Consul
       this.consul = this.initializeConsul();
-      
+
       // Start server
       this.server = this.app.listen(this.port, '::', () => {
         logger.info(`${this.SERVICE_NAME} running on port ${this.port} (IPv4 and IPv6)`);
-        
+
         if (this.consul) {
           this.registerService();
         } else {
           logger.info('Skipping Consul registration - Consul client not available or disabled');
         }
       });
-      
+
       // Setup graceful shutdown
       const shutdownHandler = this.createShutdownHandler();
       process.on('SIGTERM', shutdownHandler);
       process.on('SIGINT', shutdownHandler);
-      
+
       return this;
     } catch (error) {
       logger.error('Failed to initialize application:', error);

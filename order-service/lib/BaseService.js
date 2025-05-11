@@ -7,7 +7,7 @@ class BaseService {
     // Service identification
     this.SERVICE_NAME = options.serviceName || 'unknown-service';
     this.ENVIRONMENT = process.env.NODE_ENV || 'local';
-    this.CONFIG_SERVER_URL = process.env.CONFIG_SERVER_URL || 'http://ms-config-service:4000';
+    this.CONFIG_SERVER_URL = process.env.CONFIG_SERVER_URL || (process.env.NODE_ENV ? 'http://ms-config-service:4000' : 'http://localhost:4000');
     
     // Runtime properties
     this.server = null;

@@ -11,7 +11,7 @@ const listenProductUpdates = async () => {
       const { event, data, productId } = productEvent;
       try {
         if (event === 'PRODUCT_CREATED') {
-          productController.createProduct({ ...data, id: productId });
+          productController.createProduct({ ...data, _id: productId });
         }
       } catch (error) {
         logger.error('Failed to process product event:', error);

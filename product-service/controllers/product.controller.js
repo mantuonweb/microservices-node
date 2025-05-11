@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 const rabbitMQClient = require('../utils/RabbitMQClient');
 const createCircuitBreaker = require('../middleware/circuitBreaker');
 const withCircuitBreaker = require('../lib/CircuitBreaker');
-const exchange = process.env.RABBITMQ_EXCHANGE
+
 class ProductController {
   async getAllProducts(req, res) {
     try {
@@ -32,6 +32,7 @@ class ProductController {
     try {
       const product = new Product(req.body);
       const savedProduct = await product.save();
+      const exchange = process.env.RABBITMQ_EXCHANGE
       rabbitMQClient.getInstance().publishMessage(exchange, 'product.created', {
           event: 'PRODUCT_CREATED',
           productId: savedProduct._id,
