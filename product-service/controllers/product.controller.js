@@ -2,26 +2,9 @@ const Product = require('../models/product.model');
 const logger = require('../utils/logger');
 const rabbitMQClient = require('../utils/RabbitMQClient');
 const createCircuitBreaker = require('../middleware/circuitBreaker');
+const withCircuitBreaker = require('../lib/CircuitBreaker');
 const exchange = process.env.RABBITMQ_EXCHANGE
 class ProductController {
-  constructor() {
-    this.getAllProductsBreaker = createCircuitBreaker(
-      this.getAllProducts.bind(this)
-    );
-    this.createProductBreaker = createCircuitBreaker(
-      this.createProduct.bind(this)
-    );
-    this.updateProductBreaker = createCircuitBreaker(
-      this.updateProduct.bind(this)
-    );
-    this.deleteProductBreaker = createCircuitBreaker(
-      this.deleteProduct.bind(this)
-    );
-    this.getProductByIdBreaker = createCircuitBreaker(
-      this.getProductById.bind(this)
-    );
-  }
-
   async getAllProducts(req, res) {
     try {
       const products = await Product.find();
@@ -99,4 +82,4 @@ class ProductController {
   }
 }
 
-module.exports = new ProductController();
+module.exports = withCircuitBreaker(ProductController, createCircuitBreaker);

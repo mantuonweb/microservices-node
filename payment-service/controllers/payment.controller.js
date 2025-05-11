@@ -1,5 +1,6 @@
 const Payment = require('../models/payment.model');
-
+const createCircuitBreaker = require('../middleware/circuitBreaker');
+const withCircuitBreaker = require('../lib/CircuitBreaker');
 class PaymentController {
   static async processPayment(req, res) {
     try {
@@ -111,4 +112,4 @@ class PaymentController {
 }
 
 // Export the class directly (no instantiation needed)
-module.exports = PaymentController;
+module.exports = withCircuitBreaker(PaymentController,createCircuitBreaker);
