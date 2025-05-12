@@ -1,21 +1,10 @@
 const Order = require('../models/order.model');
 const Product = require('../models/product.model');
 const logger = require('../utils/logger');
-const createCircuitBreaker = require('../middleware/circuitBreaker');
+const createCircuitBreaker = require('../utils/circuitBreaker');
+const withCircuitBreaker = require('../lib/CircuitBreaker');
 
 class OrderController {
-  constructor() {
-    this.getAllOrdersBreaker = createCircuitBreaker(
-      this.getAllOrders.bind(this)
-    );
-    this.createOrderBreaker = createCircuitBreaker(this.createOrder.bind(this));
-    this.updateOrderBreaker = createCircuitBreaker(this.updateOrder.bind(this));
-    this.deleteOrderBreaker = createCircuitBreaker(this.deleteOrder.bind(this));
-    this.getOrderByIdBreaker = createCircuitBreaker(
-      this.getOrderById.bind(this)
-    );
-  }
-
   async getAllOrders(req, res) {
     try {
       const orders = await Order.find();
@@ -43,6 +32,7 @@ class OrderController {
     try {
       const products = [];
       const reqOrder = req.body;
+      let price = 0;
       if (reqOrder.products.length > 0) {
         for (const product of reqOrder.products) {
           const productId = product.id;
@@ -151,4 +141,4 @@ class OrderController {
   }
 }
 
-module.exports = new OrderController();
+module.exports = withCircuitBreaker(OrderController, createCircuitBreaker);

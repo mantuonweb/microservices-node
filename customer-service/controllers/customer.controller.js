@@ -3,8 +3,7 @@ const logger = require('../utils/logger');
 const createCircuitBreaker = require('../utils/circuitBreaker');
 const withCircuitBreaker = require('../lib/CircuitBreaker');
 class CustomerController {
-  constructor() {
-  }
+  constructor() {}
 
   async getCustomerById(req, res) {
     logger.info('Customer retrieved successfully:', req.params.id);
@@ -46,11 +45,16 @@ class CustomerController {
 
   async updateCustomer(req, res) {
     try {
-      const customer = await Customer.findByIdAndUpdate(
+      const updatedCustomer = await Customer.findByIdAndUpdate(
         req.params.id,
-        req.body
+        req.body,
+        { new: true, runValidators: true }
       );
-      const updatedCustomer = await customer.save();
+
+      if (!updatedCustomer) {
+        return res.status(404).json({ message: 'Customer not found' });
+      }
+
       logger.info('Customer updated:', req.params.id);
       res.status(200).json(updatedCustomer);
     } catch (error) {

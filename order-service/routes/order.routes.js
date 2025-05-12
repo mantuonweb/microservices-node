@@ -3,19 +3,19 @@ const router = express.Router();
 const orderController = require('../controllers/order.controller');
 
 router.get('/', (req, res) =>
-  orderController.getAllOrdersBreaker.fire(req, res)
+  orderController.getAllOrders.fire(req, res)
 );
 router.post('/', (req, res) =>
-  orderController.createOrderBreaker.fire(req, res)
+  orderController.createOrder.fire(req, res)
 );
 router.put('/:id', (req, res) =>
-  orderController.updateOrderBreaker.fire(req, res)
+  orderController.updateOrder.fire(req, res)
 );
 router.get('/:id', (req, res) =>
-  productController.getProductByIdBreaker.fire(req, res)
+  productController.getProductById.fire(req, res)
 );
 router.delete('/:id', (req, res) =>
-  productController.deleteProductBreaker.fire(req, res)
+  productController.deleteProduct.fire(req, res)
 );
 
 module.exports = router;

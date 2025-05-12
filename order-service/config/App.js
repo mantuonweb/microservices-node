@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const orderRoutes = require('../routes/order.routes');
+const customerRoutes = require('../routes/customer.routes');
 const logger = require('../utils/logger');
 const mongoClient = require('../utils/MongoConnectionClient');
 const rabbitMQClient = require('../utils/RabbitMQClient');
@@ -25,7 +26,7 @@ const configureApp = () => {
 
   // Configure routes
   app.use('/api/orders', orderRoutes);
-
+  app.use('/api/orders/customers', customerRoutes);
   // Health Check
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK', service: 'Order Service' });
