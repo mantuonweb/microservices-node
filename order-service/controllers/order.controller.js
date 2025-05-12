@@ -1,6 +1,7 @@
 const Order = require('../models/order.model');
 const Product = require('../models/product.model');
 const logger = require('../utils/logger');
+const eventManager = require('../utils/send-event');
 const createCircuitBreaker = require('../utils/circuitBreaker');
 const withCircuitBreaker = require('../lib/CircuitBreaker');
 
@@ -37,17 +38,36 @@ class OrderController {
         for (const product of reqOrder.products) {
           const productId = product.id;
           const productExists = await Product.findById(productId);
-          products.push(productExists);
           if (!productExists) {
             return res.status(400).json({
               message: `Product with ID ${productId} not found`
             });
           }
+          products.push({id: productId, name: productExists.name, quantity: product.quantity});
+          const productPrice = (productExists.price ?? 0) * (product.quantity ?? 1);
+          price += productPrice;
+          reqOrder.totalAmount = price;
         }
       }
+     
       req.body.products = products;
       const order = new Order(req.body);
       const savedOrder = await order.save();
+      const payment = {
+        orderId:savedOrder._id.toString(),
+        customerId: reqOrder.customer.email,
+        amount: savedOrder.totalAmount,
+        paymentMethod: reqOrder.mode,
+        transactionId: 'tx'+(new Date().getTime().toString()),
+      }
+      const payRes = await eventManager
+              .getInstance()
+              .sendEvent('payment-service', 'api/payments', payment);
+    
+      // Update the order with the payment ID
+      savedOrder.paymentId = payRes.paymentId;
+      await savedOrder.save();
+    
       logger.info('Order created successfully');
       res.status(201).json(savedOrder);
     } catch (error) {
@@ -63,10 +83,10 @@ class OrderController {
       if (!existingOrder) {
         return res.status(404).json({ message: 'Order not found' });
       }
-      
+
       const reqOrder = req.body;
       const updatedProducts = [];
-      
+
       // Process products if they exist in the request
       if (reqOrder.products && reqOrder.products.length > 0) {
         for (const product of reqOrder.products) {
@@ -77,7 +97,7 @@ class OrderController {
               message: `Product with ID ${product.id} not found`
             });
           }
-          
+
           // Create product entry according to the schema structure
           updatedProducts.push({
             id: productExists._id,
@@ -90,14 +110,14 @@ class OrderController {
       }
       // Set the updated timestamp
       req.body.updatedAt = Date.now();
-      
+
       // Update the order with all the changes
       const updatedOrder = await Order.findByIdAndUpdate(
         req.params.id,
         req.body,
         { new: true }
       );
-      
+
       logger.info('Order updated successfully');
       res.json(updatedOrder);
     } catch (error) {

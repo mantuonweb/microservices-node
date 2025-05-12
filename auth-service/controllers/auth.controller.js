@@ -32,11 +32,11 @@ class AuthController {
         email,
         password
       });
-      eventManager
+      await eventManager
         .getInstance()
         .sendEvent('customer-service', 'api/customers', { email, username });
 
-      eventManager
+      await eventManager
         .getInstance()
         .sendEvent('order-service', 'api/orders/customers', { email, username });
 
