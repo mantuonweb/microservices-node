@@ -23,9 +23,19 @@ class InventoryController {
 
   // Get inventory by product ID
   async getInventoryByProductId(req, res) {
-    const { productId } = req.params;
-    logger.info(`getInventoryByProductId: Fetching inventory for product ID: ${productId}`);
     try {
+      const { productId } = req.params;
+      
+      if (!productId) {
+        logger.warn('getInventoryByProductId: Missing product ID parameter');
+        return res.status(400).json({
+          success: false,
+          error: 'Product ID is required',
+        });
+      }
+      
+      logger.info(`getInventoryByProductId: Fetching inventory for product ID: ${productId}`);
+      
       const inventory = await Inventory.findOne({
         productId: productId,
       });
@@ -41,7 +51,7 @@ class InventoryController {
       logger.info(`getInventoryByProductId: Successfully retrieved inventory for product ID: ${productId}`);
       res.status(200).json(inventory);
     } catch (error) {
-      logger.error(`getInventoryByProductId: Error fetching inventory for product ID: ${productId} - ${error.message}`, { error });
+      logger.error(`getInventoryByProductId: Error fetching inventory - ${error.message}`, { error });
       res.status(500).json({
         success: false,
         error: 'Server Error',
@@ -51,17 +61,44 @@ class InventoryController {
 
   // Create new inventory item
   async createInventory(req, res) {
-    logger.info('createInventory: Creating new inventory item', { data: req.body });
     try {
-      const { productId } = req.body;
-      const productExists = await Product.findById(productId);
-      if (!productExists) {
-        logger.warn(`createInventory: Product with ID ${productId} does not exist`);
-        return res.status(404).json({
+      if (!req.body || Object.keys(req.body).length === 0) {
+        logger.warn('createInventory: Empty request body');
+        return res.status(400).json({
           success: false,
-          error: 'Product not found',
+          error: 'Request body cannot be empty',
         });
       }
+      
+      const { productId } = req.body;
+      
+      if (!productId) {
+        logger.warn('createInventory: Missing productId in request body');
+        return res.status(400).json({
+          success: false,
+          error: 'Product ID is required',
+        });
+      }
+      
+      logger.info('createInventory: Creating new inventory item', { data: req.body });
+      
+      try {
+        const productExists = await Product.findById(productId);
+        if (!productExists) {
+          logger.warn(`createInventory: Product with ID ${productId} does not exist`);
+          return res.status(404).json({
+            success: false,
+            error: 'Product not found',
+          });
+        }
+      } catch (productError) {
+        logger.error(`createInventory: Error checking product existence - ${productError.message}`, { error: productError });
+        return res.status(500).json({
+          success: false,
+          error: 'Error validating product',
+        });
+      }
+      
       const inventory = await Inventory.create(req.body);
       logger.info(`createInventory: Successfully created inventory item with ID: ${inventory._id}`);
       res.status(201).json(inventory);
@@ -85,9 +122,27 @@ class InventoryController {
 
   // Update inventory
   async updateInventory(req, res) {
-    const { productId } = req.params;
-    logger.info(`updateInventory: Updating inventory for product ID: ${productId}`, { data: req.body });
     try {
+      const { productId } = req.params;
+      
+      if (!productId) {
+        logger.warn('updateInventory: Missing product ID parameter');
+        return res.status(400).json({
+          success: false,
+          error: 'Product ID is required',
+        });
+      }
+      
+      if (!req.body || Object.keys(req.body).length === 0) {
+        logger.warn(`updateInventory: Empty request body for product ID: ${productId}`);
+        return res.status(400).json({
+          success: false,
+          error: 'Update data cannot be empty',
+        });
+      }
+      
+      logger.info(`updateInventory: Updating inventory for product ID: ${productId}`, { data: req.body });
+      
       const inventory = await Inventory.findOneAndUpdate(
         { productId: productId },
         req.body,
@@ -105,18 +160,31 @@ class InventoryController {
       logger.info(`updateInventory: Successfully updated inventory for product ID: ${productId}`);
       res.status(200).json(inventory);
     } catch (error) {
-      logger.warn(`updateInventory: Validation error for product ID: ${productId} - ${error.message}`);
-      return res.status(400).json({
+      logger.error(`updateInventory: Error updating inventory - ${error.message}`, { error });
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({
+          success: false,
+          error: 'Validation error: ' + error.message,
+        });
+      }
+      return res.status(500).json({
         success: false,
-        error: 'Error updating inventory',
+        error: 'Server Error',
       });
     }
   }
 
   // Update quantity for multiple products
   async updateMultipleProductQuantities(req, res) {
-    logger.info('updateMultipleProductQuantities: Reducing quantities for multiple products', { data: req.body });
     try {
+      if (!req.body) {
+        logger.warn('updateMultipleProductQuantities: Missing request body');
+        return res.status(400).json({
+          success: false,
+          error: 'Request body is required',
+        });
+      }
+      
       const products = req.body;
       
       if (!Array.isArray(products) || products.length === 0) {
@@ -127,6 +195,8 @@ class InventoryController {
         });
       }
 
+      logger.info('updateMultipleProductQuantities: Reducing quantities for multiple products', { data: req.body });
+      
       const updateResults = [];
       const errors = [];
 
@@ -167,6 +237,7 @@ class InventoryController {
           updateResults.push(updatedInventory);
           
         } catch (error) {
+          logger.error(`updateMultipleProductQuantities: Error updating product ID ${productId} - ${error.message}`, { error });
           errors.push(`Error updating product ID ${productId}: ${error.message}`);
         }
       }
@@ -190,9 +261,19 @@ class InventoryController {
 
   // Delete inventory
   async deleteInventory(req, res) {
-    const { productId } = req.params;
-    logger.info(`deleteInventory: Deleting inventory for product ID: ${productId}`);
     try {
+      const { productId } = req.params;
+      
+      if (!productId) {
+        logger.warn('deleteInventory: Missing product ID parameter');
+        return res.status(400).json({
+          success: false,
+          error: 'Product ID is required',
+        });
+      }
+      
+      logger.info(`deleteInventory: Deleting inventory for product ID: ${productId}`);
+      
       const inventory = await Inventory.findOneAndDelete({
         productId: productId,
       });
@@ -210,7 +291,7 @@ class InventoryController {
         success: true,
       });
     } catch (error) {
-      logger.error(`deleteInventory: Error deleting inventory for product ID: ${productId} - ${error.message}`, { error });
+      logger.error(`deleteInventory: Error deleting inventory - ${error.message}`, { error });
       res.status(500).json({
         success: false,
         error: 'Server Error',

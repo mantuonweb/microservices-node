@@ -32,13 +32,35 @@ class AuthController {
         email,
         password
       });
-      await eventManager
-        .getInstance()
-        .sendEvent('customer-service', 'api/customers', { email, username });
+      
+      // Add error handling for event sending
+      try {
+        await eventManager
+          .getInstance()
+          .sendEvent('customer-service', 'api/customers', { email, username });
+      } catch (eventError) {
+        logger.error('Failed to send event to customer-service', { 
+          error: eventError.message, 
+          stack: eventError.stack,
+          username,
+          email
+        });
+        // Continue with registration despite event failure
+      }
 
-      await eventManager
-        .getInstance()
-        .sendEvent('order-service', 'api/orders/customers', { email, username });
+      try {
+        await eventManager
+          .getInstance()
+          .sendEvent('order-service', 'api/orders/customers', { email, username });
+      } catch (eventError) {
+        logger.error('Failed to send event to order-service', { 
+          error: eventError.message, 
+          stack: eventError.stack,
+          username,
+          email
+        });
+        // Continue with registration despite event failure
+      }
 
       await user.save();
       logger.info('User registered successfully', {
