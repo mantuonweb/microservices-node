@@ -113,6 +113,81 @@ class InventoryController {
     }
   }
 
+  // Update quantity for multiple products
+  async updateMultipleProductQuantities(req, res) {
+    logger.info('updateMultipleProductQuantities: Reducing quantities for multiple products', { data: req.body });
+    try {
+      const products = req.body;
+      
+      if (!Array.isArray(products) || products.length === 0) {
+        logger.warn('updateMultipleProductQuantities: Invalid request format - products array is required');
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid request format. Expected an array of products with productId and quantity',
+        });
+      }
+
+      const updateResults = [];
+      const errors = [];
+
+      // Process each product update
+      for (const product of products) {
+        const { productId, quantity } = product;
+        
+        if (!productId || quantity === undefined) {
+          errors.push(`Invalid data for product: ${JSON.stringify(product)}`);
+          continue;
+        }
+
+        try {
+          // First find the current inventory
+          const currentInventory = await Inventory.findOne({ productId: productId });
+          
+          if (!currentInventory) {
+            errors.push(`Inventory not found for product ID: ${productId}`);
+            continue;
+          }
+          
+          // Calculate new quantity by reducing the requested amount
+          const newQuantity = currentInventory.quantity - quantity;
+          
+          // Prevent negative inventory if needed
+          if (newQuantity < 0) {
+            errors.push(`Insufficient inventory for product ID: ${productId}. Requested: ${quantity}, Available: ${currentInventory.quantity}`);
+            continue;
+          }
+          
+          // Update with the reduced quantity
+          const updatedInventory = await Inventory.findOneAndUpdate(
+            { productId: productId },
+            { quantity: newQuantity },
+            { new: true, runValidators: true }
+          );
+
+          updateResults.push(updatedInventory);
+          
+        } catch (error) {
+          errors.push(`Error updating product ID ${productId}: ${error.message}`);
+        }
+      }
+
+      logger.info(`updateMultipleProductQuantities: Updated ${updateResults.length} products, encountered ${errors.length} errors`);
+      
+      res.status(200).json({
+        success: true,
+        updatedCount: updateResults.length,
+        updatedProducts: updateResults,
+        errors: errors.length > 0 ? errors : undefined
+      });
+    } catch (error) {
+      logger.error(`updateMultipleProductQuantities: Error updating multiple products - ${error.message}`, { error });
+      res.status(500).json({
+        success: false,
+        error: 'Server Error',
+      });
+    }
+  }
+
   // Delete inventory
   async deleteInventory(req, res) {
     const { productId } = req.params;

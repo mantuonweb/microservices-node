@@ -43,31 +43,36 @@ class OrderController {
               message: `Product with ID ${productId} not found`
             });
           }
-          products.push({id: productId, name: productExists.name, quantity: product.quantity});
+          products.push({ id: productId, name: productExists.name, quantity: product.quantity });
           const productPrice = (productExists.price ?? 0) * (product.quantity ?? 1);
           price += productPrice;
           reqOrder.totalAmount = price;
         }
       }
-     
+
       req.body.products = products;
       const order = new Order(req.body);
       const savedOrder = await order.save();
       const payment = {
-        orderId:savedOrder._id.toString(),
+        orderId: savedOrder._id.toString(),
         customerId: reqOrder.customer.email,
         amount: savedOrder.totalAmount,
         paymentMethod: reqOrder.mode,
-        transactionId: 'tx'+(new Date().getTime().toString()),
+        transactionId: 'tx' + (new Date().getTime().toString()),
       }
       const payRes = await eventManager
-              .getInstance()
-              .sendEvent('payment-service', 'api/payments', payment);
-    
+        .getInstance()
+        .sendEvent('payment-service', 'api/payments', payment);
+      const productsUpdated = products.map(item => ({ productId: item.id, quantity: item.quantity }));
+      console.log('productsUpdated', productsUpdated);
+      const updateInventory = await eventManager
+        .getInstance()
+        .sendEvent('inventory-service', 'api/inventories/update-multiple-quantities', productsUpdated);
+
       // Update the order with the payment ID
       savedOrder.paymentId = payRes.paymentId;
       await savedOrder.save();
-    
+
       logger.info('Order created successfully');
       res.status(201).json(savedOrder);
     } catch (error) {

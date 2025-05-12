@@ -14,4 +14,6 @@ router
   .put((req, res) => inventoryController.updateInventory.fire(req, res))
   .delete((req, res) => inventoryController.deleteInventory.fire(req, res));
 
+router.post('/update-multiple-quantities', (req, res) => inventoryController.updateMultipleProductQuantities.fire(req, res));
+
 module.exports = router;
