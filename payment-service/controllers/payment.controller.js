@@ -1,10 +1,10 @@
 const Payment = require('../models/payment.model');
 const logger = require('../utils/logger');
-const createCircuitBreaker = require('../middleware/circuitBreaker');
+const createCircuitBreaker = require('../utils/circuitBreaker');
 const withCircuitBreaker = require('../lib/CircuitBreaker');
 
 class PaymentController {
-  static async processPayment(req, res) {
+  async processPayment(req, res) {
     logger.info(`Payment processing initiated for order: ${req.body.orderId || 'unknown'}`);
     try {
       const { orderId, customerId, amount, paymentMethod } = req.body || {};
@@ -75,7 +75,7 @@ class PaymentController {
     }
   }
 
-  static async getPayment(req, res) {
+  async getPayment(req, res) {
     if (!req.params || !req.params.id) {
       logger.warn('Missing payment ID in request');
       return res.status(400).json({ message: 'Payment ID is required' });
@@ -103,7 +103,7 @@ class PaymentController {
     }
   }
 
-  static async getPaymentsByOrder(req, res) {
+  async getPaymentsByOrder(req, res) {
     if (!req.params || !req.params.orderId) {
       logger.warn('Missing order ID in request');
       return res.status(400).json({ message: 'Order ID is required' });
@@ -122,7 +122,7 @@ class PaymentController {
     }
   }
 
-  static async getAllPayments(req, res) {
+  async getAllPayments(req, res) {
     logger.info('Fetching all payments');
     try {
       // Add pagination to avoid potential memory issues with large datasets
@@ -153,7 +153,7 @@ class PaymentController {
     }
   }
 
-  static async refundPayment(req, res) {
+  async refundPayment(req, res) {
     if (!req.params || !req.params.id) {
       logger.warn('Missing payment ID in refund request');
       return res.status(400).json({ message: 'Payment ID is required' });
@@ -205,11 +205,5 @@ class PaymentController {
   }
 }
 
-// Wrap with try-catch to ensure circuit breaker initialization doesn't crash
-try {
-  module.exports = withCircuitBreaker(PaymentController, createCircuitBreaker);
-} catch (error) {
-  logger.error('Failed to initialize circuit breaker:', error);
-  // Fallback to regular controller if circuit breaker fails
-  module.exports = PaymentController;
-}
+
+module.exports = withCircuitBreaker(PaymentController, createCircuitBreaker);

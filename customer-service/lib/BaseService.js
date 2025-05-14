@@ -1,5 +1,6 @@
 const axios = require('axios');
 const Consul = require('consul');
+const os = require('os');
 const logger = require('../utils/logger');
 
 class BaseService {
@@ -77,7 +78,7 @@ class BaseService {
       return;
     }
 
-    const serviceHost = process.env.SERVICE_HOST || 'localhost';
+    const serviceHost = process.env.SERVICE_HOST || os.hostname() || 'localhost';
     
     const serviceDetails = {
       id: this.serviceId,

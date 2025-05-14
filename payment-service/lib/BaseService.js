@@ -1,5 +1,6 @@
 const axios = require('axios');
 const Consul = require('consul');
+const os = require('os');
 const logger = require('../utils/logger');
 
 class BaseService {
@@ -76,8 +77,7 @@ class BaseService {
       logger.warn('Cannot register service: Consul client is not initialized');
       return;
     }
-
-    const serviceHost = process.env.SERVICE_HOST || 'localhost';
+    const serviceHost = process.env.SERVICE_HOST || os.hostname() || 'localhost';
     
     const serviceDetails = {
       id: this.serviceId,
@@ -154,7 +154,7 @@ class BaseService {
     try {
       // Load configuration
       await this.loadConfig();
-      
+
       // Configure Express app - this will be implemented by subclasses
       const configApp = this.configureApp();
       this.port = configApp.PORT;
@@ -167,7 +167,7 @@ class BaseService {
       // Start server
       this.server = this.app.listen(this.port, '::', () => {
         logger.info(`${this.SERVICE_NAME} running on port ${this.port} (IPv4 and IPv6)`);
-        
+
         if (this.consul) {
           this.registerService();
         } else {
