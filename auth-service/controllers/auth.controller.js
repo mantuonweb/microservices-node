@@ -32,15 +32,15 @@ class AuthController {
         email,
         password
       });
-      
+
       // Add error handling for event sending
       try {
         await eventManager
           .getInstance()
           .sendEvent('customer-service', 'api/customers', { email, username });
       } catch (eventError) {
-        logger.error('Failed to send event to customer-service', { 
-          error: eventError.message, 
+        logger.error('Failed to send event to customer-service', {
+          error: eventError.message,
           stack: eventError.stack,
           username,
           email
@@ -53,8 +53,8 @@ class AuthController {
           .getInstance()
           .sendEvent('order-service', 'api/orders/customers', { email, username });
       } catch (eventError) {
-        logger.error('Failed to send event to order-service', { 
-          error: eventError.message, 
+        logger.error('Failed to send event to order-service', {
+          error: eventError.message,
           stack: eventError.stack,
           username,
           email
@@ -113,8 +113,17 @@ class AuthController {
         { expiresIn: process.env.JWT_EXPIRATION }
       );
 
-      logger.info('Login successful', { userId: user._id, username, roles: user.roles });
-
+      logger.info('Login successful', {
+        userId: user._id,
+        username,
+        roles: user.roles,
+      });
+      res.cookie('auth_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000 * 60// 24 hours
+      });
       res.status(200).json({
         message: 'Login successful',
         token

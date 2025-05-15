@@ -5,6 +5,8 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const Consul = require('consul');
 const logger = require('./utils/logger');
 const axios = require('axios');
+const cors = require('cors');
+
 class ApiGateway {
   constructor() {
     this.app = express();
@@ -68,6 +70,22 @@ class ApiGateway {
       this.serviceRegistry[service] = [];
       this.serviceIndices[service] = 0;
     });
+
+    // Enable CORS for all routes with no restrictions
+    this.app.use(
+      cors({
+        origin: true, // Allow all origins
+        methods: '*', // Allow all methods
+        allowedHeaders: '*', // Allow all headers
+        exposedHeaders: '*', // Expose all headers
+        credentials: true, // Allow credentials
+        maxAge: 86400, // Cache preflight requests for 24 hours
+      })
+    );
+
+    // Add cookie-parser middleware
+    const cookieParser = require('cookie-parser');
+    this.app.use(cookieParser());
 
     // Add request logging middleware
     this.setupLoggingMiddleware();
@@ -196,10 +214,13 @@ class ApiGateway {
           pathRewrite: {
             [`^${pathPrefix}`]: pathPrefix,
           },
+          cookieDomainRewrite: {
+            '*': '', // This rewrites cookie domains from the target to the current domain
+          },
           onProxyReq: (proxyReq, req, res) => {
             // Add request ID
             proxyReq.setHeader('X-Gateway-Request-ID', Date.now().toString());
-            
+
             // Forward all original headers
             Object.keys(req.headers).forEach(header => {
               proxyReq.setHeader(header, req.headers[header]);
@@ -289,11 +310,20 @@ class ApiGateway {
         }
 
         // Get the token from the request headers
-        const token = req.headers.authorization;
+        let token = req.headers.authorization;
+
+        // If no token in headers but cookies exist, check for auth cookie
+        // Note: We need cookie-parser middleware for this to work
+        if (!token && req.cookies && req.cookies.auth_token) {
+          token = `Bearer ${req.cookies.auth_token}`;
+          // Add the token to headers so it gets forwarded to services
+          req.headers.authorization = token;
+        }
+
         if (!token) {
           return res.status(401).json({ error: 'No authorization token provided' });
         }
-        console.log('Token:', token, `${authServiceInstance}/api/auth/profile`);
+
         // Forward the token to the auth service for validation using axios
         const response = await axios({
           method: 'get',
@@ -307,16 +337,16 @@ class ApiGateway {
 
         // If validation successful, add user info to request
         req.user = response.data;
-        
+
         next();
       } catch (error) {
         logger.error('Authentication error:', error.message);
-        
+
         // Handle different types of errors
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          return res.status(error.response.status).json({ 
+          return res.status(error.response.status).json({
             error: error.response.data.error || 'Authentication failed' 
           });
         } else if (error.request) {
