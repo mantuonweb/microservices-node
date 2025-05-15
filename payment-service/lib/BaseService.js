@@ -159,7 +159,7 @@ class BaseService {
       const configApp = this.configureApp();
       this.port = configApp.PORT;
       this.app = configApp.app;
-      this.serviceId = `${this.SERVICE_NAME}-${this.port}`;
+      this.serviceId = `${this.SERVICE_NAME}-${this.port}-${os.hostname()}`;
       
       // Initialize Consul
       this.consul = this.initializeConsul();
