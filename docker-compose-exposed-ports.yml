@@ -74,9 +74,9 @@ services:
     build:
       context: ./product-service
       dockerfile: Dockerfile
-    # container_name: ms-product-service
+    container_name: ms-product-service
     ports:
-      - "3001-3500"
+      - "3001:3001"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
@@ -99,9 +99,9 @@ services:
     build:
       context: ./order-service
       dockerfile: Dockerfile
-    # container_name: ms-order-service
+    container_name: ms-order-service
     ports:
-      - "3003-3500"
+      - "3003:3003"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
@@ -124,9 +124,9 @@ services:
     build:
       context: ./customer-service
       dockerfile: Dockerfile
-    # container_name: ms-customer-service
+    container_name: ms-customer-service
     ports:
-      - "3002-3500"
+      - "3002:3002"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
@@ -149,9 +149,9 @@ services:
     build:
       context: ./payment-service
       dockerfile: Dockerfile
-    # container_name: ms-payment-service
+    container_name: ms-payment-service
     ports:
-      - "3007-3500"
+      - "3007:3007"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
@@ -174,9 +174,9 @@ services:
     build:
       context: ./inventory-service
       dockerfile: Dockerfile
-    # container_name: ms-inventory-service
+    container_name: ms-inventory-service
     ports:
-      - "3006-3500"
+      - "3006:3006"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
@@ -198,9 +198,9 @@ services:
     build:
       context: ./auth-service
       dockerfile: Dockerfile
-    # container_name: ms-auth-service
+    container_name: ms-auth-service
     ports:
-      - "3005-3500"
+      - "3005:3005"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
@@ -222,9 +222,9 @@ services:
     build:
       context: ./events-service
       dockerfile: Dockerfile
-    # container_name: ms-events-service
+    container_name: ms-events-service
     ports:
-      - "3009-3500"
+      - "3009:3009"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
