@@ -3,6 +3,7 @@ const cors = require('cors');
 const paymentRoutes = require('../routes/payment.routes');
 const logger = require('../utils/logger');
 const mongoClient = require('../utils/MongoConnectionClient');
+const AuthMiddleware = require('../middleware/auth.middleware');
 
 const configureApp = () => {
     const app = express();
@@ -10,6 +11,7 @@ const configureApp = () => {
     // Configure middleware
     app.use(express.json());
     app.use(cors());
+    app.use(new AuthMiddleware.authenticate());
     // Initialize MongoDB connection
     mongoClient.getInstance().connect();
     // Configure routes
