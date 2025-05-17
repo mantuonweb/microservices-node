@@ -45,10 +45,9 @@ class CustomerController {
           logger.error('order service returned invalid response', payRes);
           throw new Error('Failed to process payment');
         }
-      } catch (paymentError) {
-        logger.error('order service error:', paymentError);
-        // Rollback the order creation
-        await Order.findByIdAndDelete(savedOrder._id);
+      } catch (customerError) {
+        logger.error('order service error:', customerError);
+        await Customer.findByIdAndDelete(savedCustomer._id);
         return res.status(503).json({
           error: 'order service unavailable',
           message: 'order service unavailable'
