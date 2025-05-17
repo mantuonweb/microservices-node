@@ -1,5 +1,5 @@
 const BaseService = require('./lib/BaseService');
-const configureApp = require('./config/App');
+const configureApp = require('./config/app');
 const logger = require('./utils/logger');
 
 class ProductService extends BaseService {
