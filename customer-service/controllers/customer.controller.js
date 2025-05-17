@@ -54,24 +54,6 @@ class CustomerController {
           message: 'order service unavailable'
         });
       }
-      try {
-        custRes = await eventManager
-          .getInstance()
-          .sendEvent('order-service', 'api/orders/customers', savedCustomer, req.headers);
-
-        if (!custRes || !custRes.username) {
-          logger.error('order service returned invalid response', payRes);
-          throw new Error('Failed to process payment');
-        }
-      } catch (paymentError) {
-        logger.error('order service error:', paymentError);
-        // Rollback the order creation
-        await Order.findByIdAndDelete(savedOrder._id);
-        return res.status(503).json({
-          error: 'order service unavailable',
-          message: 'order service unavailable'
-        });
-      }
       logger.info('New customer created:', savedCustomer._id);
       res.status(201).json(savedCustomer);
     } catch (error) {
