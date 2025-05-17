@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 const logger = require('../utils/logger');
-const eventManager = require('../utils/send-event');
 
 class AuthController {
   // Register a new user
@@ -12,17 +11,17 @@ class AuthController {
 
       // Check if user already exists
       const existingUser = await User.findOne({
-        $or: [{ email }, { username }] 
+        $or: [{ email }, { username }]
       });
 
       if (existingUser) {
         logger.warn('Registration failed: User already exists', {
           username,
           email,
-          existingUsername: existingUser.username 
+          existingUsername: existingUser.username
         });
         return res.status(409).json({
-          message: 'User already exists with that email or username' 
+          message: 'User already exists with that email or username'
         });
       }
 
@@ -32,35 +31,6 @@ class AuthController {
         email,
         password
       });
-
-      // Add error handling for event sending
-      try {
-        await eventManager
-          .getInstance()
-          .sendEvent('customer-service', 'api/customers', { email, username });
-      } catch (eventError) {
-        logger.error('Failed to send event to customer-service', {
-          error: eventError.message,
-          stack: eventError.stack,
-          username,
-          email
-        });
-        // Continue with registration despite event failure
-      }
-
-      try {
-        await eventManager
-          .getInstance()
-          .sendEvent('order-service', 'api/orders/customers', { email, username });
-      } catch (eventError) {
-        logger.error('Failed to send event to order-service', {
-          error: eventError.message,
-          stack: eventError.stack,
-          username,
-          email
-        });
-        // Continue with registration despite event failure
-      }
 
       await user.save();
       logger.info('User registered successfully', {
@@ -107,7 +77,7 @@ class AuthController {
         {
           id: user._id,
           username: user.username,
-          roles: user.roles 
+          roles: user.roles
         },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRATION }

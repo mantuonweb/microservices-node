@@ -15,7 +15,7 @@ const configureApp = () => {
   // Configure middleware
   app.use(express.json());
   app.use(cors());
-  app.use(new (AuthMiddleware()).authenticate());
+  app.use(new AuthMiddleware().authenticate());
   // Initialize MongoDB connection
   mongoClient.getInstance().connect();
 

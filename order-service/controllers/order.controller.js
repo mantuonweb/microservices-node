@@ -112,7 +112,7 @@ class OrderController {
       try {
         payRes = await eventManager
           .getInstance()
-          .sendEvent('payment-service', 'api/payments', payment);
+          .sendEvent('payment-service', 'api/payments', payment, req.headers);
         
         if (!payRes || !payRes.paymentId) {
           logger.error('Payment service returned invalid response', payRes);
@@ -134,7 +134,7 @@ class OrderController {
       try {
         const updateInventory = await eventManager
           .getInstance()
-          .sendEvent('inventory-service', 'api/inventories/update-multiple-quantities', productsUpdated);
+          .sendEvent('inventory-service', 'api/inventories/update-multiple-quantities', productsUpdated, req.headers);``
         
         if (!updateInventory || updateInventory.error) {
           throw new Error(updateInventory?.error || 'Inventory update failed');
