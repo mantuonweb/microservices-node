@@ -4,7 +4,6 @@ const rateLimit = require('express-rate-limit');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const Consul = require('consul');
 const logger = require('./utils/logger');
-const axios = require('axios');
 const cors = require('cors');
 
 class ApiGateway {
@@ -238,9 +237,6 @@ class ApiGateway {
 
   // Define proxy routes
   setupProxyRoutes() {
-    // Apply authentication middleware globally
-    this.app.use(this.authenticateRequest());
-
     // Set up routes for each service using the config
     this.supportedServices.forEach(service => {
       const path = this.serviceConfig[service].path;
@@ -293,71 +289,6 @@ class ApiGateway {
     } catch (error) {
       logger.error('Error discovering services:', error);
     }
-  }
-
-  authenticateRequest() {
-    return async (req, res, next) => {
-      // Skip authentication for the auth service itself and health endpoint
-      if (req.path.startsWith('/api/auth') || req.path === '/health') {
-        return next();
-      }
-
-      try {
-        // Get auth service instance
-        const authServiceInstance = this.getNextServiceInstance('auth-service');
-        if (!authServiceInstance) {
-          return res.status(503).json({ error: 'Authentication service unavailable' });
-        }
-
-        // Get the token from the request headers
-        let token = req.headers.authorization;
-
-        // If no token in headers but cookies exist, check for auth cookie
-        // Note: We need cookie-parser middleware for this to work
-        if (!token && req.cookies && req.cookies.auth_token) {
-          token = `Bearer ${req.cookies.auth_token}`;
-          // Add the token to headers so it gets forwarded to services
-          req.headers.authorization = token;
-        }
-
-        if (!token) {
-          return res.status(401).json({ error: 'No authorization token provided' });
-        }
-
-        // Forward the token to the auth service for validation using axios
-        const response = await axios({
-          method: 'get',
-          url: `${authServiceInstance}/api/auth/profile`,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          },
-          timeout: 5000 // 5 second timeout
-        });
-
-        // If validation successful, add user info to request
-        req.user = response.data;
-
-        next();
-      } catch (error) {
-        logger.error('Authentication error:', error.message);
-
-        // Handle different types of errors
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          return res.status(error.response.status).json({
-            error: error.response.data.error || 'Authentication failed' 
-          });
-        } else if (error.request) {
-          // The request was made but no response was received
-          return res.status(503).json({ error: 'Authentication service not responding' });
-        } else {
-          // Something happened in setting up the request
-          return res.status(500).json({ error: 'Authentication failed' });
-        }
-      }
-    };
   }
 
   start() {
