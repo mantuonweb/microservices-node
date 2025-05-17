@@ -87,8 +87,8 @@ class AuthMiddleware {
         });
 
         // If validation successful, add user info to request
-        logger.info(`Authentication successful for user: ${response.data.username || response.data.email || 'unknown'}`);
-        req.user = response.data;
+        req.user = response?.data?.user;
+        logger.info(`Authentication successful for user: ${response.data.user.username || response.data.user.email || 'unknown'}`);
 
         next();
       } catch (error) {
