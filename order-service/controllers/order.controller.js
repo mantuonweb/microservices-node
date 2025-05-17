@@ -2,8 +2,7 @@ const Order = require('../models/order.model');
 const Product = require('../models/product.model');
 const logger = require('../utils/logger');
 const eventManager = require('../utils/send-event');
-const createCircuitBreaker = require('../utils/circuitBreaker');
-const withCircuitBreaker = require('../lib/CircuitBreaker');
+const { createCircuitBreaker, withCircuitBreaker } = require('../lib/CircuitBreaker');
 
 class OrderController {
   async getAllOrders(req, res) {

@@ -1,7 +1,6 @@
 const Customer = require('../models/customer.model');
 const logger = require('../utils/logger');
-const createCircuitBreaker = require('../utils/circuitBreaker');
-const withCircuitBreaker = require('../lib/CircuitBreaker');
+const { createCircuitBreaker, withCircuitBreaker } = require('../lib/CircuitBreaker');
 
 class CustomerController {
   constructor() {}
