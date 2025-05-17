@@ -5,6 +5,7 @@
   "scripts": {
     "docker:start":"docker compose -f docker-compose-exposed-ports.yml up -d",
     "docker:stop":"docker compose -f docker-compose-exposed-ports.yml down",
+    "docker:build-customer":"docker-compose -f docker-compose-exposed-ports.yml up -d --build customer-service",
     "install-all": "npm install && npm run install-services",
     "install-services": "npm-run-all --sequential install:*",
     "install:product": "cd product-service && npm install",

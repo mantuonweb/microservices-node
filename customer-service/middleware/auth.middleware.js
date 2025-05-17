@@ -1,38 +1,54 @@
 const axios = require('axios');
 const logger = require('../utils/logger');
-
+const Consul = require('consul');
 class AuthMiddleware {
-  constructor(serviceRegistry, serviceIndices) {
-    this.serviceRegistry = serviceRegistry;
-    this.serviceIndices = serviceIndices;
+  constructor() {
+    this.eventServiceUrl = {};
+    this.consul = new Consul({
+      host: process.env.CONSUL_HOST || 'localhost',
+      port: process.env.CONSUL_PORT || 8500,
+      promisify: true,
+    });
   }
 
   // Simple round-robin load balancer
-  getNextServiceInstance(serviceName) {
-    const instances = this.serviceRegistry[serviceName];
-    if (!instances?.length) return null;
-
-    // Get the next instance in round-robin fashion
-    const index = this.serviceIndices[serviceName] % instances.length;
-    this.serviceIndices[serviceName] = (this.serviceIndices[serviceName] + 1) % instances.length;
-
-    return instances[index];
+  async getAuthServiceInstance() {
+    const serviceId = 'auth-service';
+    try {
+      // Try to get the service details from Consul using service ID
+      const services = await this.consul.catalog.service.nodes(serviceId);
+      if (services && services.length > 0) {
+        const service = services[0];
+        // Construct URL from service address and port
+        this.eventServiceUrl[
+          serviceId
+        ] = `http://${service.ServiceAddress}:${service.ServicePort}`;
+        logger.info(
+          `Retrieved event service URL from Consul: ${this.eventServiceUrl[serviceId]}`
+        );
+        return this.eventServiceUrl?.[serviceId];
+      }
+    } catch (error) {
+      logger.warn(
+        `Failed to retrieve event service from Consul: ${error.message}`
+      );
+    }
   }
 
   authenticate() {
+    // Skip authentication for the auth service itself and health endpoint
     return async (req, res, next) => {
-      logger.info(`Authentication request for path: ${req.path}, method: ${req.method}`);
-    
-      // Skip authentication for the auth service itself and health endpoint
-      if (req.path.startsWith('/api/auth') || req.path === '/health') {
-        logger.info(`Skipping authentication for public path: ${req.path}`);
+      if (req.path === '/health') {
         return next();
       }
-
+      logger.info(`Authentication request for path: ${req.path}, method: ${req.method}`);
       try {
+        let token = req.headers.authorization;
         // Get auth service instance
         logger.debug('Attempting to get auth service instance');
-        const authServiceInstance = this.getNextServiceInstance('auth-service');
+        console.log(`Authorization header ${token ? 'present' : 'not present'}`);
+        const authServiceInstance = await this.getAuthServiceInstance();
+        logger.debug('authServiceInstance: ', authServiceInstance);
         if (!authServiceInstance) {
           logger.error('No auth service instances available');
           return res.status(503).json({ error: 'Authentication service unavailable' });
@@ -40,8 +56,8 @@ class AuthMiddleware {
         logger.debug(`Selected auth service instance: ${authServiceInstance}`);
 
         // Get the token from the request headers
-        let token = req.headers.authorization;
-        logger.debug(`Authorization header ${token ? 'present' : 'not present'}`);
+        
+        logger.info(`Authorization header ${token ? 'present' : 'not present'}`);
 
         // If no token in headers but cookies exist, check for auth cookie
         // Note: We need cookie-parser middleware for this to work
@@ -76,7 +92,7 @@ class AuthMiddleware {
         next();
       } catch (error) {
         logger.error('Authentication error:', error.message);
-        
+
         // Log the full error for debugging in development
         logger.debug('Authentication error details:', error);
 
@@ -86,7 +102,7 @@ class AuthMiddleware {
           // that falls out of the range of 2xx
           logger.warn(`Auth service responded with error: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
           return res.status(error.response.status).json({
-            error: error.response.data.error || 'Authentication failed' 
+            error: error.response.data.error || 'Authentication failed'
           });
         } else if (error.request) {
           // The request was made but no response was received

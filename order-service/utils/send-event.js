@@ -14,7 +14,6 @@ class EventSender {
   }
 
   async getEventServiceUrl(serviceId) {
-    console.log(this.eventServiceUrl, serviceId, 'serviceId');
     if (this.eventServiceUrl[serviceId]) {
       return this.eventServiceUrl[serviceId];
     }
