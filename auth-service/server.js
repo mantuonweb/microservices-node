@@ -1,5 +1,5 @@
 const BaseService = require('./lib/BaseService');
-const configureApp = require('./config/app');
+const configureApp = require('./config/application');
 const logger = require('./utils/logger');
 
 class AuthService extends BaseService {
