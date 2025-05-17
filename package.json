@@ -3,8 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "docker:start":"docker compose -f docker-compose-exposed-ports.yml up -d",
+    "docker:stop":"docker compose -f docker-compose-exposed-ports.yml down",
     "install-all": "npm install && npm run install-services",
-    "install-services": "cd product-service && npm install && cd ../customer-service && npm install  &&  cd ../inventory-service && npm install && cd ../order-service && npm install&& cd ../payment-service && npm install && cd ../api-gateway && npm install"
+    "install-services": "npm-run-all --sequential install:*",
+    "install:product": "cd product-service && npm install",
+    "install:customer": "cd customer-service && npm install",
+    "install:inventory": "cd inventory-service && npm install",
+    "install:order": "cd order-service && npm install",
+    "install:payment": "cd payment-service && npm install",
+    "install:api-gateway": "cd api-gateway && npm install",
+    "install:auth": "cd auth-service && npm install",
+    "install:config": "cd config-service && npm install",
+    "install:events": "cd events-service && npm install"
   },
   "keywords": [],
   "author": "",

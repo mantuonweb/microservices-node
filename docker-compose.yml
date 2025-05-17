@@ -93,6 +93,10 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
   order-service:
@@ -116,6 +120,10 @@ services:
       mongodb:
         condition: service_healthy
       config-service:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
         condition: service_started
     networks:
       - microservice-network
@@ -142,6 +150,10 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
   
@@ -166,6 +178,10 @@ services:
       mongodb:
         condition: service_healthy
       config-service:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
         condition: service_started
     networks:
       - microservice-network
@@ -192,6 +208,10 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
   auth-service:
@@ -215,6 +235,8 @@ services:
       mongodb:
         condition: service_healthy
       config-service:
+        condition: service_started
+      api-gateway:
         condition: service_started
     networks:
       - microservice-network
@@ -281,12 +303,6 @@ services:
     volumes:
       - ./api-gateway:/usr/src/app
     restart: unless-stopped
-    depends_on:
-      - config-service
-      - product-service
-      - order-service
-      - customer-service
-      - inventory-service
     networks:
       - microservice-network
 volumes:
