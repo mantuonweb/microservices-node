@@ -1,8 +1,9 @@
 const Customer = require('../models/customer.model');
 const logger = require('../utils/logger');
 const { withCircuitBreaker, createCircuitBreaker } = require('../lib/CircuitBreaker');
+const eventManager = require('../utils/send-event');
 class CustomerController {
-  constructor() {}
+  constructor() { }
 
   async getCustomerById(req, res) {
     logger.info('Customer retrieved successfully:', req.params.id);
@@ -34,6 +35,43 @@ class CustomerController {
     try {
       const customer = new Customer(req.body);
       const savedCustomer = await customer.save();
+      let custRes;
+      try {
+        custRes = await eventManager
+          .getInstance()
+          .sendEvent('order-service', 'api/orders/customers', savedCustomer, req.headers);
+
+        if (!custRes || !custRes.username) {
+          logger.error('order service returned invalid response', payRes);
+          throw new Error('Failed to process payment');
+        }
+      } catch (paymentError) {
+        logger.error('order service error:', paymentError);
+        // Rollback the order creation
+        await Order.findByIdAndDelete(savedOrder._id);
+        return res.status(503).json({
+          error: 'order service unavailable',
+          message: 'order service unavailable'
+        });
+      }
+      try {
+        custRes = await eventManager
+          .getInstance()
+          .sendEvent('order-service', 'api/orders/customers', savedCustomer, req.headers);
+
+        if (!custRes || !custRes.username) {
+          logger.error('order service returned invalid response', payRes);
+          throw new Error('Failed to process payment');
+        }
+      } catch (paymentError) {
+        logger.error('order service error:', paymentError);
+        // Rollback the order creation
+        await Order.findByIdAndDelete(savedOrder._id);
+        return res.status(503).json({
+          error: 'order service unavailable',
+          message: 'order service unavailable'
+        });
+      }
       logger.info('New customer created:', savedCustomer._id);
       res.status(201).json(savedCustomer);
     } catch (error) {

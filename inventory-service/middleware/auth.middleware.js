@@ -13,6 +13,7 @@ class AuthMiddleware {
 
   // Simple round-robin load balancer
   async getAuthServiceInstance() {
+    const env = process.env.NODE_ENV || 'local'
     const serviceId = 'auth-service';
     try {
       // Try to get the service details from Consul using service ID
@@ -22,7 +23,7 @@ class AuthMiddleware {
         // Construct URL from service address and port
         this.eventServiceUrl[
           serviceId
-        ] = `http://${service.ServiceAddress}:${service.ServicePort}`;
+        ] =  env ==='local'? `http://localhost:${service.ServicePort}`: `http://${service.ServiceAddress}:${service.ServicePort}`;
         logger.info(
           `Retrieved event service URL from Consul: ${this.eventServiceUrl[serviceId]}`
         );
@@ -56,7 +57,7 @@ class AuthMiddleware {
         logger.debug(`Selected auth service instance: ${authServiceInstance}`);
 
         // Get the token from the request headers
-        
+
         logger.info(`Authorization header ${token ? 'present' : 'not present'}`);
 
         // If no token in headers but cookies exist, check for auth cookie
