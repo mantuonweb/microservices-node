@@ -1,8 +1,7 @@
 const Product = require('../models/product.model');
 const logger = require('../utils/logger');
 const rabbitMQClient = require('../utils/RabbitMQClient');
-const createCircuitBreaker = require('../middleware/circuitBreaker');
-const withCircuitBreaker = require('../lib/CircuitBreaker');
+const { withCircuitBreaker, createCircuitBreaker } = require('../lib/CircuitBreaker');
 
 class ProductController {
   async getAllProducts(req, res) {

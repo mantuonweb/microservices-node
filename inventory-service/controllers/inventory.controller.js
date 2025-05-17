@@ -1,8 +1,7 @@
 const Inventory = require('../models/Inventory');
 const Product = require('../models/product.model');
 const logger = require('../utils/logger');
-const createCircuitBreaker = require('../utils/circuitBreaker');
-const withCircuitBreaker = require('../lib/CircuitBreaker');
+const {withCircuitBreaker, createCircuitBreaker} = require('../lib/CircuitBreaker');
 
 class InventoryController {
   // Get all inventory items

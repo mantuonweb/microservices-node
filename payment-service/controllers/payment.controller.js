@@ -1,7 +1,6 @@
 const Payment = require('../models/payment.model');
 const logger = require('../utils/logger');
-const createCircuitBreaker = require('../utils/circuitBreaker');
-const withCircuitBreaker = require('../lib/CircuitBreaker');
+const { withCircuitBreaker, createCircuitBreaker } = require('../lib/CircuitBreaker');
 
 class PaymentController {
   async processPayment(req, res) {
