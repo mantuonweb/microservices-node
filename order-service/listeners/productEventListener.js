@@ -17,8 +17,7 @@ const listenProductUpdates = async () => {
         logger.error('Failed to process product event:', error);
       }
 
-      console.log('Received message:', event, data, productId, productEvent);
-      // Your business logic here
+      logger.info('Received message:', event, data, productId, productEvent);
     }
   );
 };
