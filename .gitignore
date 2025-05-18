@@ -2,3 +2,4 @@ node_modules
 monitor.logs
 .env
 .log
+.DS_Store
