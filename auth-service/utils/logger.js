@@ -41,7 +41,7 @@ if (isMongoLogging) {
 if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'dev') {
   logger.add(new LokiTransport({
     host: process.env.LOKI_URL || 'http://ms-loki:3100',
-    labels: { job: 'customer-service' },
+    labels: { job: 'auth-service' },
     json: true,
     format: format.json(),
     replaceTimestamp: true,
