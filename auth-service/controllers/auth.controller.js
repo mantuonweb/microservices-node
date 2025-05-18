@@ -104,7 +104,11 @@ class AuthController {
       });
       res.status(200).json({
         message: 'Login successful',
-        token
+        user: {
+          id: user._id,
+          username,
+          token
+        }
       });
     } catch (error) {
       logger.error('Login error', { error: error.message, stack: error.stack });
@@ -193,29 +197,29 @@ class AuthController {
   static async logout(req, res) {
     try {
       const token = req.headers.authorization?.split(' ')[1];
-    
+
       if (!token) {
         logger.warn('Logout failed: No token provided');
         return res.status(400).json({ message: 'No token provided' });
       }
-      
+
       logger.info('Logout attempt');
-      
+
       try {
         // Verify the token is valid before invalidating
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         logger.debug('Token decoded for logout', { userId: decoded.id, username: decoded.username });
-        
+
         // Mark token as inactive
         await Token.findOneAndUpdate(
           { token },
           { status: 'inactive' },
           { upsert: true } // Create if doesn't exist
         );
-        
+
         // Clear the auth cookie
         res.clearCookie('auth_token');
-        
+
         logger.info('Logout successful', { userId: decoded.id, username: decoded.username });
         res.status(200).json({ message: 'Logout successful' });
       } catch (jwtError) {
