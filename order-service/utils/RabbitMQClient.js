@@ -4,7 +4,6 @@ const logger = require('./logger');
 class RabbitMQClient {
   static instance = null;
   constructor() {
-    console.log('RabbitMQClient constructor called', process.env.RABBITMQ_EXCHANGE_PRODUCT);
     this.connection = null;
     this.channel = null;
     this.uri = process.env.RABBITMQ_URL || 'amqp://localhost';
@@ -24,7 +23,6 @@ class RabbitMQClient {
   }
 
   async connect() {
-    console.log(this.exchange, process.env.RABBITMQ_EXCHANGE_PRODUCT , 'process.env.RABBITMQ_EXCHANGE_PRODUCT');
     try {
       this.connection = await amqp.connect(this.uri);
       this.channel = await this.connection.createChannel();
