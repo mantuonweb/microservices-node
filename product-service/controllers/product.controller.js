@@ -28,20 +28,51 @@ class ProductController {
     }
   }
   async createProduct(req, res) {
+    let savedProduct = null;
     try {
+      // Create a new Product instance using the data from the request body
       const product = new Product(req.body);
-      const savedProduct = await product.save();
+      
+      // Save the new product to the database and get the saved instance
+      savedProduct = await product.save();
+      
+      // Get the RabbitMQ exchange name from environment variables
       const exchange = process.env.RABBITMQ_EXCHANGE
-      rabbitMQClient.getInstance().publishMessage(exchange, 'product.created', {
+      
+      // Publish a message to RabbitMQ about the product creation event
+      await rabbitMQClient.getInstance().publishMessage(exchange, 'product.created', {
           event: 'PRODUCT_CREATED',
           productId: savedProduct._id,
           data: savedProduct,
-        })
-        .catch((err) => logger.error('Failed to publish message:', err));
+          status: 'SUCCESS'
+        });
+      
       logger.info('Product created successfully');
       res.status(201).json(savedProduct);
     } catch (error) {
       logger.error('Error creating product:', error);
+      
+      // Compensation logic - if we created the product but failed at a later step
+      if (savedProduct && savedProduct._id) {
+        try {
+          logger.info(`Executing compensation: Deleting product ${savedProduct._id}`);
+          await Product.findByIdAndDelete(savedProduct._id);
+          
+          // Notify other services about the failed transaction
+          const exchange = process.env.RABBITMQ_EXCHANGE;
+          await rabbitMQClient.getInstance().publishMessage(exchange, 'product.created', {
+            event: 'PRODUCT_CREATED',
+            productId: savedProduct._id,
+            status: 'FAILED',
+            error: error.message
+          });
+          
+          logger.info(`Compensation completed: Product ${savedProduct._id} deleted`);
+        } catch (compensationError) {
+          logger.error('Error in compensation:', compensationError);
+        }
+      }
+      
       res.status(500).json({ error: error.message });
     }
   }

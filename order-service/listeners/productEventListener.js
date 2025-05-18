@@ -1,25 +1,34 @@
 const rabbitMQClient = require('../utils/RabbitMQClient');
 const logger = require('../utils/logger');
 const productController = require('../controllers/product.controller');
+
 const listenProductUpdates = async () => {
-  const exchange = process.env.RABBITMQ_EXCHANGE_PRODUCT
   await rabbitMQClient.getInstance().subscribeToMessages(
-     exchange,
+    process.env.RABBITMQ_EXCHANGE_PRODUCT,
     'product.created',
     'order-service.product-updates', // queue name
     (productEvent) => {
-      const { event, data, productId } = productEvent;
+      const { event, data, productId, status } = productEvent;
+      logger.info(`Received product event: ${event}, status: ${status}, productId: ${productId}`);
+      
       try {
-        if (event === 'PRODUCT_CREATED') {
+        if (event === 'PRODUCT_CREATED' && status === 'SUCCESS') {
+          // Handle successful product creation
+          logger.info(`Processing successful product creation: ${productId}`);
           productController.createProduct({ ...data, _id: productId });
         }
+        else if (event === 'PRODUCT_CREATED' && status === 'FAILED') {
+          // Handle compensation for failed product creation
+          logger.info(`Processing compensation for failed product: ${productId}`);
+          productController.deleteProduct(productId);
+        }
       } catch (error) {
-        logger.error('Failed to process product event:', error);
+        logger.error(`Failed to process product event ${event} for product ${productId}:`, error);
       }
-
-      logger.info('Received message:', event, data, productId, productEvent);
     }
   );
+  
+  logger.info('Product update listener initialized');
 };
 
 module.exports = {
