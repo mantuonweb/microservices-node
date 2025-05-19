@@ -2,10 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const orderRoutes = require('../routes/order.routes');
 const customerRoutes = require('../routes/customer.routes');
-const logger = require('../utils/logger');
+const productRoutes = require('../routes/product.routes');
 const mongoClient = require('../utils/MongoConnectionClient');
-const rabbitMQClient = require('../utils/RabbitMQClient');
-const { listenProductUpdates } = require('../listeners/productEventListener');
 const AuthMiddleware = require('../middleware/auth.middleware');
 
 const configureApp = () => {
@@ -19,23 +17,14 @@ const configureApp = () => {
   // Initialize MongoDB connection
   mongoClient.getInstance().connect();
 
-  // Initialize RabbitMQ connection - without using Promise chaining
-  try {
-    rabbitMQClient.getInstance().connect();
-  } catch (err) {
-    logger.error('Failed to initialize RabbitMQ:', err);
-  }
-
   // Configure routes
   app.use('/api/orders', orderRoutes);
   app.use('/api/orders/customers', customerRoutes);
+  app.use('/api/orders/products', productRoutes);
   // Health Check
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK', service: 'Order Service' });
   });
-
-  listenProductUpdates();
-
   return { app, PORT };
 };
 module.exports = configureApp;

@@ -1,99 +1,56 @@
 const Product = require('../models/product.model');
 const logger = require('../utils/logger');
+const { createCircuitBreaker, withCircuitBreaker } = require('../lib/CircuitBreaker');
 
 class ProductController {
-  async getAllProducts() {
-    try {
-      const products = await Product.find();
-      logger.info('Products retrieved successfully');
-      return products;
-    } catch (error) {
-      logger.error('Error retrieving products:', error.message || error);
-      // Return empty array instead of throwing the error up the call stack
-      return [];
+  async createProduct(req, res) {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      logger.warn('Invalid product data received');
+      return res.status(400).json({ message: 'Invalid product data' });
     }
-  }
-  async getProductById(id) {
     try {
-      if (!id) {
-        logger.warn('Product ID not provided');
-        return null;
-      }
-      
-      const product = await Product.findById(id);
-      if (!product) {
-        logger.info(`Product with ID ${id} not found`);
-      }
-      return product;
-    } catch (error) {
-      logger.error(`Error retrieving product with ID ${id}:`, error.message || error);
-      return null;
-    }
-  }
-  async createProduct(data) {
-    try {
+      const data = req.body;
       if (!data) {
         logger.warn('No product data provided for creation');
-        return null;
+        return res.status(400).json({ message: 'No product data provided' });
       }
-      
+      console.log('Received data:', data);
       const product = new Product(data);
       const savedProduct = await product.save();
       logger.info('Product created successfully');
-      return savedProduct;
+      res.status(201).json(savedProduct);
     } catch (error) {
       logger.error('Error creating product:', error.message || error);
-      return null;
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({ message: 'Validation error', details: error.message });
+      } else if (error.name === 'MongoError' && error.code === 11000) {
+        return res.status(409).json({ message: 'Product already exists' });
+      }
+      return res.status(500).json({ message: 'Internal server error' });
     }
   }
 
-  async updateProduct(data) {
+  async deleteProduct(req, res) {
     try {
-      if (!data || !data.id) {
-        logger.warn('Invalid product data or missing ID for update');
-        return null;
-      }
-      
-      // Fix the spread operator issue
-      const { id, ...updateData } = data;
-      const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
-        new: true,
-        runValidators: true
-      });
-      
-      if (!updatedProduct) {
-        logger.warn(`Product with ID ${id} not found for update`);
-        return null;
-      }
-      
-      logger.info(`Product ${id} updated successfully`);
-      return updatedProduct;
-    } catch (error) {
-      logger.error(`Error updating product with ID ${data?.id}:`, error.message || error);
-      return null;
-    }
-  }
-
-  async deleteProduct(id) {
-    try {
+      const id = req.params.id;
       if (!id) {
         logger.warn('Product ID not provided for deletion');
-        return null;
+        return res.status(400).json({ message: 'Product ID is required' });
       }
-      
+
       const deletedProduct = await Product.findByIdAndDelete(id);
       if (!deletedProduct) {
         logger.warn(`Product with ID ${id} not found for deletion`);
-        return null;
+        return res.status(404).json({ message: 'Product not found' });
       }
-      
+
       logger.info(`Product ${id} deleted successfully`);
-      return deletedProduct;
+      return res.status(200).json(deletedProduct);
     } catch (error) {
-      logger.error(`Error deleting product with ID ${id}:`, error.message || error);
-      return null;
+      logger.error(`Error deleting product with ID ${req.params.id}:`, error.message || error);
+      return res.status(500).json({ message: 'Internal server error' });
     }
   }
 }
 
-module.exports = new ProductController();
+module.exports = withCircuitBreaker(ProductController, createCircuitBreaker);

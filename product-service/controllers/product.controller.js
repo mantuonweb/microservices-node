@@ -1,6 +1,6 @@
 const Product = require('../models/product.model');
 const logger = require('../utils/logger');
-const rabbitMQClient = require('../utils/RabbitMQClient');
+const eventManager = require('../utils/send-event');
 const { withCircuitBreaker, createCircuitBreaker } = require('../lib/CircuitBreaker');
 
 class ProductController {
@@ -32,47 +32,43 @@ class ProductController {
     try {
       // Create a new Product instance using the data from the request body
       const product = new Product(req.body);
-      
-      // Save the new product to the database and get the saved instance
       savedProduct = await product.save();
-      
-      // Get the RabbitMQ exchange name from environment variables
-      const exchange = process.env.RABBITMQ_EXCHANGE
-      
-      // Publish a message to RabbitMQ about the product creation event
-      await rabbitMQClient.getInstance().publishMessage(exchange, 'product.created', {
-          event: 'PRODUCT_CREATED',
-          productId: savedProduct._id,
-          data: savedProduct,
-          status: 'SUCCESS'
+      let prodResOrder, prodResInventory;
+      try {
+        prodResOrder = await eventManager
+          .getInstance()
+          .sendEvent('order-service', 'api/orders/products', savedProduct, req.headers);
+        prodResInventory = await eventManager
+          .getInstance()
+          .sendEvent('inventory-service', 'api/inventories/products', savedProduct, req.headers);
+        if ((!prodResOrder || !prodResOrder.name) || (!prodResInventory || !prodResInventory.name)) {
+          logger.error('Service returned invalid response', prodResOrder, prodResInventory);
+          throw new Error('Failed to notify dependent services');
+        }
+      } catch (productError) {
+        logger.error('Service communication error:', productError);
+        await Product.findByIdAndDelete(savedProduct._id);
+        return res.status(503).json({
+          error: 'Service unavailable',
+          message: 'Failed to communicate with dependent services'
         });
-      
+      }
       logger.info('Product created successfully');
       res.status(201).json(savedProduct);
     } catch (error) {
       logger.error('Error creating product:', error);
-      
+
       // Compensation logic - if we created the product but failed at a later step
       if (savedProduct && savedProduct._id) {
         try {
           logger.info(`Executing compensation: Deleting product ${savedProduct._id}`);
           await Product.findByIdAndDelete(savedProduct._id);
-          
-          // Notify other services about the failed transaction
-          const exchange = process.env.RABBITMQ_EXCHANGE;
-          await rabbitMQClient.getInstance().publishMessage(exchange, 'product.created', {
-            event: 'PRODUCT_CREATED',
-            productId: savedProduct._id,
-            status: 'FAILED',
-            error: error.message
-          });
-          
           logger.info(`Compensation completed: Product ${savedProduct._id} deleted`);
         } catch (compensationError) {
           logger.error('Error in compensation:', compensationError);
         }
       }
-      
+
       res.status(500).json({ error: error.message });
     }
   }
