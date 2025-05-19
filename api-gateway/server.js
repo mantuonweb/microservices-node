@@ -248,6 +248,16 @@ class ApiGateway {
         this.createProxyHandler(service, path)
       );
     });
+    
+    // Add catch-all route for non-intercepted services
+    this.app.use('*', (req, res) => {
+      logger.warn(`Attempted to access non-existent route: ${req.originalUrl}`);
+      res.status(404).json({
+        error: 'Service not found',
+        message: `The requested endpoint '${req.originalUrl}' does not exist or is not configured in the API Gateway.`,
+        availableServices: this.supportedServices.map(service => this.serviceConfig[service].path)
+      });
+    });
   }
 
   async discoverServices() {

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const Token = require('../models/token.model');
 
 class AuthMiddleware {
   constructor() {
@@ -24,6 +25,12 @@ class AuthMiddleware {
       
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      // Check if token exists and is active in the database
+      const tokenDoc = await Token.findOne({ token, status: 'active' });
+      if (!tokenDoc) {
+        return res.status(401).json({ message: 'Invalid or expired token' });
+      }
       
       // Check if user still exists
       const user = await User.findById(decoded.id);
