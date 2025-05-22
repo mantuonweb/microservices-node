@@ -218,6 +218,22 @@ services:
         condition: service_started
     networks:
       - microservice-network
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    container_name: ms-notification-service
+    ports:
+      - "3030:3030"  # REST API port
+      - "3031:3031"  # WebSocket port
+    environment:
+      - NODE_ENV=dev
+      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+    volumes:
+      - ./notification-service:/usr/src/app
+    restart: unless-stopped
+    networks:
+      - microservice-network
   loki:
     image: grafana/loki:latest
     container_name: ms-loki

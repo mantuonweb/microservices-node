@@ -30,6 +30,9 @@ class ApiGateway {
       },
       'auth-service': {
         path: '/api/auth'
+      },
+      'notification-service': {
+        path: '/api/notifications'
       }
     };
 
