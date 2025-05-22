@@ -35,7 +35,7 @@ export class OrderService {
     return this.http.post<OrderResponse>(`${this.apiUrl}/orders`, order);
   }
 
-  getProfile() {
-    return this.http.get<any>(`${this.apiUrl}/auth/profile`);
+  getOrders(): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrl}/orders`);
   }
 }

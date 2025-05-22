@@ -64,7 +64,7 @@
             
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter your email">
+              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter your email" readonly>
               @if (orderForm.get('email')?.invalid && orderForm.get('email')?.touched) {
                 <div class="text-danger">
                   Valid email is required

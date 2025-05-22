@@ -38,10 +38,36 @@
     </nav>
   </header>
 
-  <!-- Main Content -->
-  <main class="container grid-main">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="container-fluid grid-content">
+    <div class="row content">
+      <!-- Left Sidebar -->
+      @if(isLoggedIn()) {
+      <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar grid-sidebar">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/orders" routerLinkActive="active">
+                <i class="bi bi-box-seam me-2"></i>
+                Orders
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/payment" routerLinkActive="active">
+                <i class="bi bi-credit-card me-2"></i>
+                Payment
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      }
+
+      <!-- Main Content -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 grid-main">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="bg-dark text-light grid-footer">

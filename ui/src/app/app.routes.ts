@@ -16,6 +16,12 @@ export const routes: Routes = [
       canActivate: [AuthGuard],
       loadComponent: () => import('../components/place-order/place-order.component').then(m => m.PlaceOrderComponent)
     },
+     {
+      path: 'orders',
+      canActivate: [AuthGuard],
+      loadComponent: () => import('../components/orders/orders.component').then(m => m.OrdersComponent)
+    },
+    
     {
       path: '',
       redirectTo: 'login',
