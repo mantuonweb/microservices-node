@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const Inventory = require('../models/Inventory');
 const logger = require('../utils/logger');
 const { createCircuitBreaker, withCircuitBreaker } = require('../lib/CircuitBreaker');
 
@@ -15,8 +16,19 @@ class ProductController {
         return res.status(400).json({ message: 'No product data provided' });
       }
       console.log('Received data:', data);
-      const product = new Product(data);
+      
+      // Extract only id and name from the request data
+      const filteredData = {
+        _id: data.id || data._id, // Include id if provided
+        name: data.name
+      };
+      
+      const product = new Product(filteredData);
       const savedProduct = await product.save();
+      await Inventory.create({
+        productId: savedProduct._id,
+        quantity: 0,
+      });
       logger.info('Product created successfully');
       res.status(201).json(savedProduct);
     } catch (error) {
