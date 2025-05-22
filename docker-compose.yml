@@ -109,6 +109,7 @@ services:
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
     volumes:
       - ./order-service:/usr/src/app
     restart: unless-stopped

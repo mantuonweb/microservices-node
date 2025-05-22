@@ -3,7 +3,7 @@ const Product = require('../models/product.model');
 const logger = require('../utils/logger');
 const eventManager = require('../utils/send-event');
 const { createCircuitBreaker, withCircuitBreaker } = require('../lib/CircuitBreaker');
-
+const NotificationService = require('../lib/notification-manager');
 class OrderController {
   async getAllOrders(req, res) {
     try {
@@ -155,6 +155,12 @@ class OrderController {
       }
 
       logger.info('Order created successfully');
+      try {
+        await NotificationService.getInstance().connect();
+        await NotificationService.getInstance().publishNotification('order.created', savedOrder);
+      } catch (notificationError) {
+        logger.error('Error publishing notification:', notificationError);
+      }
       res.status(201).json(savedOrder);
     } catch (error) {
       logger.error('Error creating order:', error);
