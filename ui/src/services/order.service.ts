@@ -35,7 +35,7 @@ export class OrderService {
     return this.http.post<OrderResponse>(`${this.apiUrl}/orders`, order);
   }
 
-  getOrders(): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}/orders`);
+  getOrders(email:string): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrl}/orders/by-email/${email}`);
   }
 }

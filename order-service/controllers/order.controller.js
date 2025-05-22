@@ -15,7 +15,19 @@ class OrderController {
       res.status(500).json({ error: `Error in retrieving orders: ${error.message}` });
     }
   }
-
+  async getAllOrdersById(req, res) {
+    console.log('Received request to get orders by email:', req.params.email);
+    try {
+      const orders = await Order.find({
+        'customer.email': req.params.email,
+      });
+      logger.info('Orders retrieved successfully');
+      res.json(orders);
+    } catch (error) {
+      logger.error('Error retrieving orders:', error);
+      res.status(500).json({ error: `Error in retrieving orders: ${error.message}` });
+    }
+  }
   async getOrderById(req, res) {
     try {
       if (!req.params.id) {
@@ -55,13 +67,13 @@ class OrderController {
       const products = [];
       const reqOrder = req.body;
       let price = 0;
-      
+
       if (reqOrder.products.length > 0) {
         for (const product of reqOrder.products) {
           if (!product.id) {
             return res.status(400).json({ message: 'Product ID is required for each product' });
           }
-          
+
           try {
             const productId = product.id;
             const productExists = await Product.findById(productId);
@@ -70,12 +82,12 @@ class OrderController {
                 message: `Product with ID ${productId} not found`
               });
             }
-            
+
             const quantity = product.quantity || 1;
             if (quantity <= 0) {
               return res.status(400).json({ message: `Invalid quantity for product ${productId}` });
             }
-            
+
             products.push({ id: productId, name: productExists.name, quantity });
             const productPrice = (productExists.price ?? 0) * quantity;
             price += productPrice;
@@ -93,10 +105,10 @@ class OrderController {
 
       reqOrder.totalAmount = price;
       req.body.products = products;
-      
+
       const order = new Order(req.body);
       const savedOrder = await order.save();
-      
+
       // Prepare payment data
       const payment = {
         orderId: savedOrder._id.toString(),
@@ -106,14 +118,14 @@ class OrderController {
         transactionId: 'tx' + (new Date().getTime().toString()),
       };
       logger.info('Payment data:', payment);
-      
+
       // Send payment event with error handling
       let payRes;
       try {
         payRes = await eventManager
           .getInstance()
           .sendEvent('payment-service', 'api/payments', payment, req.headers);
-        
+
         if (!payRes || !payRes.paymentId) {
           logger.error('Payment service returned invalid response', payRes);
           throw new Error('Failed to process payment');
@@ -122,20 +134,20 @@ class OrderController {
         logger.error('Payment service error:', paymentError);
         // Rollback the order creation
         await Order.findByIdAndDelete(savedOrder._id);
-        return res.status(503).json({ 
-          error: 'Payment service unavailable', 
+        return res.status(503).json({
+          error: 'Payment service unavailable',
           message: 'Order creation failed due to payment processing error'
         });
       }
-      
+
       // Update inventory
       const productsUpdated = products.map(item => ({ productId: item.id, quantity: item.quantity }));
-      
+
       try {
         const updateInventory = await eventManager
           .getInstance()
-          .sendEvent('inventory-service', 'api/inventories/update-multiple-quantities', productsUpdated, req.headers);``
-        
+          .sendEvent('inventory-service', 'api/inventories/update-multiple-quantities', productsUpdated, req.headers); ``
+
         if (!updateInventory || updateInventory.error) {
           throw new Error(updateInventory?.error || 'Inventory update failed');
         }
@@ -166,8 +178,8 @@ class OrderController {
     } catch (error) {
       logger.error('Error creating order:', error);
       if (error.name === 'ValidationError') {
-        return res.status(400).json({ 
-          error: 'Validation error', 
+        return res.status(400).json({
+          error: 'Validation error',
           details: Object.values(error.errors).map(e => e.message)
         });
       }
@@ -201,7 +213,7 @@ class OrderController {
           if (!product.id) {
             return res.status(400).json({ message: 'Product ID is required for each product' });
           }
-          
+
           try {
             // Verify product exists in database
             const productExists = await Product.findById(product.id);
@@ -232,7 +244,7 @@ class OrderController {
         // Update the products in the request body
         req.body.products = updatedProducts;
       }
-      
+
       // Set the updated timestamp
       req.body.updatedAt = Date.now();
 
@@ -255,8 +267,8 @@ class OrderController {
         return res.status(400).json({ error: 'Invalid order ID format' });
       }
       if (error.name === 'ValidationError') {
-        return res.status(400).json({ 
-          error: 'Validation error', 
+        return res.status(400).json({
+          error: 'Validation error',
           details: Object.values(error.errors).map(e => e.message)
         });
       }
@@ -274,19 +286,19 @@ class OrderController {
       if (!deletedOrder) {
         return res.status(404).json({ message: 'Order not found' });
       }
-      
+
       // Optionally notify other services about the deletion
       try {
         await eventManager
           .getInstance()
-          .sendEvent('inventory-service', 'api/inventories/order-cancelled', { 
-            orderId: req.params.id 
+          .sendEvent('inventory-service', 'api/inventories/order-cancelled', {
+            orderId: req.params.id
           });
       } catch (notifyError) {
         logger.warn('Failed to notify inventory service about order deletion:', notifyError);
         // Continue with the deletion response as this is a non-critical error
       }
-      
+
       logger.info('Order deleted successfully');
       res.json({
         message: 'Order deleted successfully',
@@ -311,13 +323,13 @@ class OrderController {
       if (!deletedProduct) {
         return res.status(404).json({ message: 'Product not found' });
       }
-      
+
       // Check if product is used in any orders before deletion
       const ordersWithProduct = await Order.find({ 'products.id': req.params.id });
       if (ordersWithProduct.length > 0) {
         logger.warn(`Deleted product ${req.params.id} is referenced in ${ordersWithProduct.length} orders`);
       }
-      
+
       logger.info('Product deleted successfully');
       res.json({
         message: 'Product deleted successfully',

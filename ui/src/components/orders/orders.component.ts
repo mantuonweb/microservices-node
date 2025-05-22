@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { OrderService } from '../../services/order.service';
+import { AuthService } from '../../services/auth.service';
 
 interface Product {
   id: string;
@@ -36,36 +37,14 @@ interface Order {
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
-  orders:any[] = []
-  constructor(private orderServicee: OrderService) { 
-    this.orderServicee.getOrders().subscribe((orders: Order[]) => {
-      this.orders = orders;
+  orders: any[] = []
+  constructor(private orderServicee: OrderService, private authService: AuthService) {
+    this.authService.profile().subscribe((user: any) => {
+      this.orderServicee.getOrders(user.email).subscribe((orders: Order[]) => {
+        this.orders = orders;
+      });
     });
   }
-  // orders: Order[] = [
-  //   {
-  //     "customer": {
-  //       "name": "Mantu Nigam",
-  //       "email": "mantuonweb@gmail.com.com",
-  //       "address": "123 Main Street, Anytown, USA"
-  //     },
-  //     "_id": "6828ba7c6192a26c8df8bb3a",
-  //     "products": [
-  //       {
-  //         "id": "6828b9e07eb810346d97340a",
-  //         "name": "iPhone 16",
-  //         "quantity": 2,
-  //         "_id": "6828ba7d6192a26c8df8bb3b"
-  //       }
-  //     ],
-  //     "totalAmount": 3001.984,
-  //     "mode": "CREDIT_CARD",
-  //     "createdAt": "2025-05-17T16:34:05.016Z",
-  //     "updatedAt": "2025-05-17T16:34:05.158Z",
-  //     "__v": 0,
-  //     "paymentId": "6828ba7d5e262f0466aac01b"
-  //   }
-  // ];
 
 
   ngOnInit(): void {

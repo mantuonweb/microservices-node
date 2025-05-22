@@ -12,10 +12,14 @@ router.put('/:id', (req, res) =>
   orderController.updateOrder.fire(req, res)
 );
 router.get('/:id', (req, res) =>
-  productController.getProductById.fire(req, res)
+  orderController.getOrderById.fire(req, res)
 );
+router.get('/by-email/:email', (req, res) =>
+  orderController.getAllOrdersById.fire(req, res)
+);
+
 router.delete('/:id', (req, res) =>
-  productController.deleteProduct.fire(req, res)
+  orderController.deleteOrder.fire(req, res)
 );
 
 module.exports = router;
