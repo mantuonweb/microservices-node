@@ -41,11 +41,24 @@ export class AuthService {
   login(credentials: LoginCredentials): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/auth/login`, credentials)
       .pipe(
-        tap((user:any) => {
+        tap((user: any) => {
           // Store user details and token in local storage
           localStorage.setItem('currentUser', JSON.stringify(user.user));
           this.currentUserSubject.next(user);
           return user;
+        }),
+        catchError(error => {
+          console.error('Login error:', error);
+          throw error;
+        })
+      );
+  }
+
+  profile(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/auth/profile`)
+      .pipe(
+        map((user: any) => {
+          return user?.user;
         }),
         catchError(error => {
           console.error('Login error:', error);
@@ -67,7 +80,8 @@ export class AuthService {
 
   // Get the auth token
   getToken(): string | null {
-    return this.currentUserValue?.token || null;
+    console.log('Current User:', this.currentUserValue);
+    return this.currentUserValue?.token || (this.currentUserValue as unknown as any)?.user?.token || null;
   }
 
   // Register new user

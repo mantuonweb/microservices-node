@@ -1,0 +1,137 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Place Your Order</h2>
+
+  <div class="row">
+    <div class="col-md-8">
+      <!-- Cart Items -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Your Cart Items</h5>
+        </div>
+        <div class="card-body">
+          @if (cartItems.length === 0) {
+            <div class="alert alert-info">
+              Your cart is empty. Please add some products before placing an order.
+            </div>
+          }
+          
+          @if (cartItems.length > 0) {
+            <ul class="list-group list-group-flush">
+              @for (item of cartItems; track item.productId) {
+                <li class="list-group-item">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="mb-0">{{ item.name }}</h6>
+                      <small class="text-muted">${{ item.price.toFixed(2) }} × {{ item.quantity }}</small>
+                    </div>
+                    <div>
+                      <span class="fw-bold">${{ (item.price * item.quantity).toFixed(2) }}</span>
+                      <button class="btn btn-sm btn-outline-danger ms-2" (click)="removeItem(item.productId)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              }
+            </ul>
+            
+            <div class="d-flex justify-content-between mt-3">
+              <h5>Total:</h5>
+              <h5>${{ cartTotal.toFixed(2) }}</h5>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <!-- Order Form -->
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Shipping Information</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="orderForm" (ngSubmit)="placeOrder()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter your full name">
+              @if (orderForm.get('name')?.invalid && orderForm.get('name')?.touched) {
+                <div class="text-danger">
+                  Name is required
+                </div>
+              }
+            </div>
+            
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email" placeholder="Enter your email">
+              @if (orderForm.get('email')?.invalid && orderForm.get('email')?.touched) {
+                <div class="text-danger">
+                  Valid email is required
+                </div>
+              }
+            </div>
+            
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <textarea class="form-control" id="address" formControlName="address" rows="3" placeholder="Enter your shipping address"></textarea>
+              @if (orderForm.get('address')?.invalid && orderForm.get('address')?.touched) {
+                <div class="text-danger">
+                  Address is required
+                </div>
+              }
+            </div>
+            
+            <div class="mb-3">
+              <label for="paymentMethod" class="form-label">Payment Method</label>
+              <select class="form-select" id="paymentMethod" formControlName="paymentMethod">
+                <option value="">Select payment method</option>
+                <option value="CREDIT_CARD">Credit Card</option>
+                <option value="GPAY">Google Pay</option>
+                <option value="UPI">UPI</option>
+              </select>
+              @if (orderForm.get('paymentMethod')?.invalid && orderForm.get('paymentMethod')?.touched) {
+                <div class="text-danger">
+                  Payment method is required
+                </div>
+              }
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100" [disabled]="orderForm.invalid || cartItems.length === 0 || isSubmitting">
+              @if (isSubmitting) {
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              }
+              {{ isSubmitting ? 'Processing...' : 'Place Order' }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Success Modal -->
+  <div class="modal fade" [class.show]="showOrderSuccess" [style.display]="showOrderSuccess ? 'block' : 'none'" tabindex="-1" role="dialog" aria-labelledby="orderSuccessModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">Order Placed Successfully!</h5>
+          <button type="button" class="btn-close btn-close-white" (click)="closeSuccessModal()"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="mb-3">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+          </div>
+          <h4>Thank you for your order!</h4>
+          <p>Your order has been placed successfully. Your order number is: <strong>{{ orderNumber }}</strong></p>
+          <p>We've sent a confirmation email to <strong>{{ orderForm.get('email')?.value }}</strong></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeSuccessModal()">Continue Shopping</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  @if (showOrderSuccess) {
+    <div class="modal-backdrop fade show"></div>
+  }
+</div>

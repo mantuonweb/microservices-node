@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema({
   ],
   totalAmount: { type: Number },
   paymentId: { type: String },
+  address: { type: String },
   mode: { type: String, required: true },
   notes: { type: String },
   createdAt: { type: Date, default: Date.now },

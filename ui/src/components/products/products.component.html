@@ -1,6 +1,21 @@
 <div class="container mt-4">
   <h2 class="mb-4">Our Products</h2>
   
+  <!-- Toast notification container -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+     @if(showAddedToast) {
+    <div class="toast show bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-success text-white">
+        <strong class="me-auto">Success</strong>
+        <button type="button" class="btn-close btn-close-white" (click)="hideToast()"></button>
+      </div>
+      <div class="toast-body">
+        {{ toastMessage }}
+      </div>
+    </div>
+  }
+  </div>
+  
   <div class="row">
     @for (product of products; track product._id) {
       <div class="col-md-4 mb-4">
@@ -9,8 +24,20 @@
             <h5 class="card-title">{{ product.name }}</h5>
             <h6 class="card-subtitle mb-2 text-muted">${{ product.price.toFixed(2) }}</h6>
             <p class="card-text">{{ product.description }}</p>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="quantity-control d-flex align-items-center">
+                <button class="btn btn-sm btn-outline-secondary" (click)="decreaseQuantity(product)">-</button>
+                <span class="mx-2">{{ product.quantity || 1 }}</span>
+                <button class="btn btn-sm btn-outline-secondary" (click)="increaseQuantity(product)">+</button>
+              </div>
+            </div>
             <div class="d-flex justify-content-between align-items-center">
-              <button class="btn btn-primary">Add to Cart</button>
+              <button class="btn btn-primary" (click)="addToCart(product)">
+                Add to Cart
+                @if(product.addedToCart) {
+                  <span class="badge bg-success ms-1">✓</span>
+                }
+              </button>
             </div>
           </div>
         </div>

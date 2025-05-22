@@ -3,17 +3,37 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
         <a class="navbar-brand" href="#">Microservices Demo</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        @if(isLoggedIn()) {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
+            <li class="nav-item me-3">
+              <a class="nav-link position-relative" routerLink="/place-order" role="button">
+                <i class="bi bi-cart-fill fs-5"></i>
+                <span class="position-absolute top-40 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{cartItemsCount()}}
+                  <span class="visually-hidden">items in cart</span>
+                </span>
+              </a>
+            </li>
+            <li class="nav-item me-3">
+              <a class="nav-link position-relative" routerLink="/notification" role="button">
+                <i class="bi bi-bell-fill fs-5"></i>
+                <span class="position-absolute top-40 start-100 translate-middle badge rounded-pill bg-warning">
+                  3
+                  <span class="visually-hidden">unread notifications</span>
+                </span>
+              </a>
+            </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+              <a class="nav-link">Logout</a>
             </li>
           </ul>
         </div>
+        }
       </div>
     </nav>
   </header>

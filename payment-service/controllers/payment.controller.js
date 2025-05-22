@@ -10,6 +10,7 @@ class PaymentController {
       
       // Validate request
       if (!orderId || !customerId || !amount || !paymentMethod) {
+        logger.warn(`${orderId}, ${customerId}, ${amount}, ${paymentMethod}`);
         logger.warn('Payment validation failed: Missing required fields');
         return res.status(400).json({ message: 'Missing required fields' });
       }

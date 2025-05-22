@@ -105,6 +105,7 @@ class OrderController {
         paymentMethod: reqOrder.mode,
         transactionId: 'tx' + (new Date().getTime().toString()),
       };
+      logger.info('Payment data:', payment);
       
       // Send payment event with error handling
       let payRes;
