@@ -13,7 +13,7 @@ const configureApp = () => {
     // Configure routes
 
     app.use('/api/notifications', notificationRoutes);
-
+    
     // Health Check
     app.get('/health', (req, res) => {
         res.status(200).json({ status: 'OK', service: 'Notification Service' });
