@@ -4,7 +4,7 @@ import { UserService } from '../../app/services/user.service';
 import { User } from '../models/user.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../app/services/auth.service';
 
 @Component({
   selector: 'app-profile',

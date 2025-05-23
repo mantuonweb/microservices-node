@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CartService, CartItem } from '../../services/cart.service';
-import { AuthService } from '../../services/auth.service';
-import { OrderService } from '../../services/order.service';
+import { CartService, CartItem } from '../../app/services/cart.service';
+import { AuthService } from '../../app/services/auth.service';
+import { OrderService } from '../../app/services/order.service';
 
 @Component({
     selector: 'app-place-order',

@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
-import { AuthService } from '../services/auth.service';
-import { CartService } from '../services/cart.service';
+import { AuthService } from './services/auth.service';
+import { CartService } from './services/cart.service';
 
 @Component({
   selector: 'app-root',
