@@ -18,7 +18,7 @@ export class AppComponent {
   public isLoggedIn = toSignal(this.authService?.currentUser?.pipe(map(item => !!item)));
   public cartService = inject(CartService);
   cartItemsCount = toSignal(this.cartService.getCartItemsCount());
-  noticationCount = toSignal(this.notification.list().pipe(map(item => item.length)));
+  noticationCount:any = toSignal(this.notification.list().pipe(map(item => item.length)));
   constructor() {
     this.authService?.currentUser?.pipe(map(item => !!item)).subscribe(()=>{
       this.notification.init();
@@ -27,5 +27,8 @@ export class AppComponent {
 
   logout() {
     this.authService.logout();
+  }
+  clearNotification() {
+    this.notification.clear();
   }
 }

@@ -32,14 +32,26 @@
               </a>
               }
             </li>
-            <li class="nav-item me-3">
-              <a class="nav-link position-relative" routerLink="/notification" role="button">
+            <li class="nav-item dropdown me-3">
+              <a class="nav-link dropdown-toggle position-relative" href="#" id="notificationDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-bell-fill fs-5"></i>
                 <span class="position-absolute top-40 start-100 translate-middle badge rounded-pill bg-warning">
                   {{noticationCount()}}
                   <span class="visually-hidden">unread notifications</span>
                 </span>
               </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                <li>
+                  <h6 class="dropdown-header">Notifications</h6>
+                </li>
+                <!-- If there are notifications, show them -->
+                @if(noticationCount() > 0) {
+                <li><a class="dropdown-item" routerLink="/orders" (click)="clearNotification()">{{noticationCount()}} Order placed</a></li>
+                } @else {
+                <li><span class="dropdown-item text-muted">No new notifications</span></li>
+                }
+              </ul>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"

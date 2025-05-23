@@ -211,4 +211,9 @@ export class NotificationService implements OnDestroy {
             this.reconnectTimer = null;
         }
     }
+
+    clear() {
+        this.events = [];
+        this.eventsSubject.next([]);
+    }
 }

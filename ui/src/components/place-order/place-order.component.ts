@@ -24,7 +24,7 @@ export class PlaceOrderComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private authService: AuthService,
-        private orderService: OrderService
+        private orderService: OrderService,
     ) {
         this.orderForm = this.fb.group({
             name: ['', Validators.required],
@@ -38,6 +38,9 @@ export class PlaceOrderComponent implements OnInit {
         // Get cart items
         this.cartService.getCartItems().subscribe(items => {
             this.cartItems = items;
+            if (items.length === 0) {
+                this.router.navigate(['/products']);
+            }
         });
 
         // Get cart total
@@ -78,7 +81,7 @@ export class PlaceOrderComponent implements OnInit {
             }))
         };
         this.orderService.placeOrder(order as any).subscribe(
-            (response:any) => {
+            (response: any) => {
                 console.log('Order placed successfully:');
                 // Generate random order number
                 this.orderNumber = response._id;
