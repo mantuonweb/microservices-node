@@ -1,0 +1,184 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">My Profile</h3>
+        </div>
+        <div class="card-body">
+          @if(submitMessage) {
+            <div class="alert" [ngClass]="submitSuccess ? 'alert-success' : 'alert-danger'" role="alert">
+              {{ submitMessage }}
+            </div>
+          }
+          
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="firstName" 
+                  formControlName="firstName"
+                  [readonly]="!isEditing"
+                >
+                @if(profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched) {
+                  <div class="text-danger">First name is required</div>
+                }
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="lastName" 
+                  formControlName="lastName"
+                  [readonly]="!isEditing"
+                >
+                @if(profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched) {
+                  <div class="text-danger">Last name is required</div>
+                }
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username" 
+                formControlName="username"
+                readonly
+              >
+            </div>
+            
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                formControlName="email"
+                readonly
+              >
+              @if(profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+                <div class="text-danger">Valid email is required</div>
+              }
+            </div>
+            
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input 
+                type="tel" 
+                class="form-control" 
+                id="phone" 
+                formControlName="phone"
+                [readonly]="!isEditing"
+              >
+              @if(profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
+                <div class="text-danger">Phone number is required</div>
+              }
+            </div>
+            
+            <div formGroupName="address" class="mb-3">
+              <h5 class="mb-3">Address</h5>
+              
+              <div class="mb-3">
+                <label for="street" class="form-label">Street</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="street" 
+                  formControlName="street"
+                  [readonly]="!isEditing"
+                >
+                @if(profileForm.get('address.street')?.invalid && profileForm.get('address.street')?.touched) {
+                  <div class="text-danger">Street is required</div>
+                }
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="city" 
+                    formControlName="city"
+                    [readonly]="!isEditing"
+                  >
+                  @if(profileForm.get('address.city')?.invalid && profileForm.get('address.city')?.touched) {
+                    <div class="text-danger">City is required</div>
+                  }
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label for="state" class="form-label">State</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="state" 
+                    formControlName="state"
+                    [readonly]="!isEditing"
+                  >
+                  @if(profileForm.get('address.state')?.invalid && profileForm.get('address.state')?.touched) {
+                    <div class="text-danger">State is required</div>
+                  }
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="zipCode" class="form-label">Zip Code</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="zipCode" 
+                    formControlName="zipCode"
+                    [readonly]="!isEditing"
+                  >
+                  @if(profileForm.get('address.zipCode')?.invalid && profileForm.get('address.zipCode')?.touched) {
+                    <div class="text-danger">Zip code is required</div>
+                  }
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <label for="country" class="form-label">Country</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="country" 
+                    formControlName="country"
+                    [readonly]="!isEditing"
+                  >
+                  @if(profileForm.get('address.country')?.invalid && profileForm.get('address.country')?.touched) {
+                    <div class="text-danger">Country is required</div>
+                  }
+                </div>
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              @if(!isEditing) {
+                <button type="button" class="btn btn-primary" (click)="toggleEdit()">
+                  <i class="bi bi-pencil-fill me-2"></i>Edit Profile
+                </button>
+              } @else {
+                <div>
+                  <button type="submit" class="btn btn-success me-2" [disabled]="profileForm.invalid">
+                    <i class="bi bi-check-circle-fill me-2"></i>Save Changes
+                  </button>
+                  <button type="button" class="btn btn-secondary" (click)="toggleEdit()">
+                    <i class="bi bi-x-circle-fill me-2"></i>Cancel
+                  </button>
+                </div>
+              }
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

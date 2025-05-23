@@ -41,8 +41,18 @@
                 </span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link">Logout</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="bi bi-person-circle fs-5"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" (click)="logout()" style="cursor: pointer;">Logout</a></li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -58,6 +68,12 @@
       <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar grid-sidebar">
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/products" routerLinkActive="active">
+                <i class="bi bi-box-seam me-2"></i>
+                Home
+              </a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/orders" routerLinkActive="active">
                 <i class="bi bi-box-seam me-2"></i>

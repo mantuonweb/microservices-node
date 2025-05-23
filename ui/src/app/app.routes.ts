@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from '../services/auth.guard';
+import { ProfileComponent } from '../components/profile/profile.component';
 
 export const routes: Routes = [
     {
@@ -16,12 +17,21 @@ export const routes: Routes = [
       canActivate: [AuthGuard],
       loadComponent: () => import('../components/place-order/place-order.component').then(m => m.PlaceOrderComponent)
     },
-     {
+    {
       path: 'orders',
       canActivate: [AuthGuard],
       loadComponent: () => import('../components/orders/orders.component').then(m => m.OrdersComponent)
     },
-    
+    {
+      path: 'orders',
+      canActivate: [AuthGuard],
+      loadComponent: () => import('../components/profile/profile.component').then(m => m.ProfileComponent)
+    },
+    {
+      path: 'profile',
+      component: ProfileComponent,
+      canActivate: [AuthGuard]
+    },
     {
       path: '',
       redirectTo: 'login',

@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 export interface User {
   id: string;
@@ -42,7 +42,6 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/auth/login`, credentials)
       .pipe(
         tap((user: any) => {
-          // Store user details and token in local storage
           localStorage.setItem('currentUser', JSON.stringify(user.user));
           this.currentUserSubject.next(user);
           return user;

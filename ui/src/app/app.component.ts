@@ -18,4 +18,8 @@ export class AppComponent {
   cartItemsCount = toSignal(this.cartService.getCartItemsCount());
   constructor() {
   }
+
+  logout() {
+    this.authService.logout();
+  }
 }
