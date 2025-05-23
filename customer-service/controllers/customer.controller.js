@@ -20,6 +20,21 @@ class CustomerController {
     }
   }
 
+  async getCustomerByEmail(req, res) {
+    logger.info('Customer retrieved successfully:', req.params.id);
+    try {
+      const customer = await Customer.findOne({ email: req.params.email });
+      if (!customer) {
+        return res.status(404).json({ message: 'Customer not found' });
+      }
+      logger.info('Customer retrieved successfully:', req.params.id);
+      res.json(customer);
+    } catch (error) {
+      logger.error('Error retrieving customer:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
   async getAllCustomers(req, res) {
     try {
       const customers = await Customer.find();

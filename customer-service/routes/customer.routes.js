@@ -11,6 +11,9 @@ router.get('/', (req, res) =>
 router.get('/:id', (req, res) =>
   customerController.getCustomerById.fire(req, res)
 );
+router.get('/email/:email', (req, res) =>
+  customerController.getCustomerByEmail.fire(req, res)
+);
 
 // Create new customer
 router.post('/', (req, res) =>
