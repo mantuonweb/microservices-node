@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { OrderService } from '../../app/services/order.service';
 import { AuthService } from '../../app/services/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface Product {
   id: string;
@@ -54,7 +55,7 @@ export class OrdersComponent implements OnInit {
   };
 
   constructor(private orderServicee: OrderService, private authService: AuthService, private router: Router) {
-    this.authService.profile().subscribe((user: any) => {
+    this.authService.profile().pipe(takeUntilDestroyed()).subscribe((user: any) => {
       this.orderServicee.getOrders(user.email).subscribe((orders: Order[]) => {
         this.orders = orders.sort((a: any, b: any) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

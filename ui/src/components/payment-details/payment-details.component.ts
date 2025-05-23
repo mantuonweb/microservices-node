@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentsService } from '../../app/services/payments.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 
 @Component({
@@ -12,7 +13,7 @@ export class PaymentDetailsComponent implements OnInit {
   payment: any = null;
   loading = true;
   error = false;
-  paymentMethods:any = {
+  paymentMethods: any = {
     "CREDIT_CARD": {
       label: "Credit Card",
       value: "CREDIT_CARD"
@@ -30,10 +31,10 @@ export class PaymentDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private paymentsService: PaymentsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(takeUntilDestroyed()).subscribe(params => {
       const paymentId = params.get('paymentId');
       if (paymentId) {
         this.loadPaymentDetails(paymentId);
@@ -46,14 +47,16 @@ export class PaymentDetailsComponent implements OnInit {
 
   loadPaymentDetails(paymentId: string): void {
     this.paymentsService.getPaymentDetails(paymentId).subscribe(
-      (data:any) => {
-        this.payment = data;
-        this.loading = false;
-      },
-      (error:any) => {
-        console.error('Error fetching payment details:', error);
-        this.error = true;
-        this.loading = false;
+      {
+        next: (data: any) => {
+          this.payment = data;
+          this.loading = false;
+        },
+        error: (error: any) => {
+          console.error('Error fetching payment details:', error);
+          this.error = true;
+          this.loading = false;
+        }
       }
     );
   }

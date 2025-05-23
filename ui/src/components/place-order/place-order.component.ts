@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CartService, CartItem } from '../../app/services/cart.service';
 import { AuthService } from '../../app/services/auth.service';
 import { OrderService } from '../../app/services/order.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-place-order',
@@ -32,11 +33,8 @@ export class PlaceOrderComponent implements OnInit {
             address: ['', Validators.required],
             paymentMethod: ['', Validators.required]
         });
-    }
-
-    ngOnInit(): void {
         // Get cart items
-        this.cartService.getCartItems().subscribe(items => {
+        this.cartService.getCartItems().pipe(takeUntilDestroyed()).subscribe(items => {
             this.cartItems = items;
             if (items.length === 0) {
                 this.router.navigate(['/products']);
@@ -44,9 +42,13 @@ export class PlaceOrderComponent implements OnInit {
         });
 
         // Get cart total
-        this.cartService.getCartTotal().subscribe(total => {
+        this.cartService.getCartTotal().pipe(takeUntilDestroyed()).subscribe(total => {
             this.cartTotal = total;
         });
+    }
+
+    ngOnInit(): void {
+        
         this.authService.profile().subscribe((user: any) => {
             this.orderForm.patchValue({
                 name: user.name,

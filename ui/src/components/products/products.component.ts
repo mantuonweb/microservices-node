@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../app/services/product.service';
 import { Product } from '../models/product.model';
 import { CartItem, CartService } from '../../app/services/cart.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  styleUrls: ['./products.component.scss'],
+
+  imports:[ FormsModule]
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
@@ -14,6 +17,9 @@ export class ProductsComponent implements OnInit {
   error: string | null = null;
   showAddedToast = false;
   toastMessage = '';
+  searchTerm: string = '';
+  filteredProducts: any[] = [];
+  allProducts: any[] = [];
   constructor(private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit(): void {
@@ -24,7 +30,8 @@ export class ProductsComponent implements OnInit {
     this.loading = true;
     this.productService.getProducts().subscribe({
       next: (data) => {
-        this.products = data;
+        this.allProducts = data;
+        this.products = [...this.allProducts];
 
         // Sync with cart items
         this.cartService.getCartItems().subscribe(cartItems => {
@@ -96,4 +103,25 @@ export class ProductsComponent implements OnInit {
   hideToast(): void {
     this.showAddedToast = false;
   }
+  deleteProduct(product: any) {
+    this.cartService.removeFromCart(product._id);
+  }
+  // Add these methods to handle search
+searchProducts() {
+  if (!this.searchTerm.trim()) {
+    this.products = [...this.allProducts];
+    return;
+  }
+  
+  const term = this.searchTerm.toLowerCase().trim();
+  this.products = this.allProducts.filter(product => 
+    product.name.toLowerCase().includes(term) || 
+    product.description.toLowerCase().includes(term)
+  );
+}
+
+clearSearch() {
+  this.searchTerm = '';
+  this.products = [...this.allProducts];
+}
 }

@@ -1,5 +1,23 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Our Products</h2>
+  <h2 class="mb-4">Products</h2>
+  
+  <!-- Search bar -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="input-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search products..." 
+          [(ngModel)]="searchTerm"
+          (input)="searchProducts()"
+        >
+        <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">
+          <i class="bi bi-x"></i> Clear
+        </button>
+      </div>
+    </div>
+  </div>
   
   <!-- Toast notification container -->
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
@@ -21,8 +39,13 @@
       <div class="col-md-4 mb-4">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">${{ product.price.toFixed(2) }}</h6>
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <button class="btn btn-sm text-danger" [disabled]="!product.addedToCart" (click)="deleteProduct(product)" title="Delete product">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <h6 class="card-subtitle mb-2 text-muted">₹{{ product.price.toFixed(2) }}</h6>
             <p class="card-text">{{ product.description }}</p>
             <div class="d-flex justify-content-between align-items-center mb-2">
               <div class="quantity-control d-flex align-items-center">
