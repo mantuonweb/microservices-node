@@ -69,18 +69,24 @@
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" routerLink="/products" routerLinkActive="active">
-                <i class="bi bi-box-seam me-2"></i>
+              <a class="nav-link" routerLink="/products" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <i class="bi bi-shop me-2"></i>
                 Home
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/orders" routerLinkActive="active">
-                <i class="bi bi-box-seam me-2"></i>
+                <i class="bi bi-bag-check me-2"></i>
                 Orders
               </a>
             </li>
-
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/profile" routerLinkActive="active">
+                <i class="bi bi-person me-2"></i>
+                Profile
+              </a>
+            </li>
           </ul>
         </div>
       </div>

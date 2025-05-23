@@ -1,0 +1,92 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-outline-primary mb-3" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i> Back to Orders
+      </button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="row">
+      <div class="col-12 text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading payment details...</p>
+      </div>
+    </div>
+  }
+
+  @if (error) {
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-danger">
+          <p class="mb-0">Error loading payment details. Please try again later.</p>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (!loading && !error && payment) {
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Payment Details</h5>
+          </div>
+          <div class="card-body">
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <strong>Transaction ID:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ payment.transactionId }}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <strong>Order ID:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ payment.orderId }}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <strong>Amount:</strong>
+              </div>
+              <div class="col-md-6">
+                ${{ payment.amount.toFixed(2) }}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <strong>Payment Method:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ paymentMethods[payment.paymentMethod].label }}
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <strong>Status:</strong>
+              </div>
+              <div class="col-md-6">
+                <span class="badge bg-success">{{ payment.status }}</span>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <strong>Date:</strong>
+              </div>
+              <div class="col-md-6">
+                {{ formatDate(payment.createdAt) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

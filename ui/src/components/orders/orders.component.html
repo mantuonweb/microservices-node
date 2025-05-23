@@ -8,7 +8,7 @@
           <h5 class="mb-0">Order #{{ order._id.substring(order._id.length - 8) }}</h5>
           <small>Placed on: {{ formatDate(order.createdAt) }}</small>
         </div>
-        <span class="badge bg-light text-dark">{{ paymentMethods[order.mode].label }}</span>
+        <span class="badge bg-light text-dark" role="button" (click)="showPaymentDetails(order)">{{ paymentMethods[order.mode].label }}</span>
       </div>
       
       <div class="card-body">
@@ -60,3 +60,5 @@
     </div>
   }
 </div>
+
+<!-- Payment Details Modal -->

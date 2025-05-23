@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface User {
   id: string;
@@ -21,7 +22,7 @@ export interface LoginCredentials {
 export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
-  private apiUrl = 'http://localhost:9000/api'; // Adjust this to your API URL
+  private apiUrl = environment.apiUrl + '/auth';
 
   constructor(
     private http: HttpClient,
@@ -39,7 +40,7 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/auth/login`, credentials)
+    return this.http.post<User>(`${this.apiUrl}/login`, credentials)
       .pipe(
         tap((user: any) => {
           localStorage.setItem('currentUser', JSON.stringify(user.user));
@@ -54,7 +55,7 @@ export class AuthService {
   }
 
   profile(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/auth/profile`)
+    return this.http.get<User>(`${this.apiUrl}/profile`)
       .pipe(
         map((user: any) => {
           return user?.user;
@@ -79,12 +80,11 @@ export class AuthService {
 
   // Get the auth token
   getToken(): string | null {
-    console.log('Current User:', this.currentUserValue);
     return this.currentUserValue?.token || (this.currentUserValue as unknown as any)?.user?.token || null;
   }
 
   // Register new user
   register(user: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, user);
+    return this.http.post(`${this.apiUrl}/register`, user);
   }
 }

@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CartItem } from './cart.service';
+import { environment } from '../../environments/environment';
 
 export interface OrderInfo {
   name: string;
@@ -28,14 +28,14 @@ export interface OrderResponse {
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:9000/api';
+  private apiUrl = environment.apiUrl + '/orders';
   constructor(private http: HttpClient) { }
 
   placeOrder(order: Order): Observable<OrderResponse> {
-    return this.http.post<OrderResponse>(`${this.apiUrl}/orders`, order);
+    return this.http.post<OrderResponse>(`${this.apiUrl}`, order);
   }
 
-  getOrders(email:string): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}/orders/by-email/${email}`);
+  getOrders(email: string): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrl}/by-email/${email}`);
   }
 }

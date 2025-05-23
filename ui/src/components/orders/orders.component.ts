@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { OrderService } from '../../app/services/order.service';
 import { AuthService } from '../../app/services/auth.service';
 
@@ -53,7 +53,7 @@ export class OrdersComponent implements OnInit {
     }
   };
 
-  constructor(private orderServicee: OrderService, private authService: AuthService) {
+  constructor(private orderServicee: OrderService, private authService: AuthService, private router: Router) {
     this.authService.profile().subscribe((user: any) => {
       this.orderServicee.getOrders(user.email).subscribe((orders: Order[]) => {
         this.orders = orders.sort((a: any, b: any) =>
@@ -70,5 +70,8 @@ export class OrdersComponent implements OnInit {
 
   formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString();
+  }
+  showPaymentDetails(order:any) {
+    this.router.navigate(['/payment-details', order.paymentId]);
   }
 }
