@@ -37,11 +37,28 @@ interface Order {
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
-  orders: any[] = []
+  orders: any[] = [];
+  paymentMethods:any = {
+    "CREDIT_CARD": {
+      label: "Credit Card",
+      value: "CREDIT_CARD"
+    },
+    "GPAY": {
+      label: "Google Pay",
+      value: "GPAY"
+    },
+    "UPI": {
+      label: "UPI",
+      value: "UPI"
+    }
+  };
+
   constructor(private orderServicee: OrderService, private authService: AuthService) {
     this.authService.profile().subscribe((user: any) => {
       this.orderServicee.getOrders(user.email).subscribe((orders: Order[]) => {
-        this.orders = orders;
+        this.orders = orders.sort((a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
       });
     });
   }

@@ -2,6 +2,9 @@
   <header class="grid-header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
+        <a class="navbar-brand nav-link" routerLink="/products" routerLinkActive="active">
+          <i class="bi bi-house-fill fs-5"></i>
+        </a>
         <a class="navbar-brand" routerLink="/products">Microservices Demo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +15,7 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item me-3">
               @if(cartItemsCount()) {
-                 <a class="nav-link position-relative" routerLink="/place-order" role="button">
+              <a class="nav-link position-relative" routerLink="/place-order" role="button">
                 <i class="bi bi-cart-fill fs-5"></i>
                 <span class="position-absolute top-40 start-100 translate-middle badge rounded-pill bg-danger">
                   {{cartItemsCount()}}
@@ -20,13 +23,13 @@
                 </span>
               </a>
               } @else {
-                <a class="nav-link position-relative" role="button">
-                  <i class="bi bi-cart-fill fs-5"></i>
-                  <span class="position-absolute top-40 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{cartItemsCount()}}
-                    <span class="visually-hidden">items in cart</span>
-                  </span>
-                </a>
+              <a class="nav-link position-relative" role="button">
+                <i class="bi bi-cart-fill fs-5"></i>
+                <span class="position-absolute top-40 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{cartItemsCount()}}
+                  <span class="visually-hidden">items in cart</span>
+                </span>
+              </a>
               }
             </li>
             <li class="nav-item me-3">
@@ -61,7 +64,7 @@
                 Orders
               </a>
             </li>
-           
+
           </ul>
         </div>
       </div>
