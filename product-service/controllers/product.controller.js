@@ -80,6 +80,22 @@ class ProductController {
         req.body,
         { new: true }
       );
+      try {
+        const prodResOrder = await eventManager
+          .getInstance()
+          .sendEvent('order-service', `api/orders/products/${req.params.id}`, updatedProduct, req.headers, 'put');
+        if ((!prodResOrder || !prodResOrder.name)) {
+          logger.error('Service returned invalid response', prodResOrder);
+          throw new Error('Failed to notify dependent services');
+        }
+      } catch (productError) {
+        logger.error('Service communication error:', productError);
+        return res.status(503).json({
+          error: 'Service unavailable',
+          message: 'Failed to communicate with dependent services'
+        });
+      }
+      logger.info('Product created successfully');
       if (!updatedProduct) {
         return res.status(404).json({ message: 'Product not found' });
       }

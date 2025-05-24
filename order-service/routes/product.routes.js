@@ -12,4 +12,8 @@ router.delete('/:id', (req, res) =>
   productController.deleteProduct.fire(req, res)
 );
 
+router.put('/:id', (req, res) =>
+  productController.updateProduct.fire(req, res)
+);
+
 module.exports = router;

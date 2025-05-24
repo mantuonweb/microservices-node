@@ -47,7 +47,7 @@ class EventSender {
     return this.eventServiceUrl;
   }
 
-  async sendEvent(serviceId, realm, event, headers) {
+  async sendEvent(serviceId, realm, event, headers, method) {
     try {
       const serviceUrl = await this.getServiceUrl(serviceId);
       console.log(`${serviceUrl}/${realm}`, 'serviceUrl');
@@ -56,8 +56,14 @@ class EventSender {
 
       // Add headers to the request config
       config.headers["authorization"] = headers.authorization;
-      const response = await axios.post(`${serviceUrl}/${realm}`, event, config);
-      return response.data;
+      if(method) {
+        const axiosMethod = axios[method];
+        const response = await axiosMethod(`${serviceUrl}/${realm}`, event, config);
+        return response.data;
+      } else {
+         const response = await axios.post(`${serviceUrl}/${realm}`, event, config);
+        return response.data;
+      }
     } catch (error) {
       logger.error('Error sending event');
       throw error;

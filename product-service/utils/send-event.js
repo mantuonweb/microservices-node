@@ -14,7 +14,7 @@ class EventSender {
   }
 
   async getServiceUrl(serviceId) {
-     const env = process.env.NODE_ENV || 'local'
+    const env = process.env.NODE_ENV || 'local'
     if (this.eventServiceUrl[serviceId]) {
       return this.eventServiceUrl[serviceId];
     }
@@ -25,9 +25,9 @@ class EventSender {
       if (services && services.length > 0) {
         const service = services[0];
         // Construct URL from service address and port
-         this.eventServiceUrl[
+        this.eventServiceUrl[
           serviceId
-        ] = env ==='local'? `http://localhost:${service.ServicePort}`: `http://${service.ServiceAddress}:${service.ServicePort}`;
+        ] = env === 'local' ? `http://localhost:${service.ServicePort}` : `http://${service.ServiceAddress}:${service.ServicePort}`;
         logger.info(
           `Retrieved event service URL from Consul: ${this.eventServiceUrl[serviceId]}`
         );
@@ -47,7 +47,7 @@ class EventSender {
     return this.eventServiceUrl;
   }
 
-  async sendEvent(serviceId, realm, event, headers) {
+  async sendEvent(serviceId, realm, event, headers, method) {
     try {
       const serviceUrl = await this.getServiceUrl(serviceId);
       console.log(`${serviceUrl}/${realm}`, 'serviceUrl');
@@ -56,8 +56,14 @@ class EventSender {
 
       // Add headers to the request config
       config.headers["authorization"] = headers.authorization;
-      const response = await axios.post(`${serviceUrl}/${realm}`, event, config);
-      return response.data;
+      if (method) {
+        const axiosMethod = axios[method];
+        const response = await axiosMethod(`${serviceUrl}/${realm}`, event, config);
+        return response.data;
+      } else {
+        const response = await axios.post(`${serviceUrl}/${realm}`, event, config);
+        return response.data;
+      }
     } catch (error) {
       logger.error('Error sending event');
       throw error;
