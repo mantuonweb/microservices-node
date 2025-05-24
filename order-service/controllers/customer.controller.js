@@ -12,6 +12,23 @@ class CustomerController {
         return res.status(400).json({ message: 'Invalid customer data' });
       }
       
+      // Check if user with same email or username already exists
+      const { email, username } = req.body;
+      const existingCustomer = await Customer.findOne({ 
+        $or: [
+          { email: email },
+          { username: username }
+        ]
+      });
+      
+      if (existingCustomer) {
+        const duplicateField = existingCustomer.email === email ? 'email' : 'username';
+        logger.warn(`Customer with this ${duplicateField} already exists`);
+        return res.status(409).json({ 
+          message: `Customer with this ${duplicateField} already exists` 
+        });
+      }
+      
       const customer = new Customer(req.body);
       const savedCustomer = await customer.save();
       logger.info('New customer created:', savedCustomer._id);

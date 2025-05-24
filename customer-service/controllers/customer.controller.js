@@ -48,6 +48,20 @@ class CustomerController {
 
   async createCustomer(req, res) {
     try {
+      // Check if user with same email or username already exists
+      const { email, username } = req.body;
+      const existingCustomer = await Customer.findOne({
+        $or: [{ email: email }, { username: username }]
+      });
+      
+      if (existingCustomer) {
+        const duplicateField = existingCustomer.email === email ? 'email' : 'username';
+        logger.warn(`Customer with this ${duplicateField} already exists`);
+        return res.status(409).json({
+          message: `Customer with this ${duplicateField} already exists`
+        });
+      }
+      
       const customer = new Customer(req.body);
       const savedCustomer = await customer.save();
       let custRes;
@@ -57,14 +71,14 @@ class CustomerController {
           .sendEvent('order-service', 'api/orders/customers', savedCustomer, req.headers);
 
         if (!custRes || !custRes.username) {
-          logger.error('order service returned invalid response', payRes);
-          throw new Error('Failed to process payment');
+          logger.error('order service returned invalid response', custRes);
+          throw new Error('Failed to process customer registration');
         }
       } catch (customerError) {
         logger.error('order service error:', customerError);
         await Customer.findByIdAndDelete(savedCustomer._id);
         return res.status(503).json({
-          error: 'order service unavailable',
+          error: 'Error in processing customer registration',
           message: 'order service unavailable'
         });
       }
@@ -72,6 +86,15 @@ class CustomerController {
       res.status(201).json(savedCustomer);
     } catch (error) {
       logger.error('Error creating customer:', error);
+      
+      // Handle duplicate key error (E11000)
+      if (error.code === 11000) {
+        return res.status(409).json({ 
+          message: 'Customer with this email already exists',
+          error: 'Duplicate email'
+        });
+      }
+      
       res.status(500).json({ message: 'Error creating customer' });
     }
   }
