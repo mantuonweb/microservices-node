@@ -31,9 +31,7 @@ export class PaymentDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private paymentsService: PaymentsService
-  ) { }
-
-  ngOnInit(): void {
+  ) { 
     this.route.paramMap.pipe(takeUntilDestroyed()).subscribe(params => {
       const paymentId = params.get('paymentId');
       if (paymentId) {
@@ -43,6 +41,10 @@ export class PaymentDetailsComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  ngOnInit(): void {
+    
   }
 
   loadPaymentDetails(paymentId: string): void {

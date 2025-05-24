@@ -8,7 +8,7 @@ class AuthController {
   static async register(req, res) {
     try {
       logger.info('Registration attempt', { username: req.body.username, email: req.body.email });
-      const { username, email, password } = req.body;
+      const { username, email, password, roles } = req.body;
 
       // Check if user already exists
       const existingUser = await User.findOne({
@@ -30,7 +30,8 @@ class AuthController {
       const user = new User({
         username,
         email,
-        password
+        password,
+        roles
       });
 
       await user.save();
