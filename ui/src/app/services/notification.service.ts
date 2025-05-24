@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { BehaviorSubject, Observable, Subject, catchError, takeUntil, throwError } from 'rxjs';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 
 // In the class definition, update the type

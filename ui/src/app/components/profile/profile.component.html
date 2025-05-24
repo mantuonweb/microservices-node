@@ -2,9 +2,9 @@
   <div class="row">
     <div class="col-lg-8 mx-auto">
       <div class="card shadow">
-        <div class="card-header bg-primary text-white">
+        <!-- <div class="card-header bg-primary text-white">
           <h3 class="mb-0">My Profile</h3>
-        </div>
+        </div> -->
         <div class="card-body">
           @if(submitMessage) {
             <div class="alert" [ngClass]="submitSuccess ? 'alert-success' : 'alert-danger'" role="alert">
@@ -42,47 +42,50 @@
                 }
               </div>
             </div>
-            
-            <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                id="username" 
-                formControlName="username"
-                readonly
-              >
+            <div class="row mb-4">
+
+              <div  class="col-md-6 mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="username" 
+                  formControlName="username"
+                  readonly
+                >
+              </div>
+              
+              <div  class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email" 
+                  formControlName="email"
+                  readonly
+                >
+                @if(profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+                  <div class="text-danger">Valid email is required</div>
+                }
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div  class="col-md-6 mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input 
+                  type="tel" 
+                  class="form-control" 
+                  id="phone" 
+                  formControlName="phone"
+                  [readonly]="!isEditing"
+                >
+                @if(profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
+                  <div class="text-danger">Phone number is required</div>
+                }
+              </div>
             </div>
             
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input 
-                type="email" 
-                class="form-control" 
-                id="email" 
-                formControlName="email"
-                readonly
-              >
-              @if(profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
-                <div class="text-danger">Valid email is required</div>
-              }
-            </div>
-            
-            <div class="mb-3">
-              <label for="phone" class="form-label">Phone</label>
-              <input 
-                type="tel" 
-                class="form-control" 
-                id="phone" 
-                formControlName="phone"
-                [readonly]="!isEditing"
-              >
-              @if(profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched) {
-                <div class="text-danger">Phone number is required</div>
-              }
-            </div>
-            
-            <div formGroupName="address" class="mb-3">
+            <div formGroupName="address"  class="mb-3">
               <h5 class="mb-3">Address</h5>
               
               <div class="mb-3">

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartItem } from './cart.service';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 export interface OrderInfo {
   name: string;
