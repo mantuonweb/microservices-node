@@ -5,11 +5,14 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const Consul = require('consul');
 const logger = require('./utils/logger');
 const cors = require('cors');
+const os = require('os');
 
 class ApiGateway {
   constructor() {
     this.app = express();
     this.PORT = process.env.PORT || 9000;
+    this.SERVICE_NAME = 'api-gateway';
+    this.serviceId = `${this.SERVICE_NAME}-${this.PORT}-${os.hostname()}`;
 
     // Service configuration object
     this.serviceConfig = {
@@ -251,7 +254,7 @@ class ApiGateway {
         this.createProxyHandler(service, path)
       );
     });
-    
+
     // Add catch-all route for non-intercepted services
     this.app.use('*', (req, res) => {
       logger.warn(`Attempted to access non-existent route: ${req.originalUrl}`);
@@ -305,11 +308,50 @@ class ApiGateway {
   }
 
   start() {
+    // Set up proxy routes before server starts to avoid race conditions
+    this.setupProxyRoutes();
+    
+    const serviceHost = os.hostname() || 'localhost';
+    const serviceDetails = {
+      id: this.serviceId,
+      name: this.SERVICE_NAME,
+      address: serviceHost,
+      port: parseInt(this.PORT),
+      tags: ['gateway', 'api', 'entry-point'],
+      check: {
+        http: `http://${serviceHost}:${this.PORT}/health`,
+        interval: '15s',
+        timeout: '5s',
+      },
+    };
+
+    // Define the deregistration handler once
+    const handleShutdownSignal = () => {
+      this.consul.agent.service.deregister(this.serviceId)
+        .then(() => {
+          logger.info(`Service deregistered from Consul: ${this.serviceId}`);
+          process.exit(0);
+        })
+        .catch((err) => {
+          logger.error(`Failed to deregister service from Consul: ${err.message}`);
+          process.exit(1);
+        });
+    };
+
+    // Register signal handlers once
+    process.on('SIGTERM', handleShutdownSignal);
+    process.on('SIGINT', handleShutdownSignal);
+
     // Start the server and store the server instance
-    this.server = this.app.listen(this.PORT, () => {
+    this.server = this.app.listen(this.PORT, async () => {
       logger.info(`API Gateway running on http://localhost:${this.PORT}`);
-      // Set up proxy routes after server starts
-      this.setupProxyRoutes();
+      
+      try {
+        await this.consul.agent.service.register(serviceDetails);
+        logger.info(`Service registered with Consul: ${this.serviceId}`);
+      } catch (err) {
+        logger.error(`Failed to register service with Consul: ${err.message}`);
+      }
     });
 
     // Return the server instance for testing purposes
