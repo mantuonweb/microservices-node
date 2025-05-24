@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { UserService } from '../../app/services/user.service';
+import { UserService } from '../../services/user.service';
 import { User } from '../models/user.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../app/services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -40,8 +40,8 @@ export class ProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      username: [{ value: '', disabled: true }],
-      email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
+      username: [{ value: ''}],
+      email: [{ value: ''}, [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       address: this.fb.group({
         street: ['', Validators.required],
@@ -55,11 +55,11 @@ export class ProfileComponent implements OnInit {
 
   loadUserProfile(email: string): void {
     this.userService.getUserProfile(email).subscribe({
-      next: (user) => {
+      next: (user:any) => {
         this.user = user;
         this.profileForm.patchValue(user);
       },
-      error: (error) => {
+      error: (error:any) => {
         console.error('Error loading user profile:', error);
         this.isNewUser = true;
         this.profileForm.patchValue({
@@ -88,7 +88,7 @@ export class ProfileComponent implements OnInit {
       // In a real app, you would call updateUserProfile instead
       const req = !this.isNewUser ? this.userService.updateUserProfile(updatedUser) : this.userService.createUserProfile(updatedUser)
       req.subscribe({
-        next: (updatedUser) => {
+        next: (updatedUser:any) => {
           this.user = updatedUser;
           this.submitMessage = 'Profile updated successfully!';
           this.submitSuccess = true;
@@ -98,7 +98,7 @@ export class ProfileComponent implements OnInit {
             this.submitMessage = '';
           }, 3000);
         },
-        error: (error) => {
+        error: (error:any) => {
           console.error('Error updating user profile:', error);
           this.submitMessage = 'Failed to update profile. Please try again.';
           this.submitSuccess = false;

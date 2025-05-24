@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { AuthService } from '../../app/services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
@@ -44,11 +44,11 @@ export class LoginComponent implements OnInit {
     // Example of how you might call an auth service
     this.authService.login(this.loginForm.value)
       .subscribe({
-        next: (user) => {
+        next: (user: any) => {
           console.log('Login successful', user);
           this.router.navigate(['/products']);
         },
-        error: (error) => {
+        error: (error:any) => {
           console.error('Login failed', error);
         }
       });

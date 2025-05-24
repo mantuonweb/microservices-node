@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './services/auth.guard';
 import { ProfileComponent } from '../components/profile/profile.component';
 import { PaymentDetailsComponent } from '../components/payment-details/payment-details.component';
+import { AuthGuard } from '../services/auth.guard';
 
 export const routes: Routes = [
   {

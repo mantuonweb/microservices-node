@@ -224,14 +224,22 @@ services:
       dockerfile: Dockerfile
     container_name: ms-notification-service
     ports:
-      - "3030:3030"  # REST API port
-      - "3031:3031"  # WebSocket port
+      - "3030:3030"
     environment:
       - NODE_ENV=dev
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
     volumes:
       - ./notification-service:/usr/src/app
     restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      config-service:
+        condition: service_started
     networks:
       - microservice-network
   loki:

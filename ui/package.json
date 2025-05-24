@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.7",
-    "@angular/cli": "^19.2.7",
+    "@angular/cli": "^19.2.13",
     "@angular/compiler-cli": "^19.2.0",
     "@types/event-source-polyfill": "^1.0.5",
     "@types/eventsource": "^1.1.15",

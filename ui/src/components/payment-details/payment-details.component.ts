@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PaymentsService } from '../../app/services/payments.service';
+import { PaymentsService } from '../../services/payments.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 

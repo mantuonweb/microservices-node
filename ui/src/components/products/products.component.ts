@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../app/services/product.service';
+import { ProductService } from '../../services/product.service';
 import { Product } from '../models/product.model';
-import { CartItem, CartService } from '../../app/services/cart.service';
+import { CartItem, CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -29,15 +29,15 @@ export class ProductsComponent implements OnInit {
   loadProducts(): void {
     this.loading = true;
     this.productService.getProducts().subscribe({
-      next: (data) => {
+      next: (data:any) => {
         this.allProducts = data;
         this.products = [...this.allProducts];
 
         // Sync with cart items
-        this.cartService.getCartItems().subscribe(cartItems => {
+        this.cartService.getCartItems().subscribe((cartItems:any) => {
           // Update product quantities and addedToCart flags based on cart contents
           this.products.forEach(product => {
-            const cartItem = cartItems.find(item => item.productId === product._id);
+            const cartItem = cartItems.find((item:any) => item.productId === product._id);
             if (cartItem) {
               product.quantity = cartItem.quantity;
               product.addedToCart = true;
@@ -50,7 +50,7 @@ export class ProductsComponent implements OnInit {
 
         this.loading = false;
       },
-      error: (err) => {
+      error: (err:any) => {
         this.error = 'Failed to load products. Please try again later.';
         console.error('Error fetching products:', err);
         this.loading = false;
