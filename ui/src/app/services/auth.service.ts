@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
@@ -32,7 +32,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
   private apiUrl = environment.apiUrl + '/auth';
-
+  private userProfile:any = null;
   constructor(
     private http: HttpClient,
     private router: Router
@@ -64,9 +64,15 @@ export class AuthService {
   }
 
   profile(): Observable<User> {
+    if(this.userProfile) {
+      return of(this.userProfile)
+    }
     return this.http.get<User>(`${this.apiUrl}/profile`)
       .pipe(
         map((user: any) => {
+          if(user.user) {
+             this.userProfile = user?.user;
+          }
           return user?.user;
         }),
         catchError(error => {
@@ -79,6 +85,7 @@ export class AuthService {
   logout(): void {
     // Remove user from local storage
     localStorage.removeItem('currentUser');
+    this.userProfile = null;
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
   }

@@ -29,6 +29,7 @@ export interface OrderResponse {
 })
 export class OrderService {
   private apiUrl = environment.apiUrl + '/orders';
+  private apiUrlQuery = environment.apiUrl + '/query';
   constructor(private http: HttpClient) { }
 
   placeOrder(order: Order): Observable<OrderResponse> {
@@ -37,5 +38,8 @@ export class OrderService {
 
   getOrders(email: string): Observable<any[]> {
     return this.http.get<any>(`${this.apiUrl}/by-email/${email}`);
+  }
+  getFullOrders(email: string): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrlQuery}/order-by-email/${email}`);
   }
 }
