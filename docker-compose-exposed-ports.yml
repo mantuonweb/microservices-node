@@ -269,6 +269,8 @@ services:
       - order-service
       - customer-service
       - inventory-service
+      - auth-service
+      - notification-service
   api-gateway:
     build:
       context: ./api-gateway
@@ -287,6 +289,7 @@ services:
       - order-service
       - customer-service
       - inventory-service
+      - notification-service
     networks:
       - microservice-network
 volumes:
