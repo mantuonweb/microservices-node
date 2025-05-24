@@ -1,5 +1,5 @@
 const redis = require('redis');
-
+const logger = require('../utils/logger');
 /**
  * RedisClient - A singleton class for Redis operations
  * Implements connection management and basic CRUD operations for Redis
@@ -61,22 +61,22 @@ class RedisClient {
       this.client = redis.createClient(this.config);
 
       this.client.on('error', (err) => {
-        console.error('Redis Client Error:', err);
+        logger.error('Redis Client Error:', err);
         this.isConnected = false;
       });
 
       this.client.on('connect', () => {
-        console.log('Connected to Redis');
+        logger.info('Connected to Redis');
         this.isConnected = true;
       });
 
       this.client.on('reconnecting', () => {
-        console.log('Reconnecting to Redis...');
+        logger.info('Reconnecting to Redis...');
       });
 
       await this.client.connect();
     } catch (error) {
-      console.error('Failed to connect to Redis:', error);
+      logger.error('Failed to connect to Redis:', error);
       throw error;
     }
   }
@@ -91,9 +91,9 @@ class RedisClient {
     try {
       await this.client.quit();
       this.isConnected = false;
-      console.log('Disconnected from Redis');
+      logger.info('Disconnected from Redis');
     } catch (error) {
-      console.error('Error disconnecting from Redis:', error);
+      logger.error('Error disconnecting from Redis:', error);
       throw error;
     }
   }
@@ -110,7 +110,7 @@ class RedisClient {
       const value = await this.client.get(key);
       return value ? JSON.parse(value) : null;
     } catch (error) {
-      console.error(`Error getting key ${key} from Redis:`, error);
+      logger.error(`Error getting key ${key} from Redis:`, error);
       throw error;
     }
   }
@@ -134,7 +134,7 @@ class RedisClient {
       }
       return true;
     } catch (error) {
-      console.error(`Error setting key ${key} in Redis:`, error);
+      logger.error(`Error setting key ${key} in Redis:`, error);
       throw error;
     }
   }
@@ -151,7 +151,7 @@ class RedisClient {
       await this.client.del(key);
       return true;
     } catch (error) {
-      console.error(`Error deleting key ${key} from Redis:`, error);
+      logger.error(`Error deleting key ${key} from Redis:`, error);
       throw error;
     }
   }
@@ -179,7 +179,7 @@ class RedisClient {
       const result = await this.client.exists(key);
       return result === 1;
     } catch (error) {
-      console.error(`Error checking if key ${key} exists in Redis:`, error);
+      logger.error(`Error checking if key ${key} exists in Redis:`, error);
       throw error;
     }
   }
@@ -195,7 +195,7 @@ class RedisClient {
     try {
       return await this.client.keys(pattern);
     } catch (error) {
-      console.error(`Error getting keys with pattern ${pattern} from Redis:`, error);
+      logger.error(`Error getting keys with pattern ${pattern} from Redis:`, error);
       throw error;
     }
   }
@@ -211,7 +211,7 @@ class RedisClient {
       await this.client.flushAll();
       return true;
     } catch (error) {
-      console.error('Error flushing Redis database:', error);
+      logger.error('Error flushing Redis database:', error);
       throw error;
     }
   }
@@ -229,7 +229,7 @@ class RedisClient {
       const value = await this.client.sendCommand(['JSON.GET', key, path]);
       return value ? JSON.parse(value) : null;
     } catch (error) {
-      console.error(`Error getting JSON ${key} from Redis:`, error);
+      logger.error(`Error getting JSON ${key} from Redis:`, error);
       throw error;
     }
   }
@@ -255,7 +255,7 @@ class RedisClient {
       }
       return true;
     } catch (error) {
-      console.error(`Error setting JSON ${key} in Redis:`, error);
+      logger.error(`Error setting JSON ${key} in Redis:`, error);
       throw error;
     }
   }
@@ -273,7 +273,7 @@ class RedisClient {
       await this.client.sendCommand(['JSON.DEL', key, path]);
       return true;
     } catch (error) {
-      console.error(`Error deleting JSON ${key} from Redis:`, error);
+      logger.error(`Error deleting JSON ${key} from Redis:`, error);
       throw error;
     }
   }
@@ -290,7 +290,7 @@ class RedisClient {
       const type = await this.client.type(key);
       return type === 'ReJSON-RL';
     } catch (error) {
-      console.error(`Error checking if key ${key} is JSON in Redis:`, error);
+      logger.error(`Error checking if key ${key} is JSON in Redis:`, error);
       throw error;
     }
   }

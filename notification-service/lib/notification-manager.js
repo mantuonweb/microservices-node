@@ -1,5 +1,5 @@
 const amqp = require('amqplib');
-
+const logger = require('../utils/logger');
 /**
  * RabbitMQ Notification Service
  * A complete service for publishing and consuming notifications via RabbitMQ
@@ -31,9 +31,9 @@ class RabbitMQNotificationService {
       ...config
     };
 
-    console.log(`Initializing RabbitMQ notification service for ${this.config.clientId}`);
-    console.log(`RabbitMQ URL: ${this.config.url}`);
-    console.log(`Exchange: ${this.config.exchange} (${this.config.exchangeType})`);
+    logger.info(`Initializing RabbitMQ notification service for ${this.config.clientId}`);
+    logger.info(`RabbitMQ URL: ${this.config.url}`);
+    logger.info(`Exchange: ${this.config.exchange} (${this.config.exchangeType})`);
 
     // Connection state
     this.connection = null;
@@ -85,14 +85,14 @@ class RabbitMQNotificationService {
     if (this.isConnected) return;
 
     try {
-      console.log(`Connecting to RabbitMQ at ${this.config.url} (attempt ${this.reconnectAttempts + 1}/${this.config.maxReconnectAttempts})`);
+      logger.info(`Connecting to RabbitMQ at ${this.config.url} (attempt ${this.reconnectAttempts + 1}/${this.config.maxReconnectAttempts})`);
 
       // Create the connection
       this.connection = await amqp.connect(this.config.url);
 
       // Set up connection event handlers
       this.connection.on('error', (err) => {
-        console.error('RabbitMQ connection error:', err.message);
+        logger.error('RabbitMQ connection error:', err.message);
         this.handleDisconnect();
       });
 
@@ -117,9 +117,9 @@ class RabbitMQNotificationService {
       // Reset reconnect attempts on successful connection
       this.reconnectAttempts = 0;
       this.isConnected = true;
-      console.log(`Successfully connected to RabbitMQ as ${this.config.clientId}`);
+      logger.info(`Successfully connected to RabbitMQ as ${this.config.clientId}`);
     } catch (error) {
-      console.error('Failed to connect to RabbitMQ:', error.message);
+      logger.error('Failed to connect to RabbitMQ:', error.message);
       this.handleDisconnect();
       throw error;
     }
@@ -142,7 +142,7 @@ class RabbitMQNotificationService {
 
     // Stop trying after max attempts
     if (this.reconnectAttempts > this.config.maxReconnectAttempts) {
-      console.error(`Maximum reconnect attempts (${this.config.maxReconnectAttempts}) reached. Giving up.`);
+      logger.error(`Maximum reconnect attempts (${this.config.maxReconnectAttempts}) reached. Giving up.`);
       return;
     }
 
@@ -152,7 +152,7 @@ class RabbitMQNotificationService {
       30000 // Max 30 seconds
     );
 
-    console.log(`Scheduling reconnect in ${backoff}ms (attempt ${this.reconnectAttempts}/${this.config.maxReconnectAttempts})`);
+    logger.info(`Scheduling reconnect in ${backoff}ms (attempt ${this.reconnectAttempts}/${this.config.maxReconnectAttempts})`);
 
     this.reconnectTimer = setTimeout(async () => {
       this.reconnectTimer = null;
@@ -164,7 +164,7 @@ class RabbitMQNotificationService {
           await this.startListening({ queueName: this.queueName });
         }
       } catch (error) {
-        console.error('Reconnect failed:', error.message);
+        logger.error('Reconnect failed:', error.message);
       }
     }, backoff);
   }
@@ -183,7 +183,7 @@ class RabbitMQNotificationService {
     }
 
     try {
-      console.log(`Preparing to publish notification of type ${type} to exchange ${this.config.exchange}`);
+      logger.info(`Preparing to publish notification of type ${type} to exchange ${this.config.exchange}`);
 
       const notification = {
         type,
@@ -217,16 +217,16 @@ class RabbitMQNotificationService {
       );
 
       if (published) {
-        console.log(`Notification published to exchange ${this.config.exchange} with routing key ${routingKey}`);
+        logger.info(`Notification published to exchange ${this.config.exchange} with routing key ${routingKey}`);
         return true;
       } else {
         console.warn('Channel write buffer is full - applying back pressure');
         await new Promise(resolve => this.publishChannel.once('drain', resolve));
-        console.log('Channel write buffer drained, continuing');
+        logger.info('Channel write buffer drained, continuing');
         return true;
       }
     } catch (error) {
-      console.error(`Error publishing notification to exchange ${this.config.exchange}:`, error.message);
+      logger.error(`Error publishing notification to exchange ${this.config.exchange}:`, error.message);
 
       // If we have a connection error, try to reconnect
       if (!this.isConnected || error.message.includes('channel closed')) {
@@ -251,7 +251,7 @@ class RabbitMQNotificationService {
       throw new Error('Handler must be a function');
     }
     this.handlers.set(type, handler);
-    console.log(`Handler registered for notification type: ${type}`);
+    logger.info(`Handler registered for notification type: ${type}`);
   }
 
   /**
@@ -266,7 +266,7 @@ class RabbitMQNotificationService {
 
     // If we don't have any handlers, there's nothing to listen for
     if (this.handlers.size === 0) {
-      console.warn('No handlers registered. Not starting listener.');
+      logger.warn('No handlers registered. Not starting listener.');
       return;
     }
 
@@ -275,7 +275,7 @@ class RabbitMQNotificationService {
       this.queueName = options.queueName ||
         `${this.config.queuePrefix}${this.config.clientId}-${this.generateId()}`;
 
-      console.log(`Creating queue: ${this.queueName}`);
+      logger.info(`Creating queue: ${this.queueName}`);
 
       await this.consumeChannel.assertQueue(this.queueName, {
         exclusive: options.exclusive || false,
@@ -288,7 +288,7 @@ class RabbitMQNotificationService {
         // Use the notification type as the routing key pattern
         const routingKey = type === '*' ? '#' : type;
 
-        console.log(`Binding queue ${this.queueName} to exchange ${this.config.exchange} with routing key ${routingKey}`);
+        logger.info(`Binding queue ${this.queueName} to exchange ${this.config.exchange} with routing key ${routingKey}`);
         await this.consumeChannel.bindQueue(this.queueName, this.config.exchange, routingKey);
       }
 
@@ -296,7 +296,7 @@ class RabbitMQNotificationService {
       await this.consumeChannel.prefetch(options.prefetch || 10);
 
       // Start consuming messages
-      console.log(`Starting to consume messages from queue: ${this.queueName}`);
+      logger.info(`Starting to consume messages from queue: ${this.queueName}`);
       const { consumerTag } = await this.consumeChannel.consume(this.queueName, async (message) => {
         if (!message) {
           console.warn('Consumer cancelled by server');
@@ -308,7 +308,7 @@ class RabbitMQNotificationService {
           const parsedMessage = JSON.parse(content);
           const { type } = parsedMessage;
 
-          console.log(`Received notification of type: ${type}, routing key: ${message.fields.routingKey}`);
+          logger.info(`Received notification of type: ${type}, routing key: ${message.fields.routingKey}`);
 
           const metadata = {
             routingKey: message.fields.routingKey,
@@ -332,7 +332,7 @@ class RabbitMQNotificationService {
               // Acknowledge the message after successful processing
               this.consumeChannel.ack(message);
             } catch (handlerError) {
-              console.error(`Error in message handler for type ${type}:`, handlerError);
+              logger.error(`Error in message handler for type ${type}:`, handlerError);
               // Reject the message and requeue it if handler failed
               this.consumeChannel.nack(message, false, true);
             }
@@ -342,16 +342,16 @@ class RabbitMQNotificationService {
             this.consumeChannel.ack(message);
           }
         } catch (error) {
-          console.error('Error processing message:', error);
+          logger.error('Error processing message:', error);
           // Reject the message but don't requeue if it's a parsing error
           this.consumeChannel.nack(message, false, false);
         }
       }, { noAck: false });
 
       this.consumerTag = consumerTag;
-      console.log(`Started listening for notifications on exchange: ${this.config.exchange} with consumer tag: ${consumerTag}`);
+      logger.info(`Started listening for notifications on exchange: ${this.config.exchange} with consumer tag: ${consumerTag}`);
     } catch (error) {
-      console.error(`Error setting up message consumer:`, error.message);
+      logger.error(`Error setting up message consumer:`, error.message);
 
       // If we have a connection error, try to reconnect
       if (!this.isConnected || error.message.includes('channel closed')) {
@@ -373,12 +373,12 @@ class RabbitMQNotificationService {
   async stopListening() {
     if (this.consumeChannel && this.consumerTag) {
       try {
-        console.log(`Cancelling consumer with tag: ${this.consumerTag}`);
+        logger.info(`Cancelling consumer with tag: ${this.consumerTag}`);
         await this.consumeChannel.cancel(this.consumerTag);
         this.consumerTag = null;
-        console.log('Consumer cancelled');
+        logger.info('Consumer cancelled');
       } catch (error) {
-        console.error('Error cancelling consumer:', error.message);
+        logger.error('Error cancelling consumer:', error.message);
       }
     }
   }
@@ -399,23 +399,23 @@ class RabbitMQNotificationService {
     if (this.connection) {
       try {
         if (this.publishChannel) {
-          console.log('Closing publish channel');
+          logger.info('Closing publish channel');
           await this.publishChannel.close();
           this.publishChannel = null;
         }
 
         if (this.consumeChannel) {
-          console.log('Closing consume channel');
+          logger.info('Closing consume channel');
           await this.consumeChannel.close();
           this.consumeChannel = null;
         }
 
-        console.log('Closing RabbitMQ connection');
+        logger.info('Closing RabbitMQ connection');
         await this.connection.close();
         this.isConnected = false;
-        console.log('Disconnected from RabbitMQ');
+        logger.info('Disconnected from RabbitMQ');
       } catch (error) {
-        console.error('Error disconnecting from RabbitMQ:', error.message);
+        logger.error('Error disconnecting from RabbitMQ:', error.message);
       } finally {
         this.connection = null;
       }
@@ -426,9 +426,9 @@ class RabbitMQNotificationService {
    * Handle SIGINT/SIGTERM signals for graceful shutdown
    */
   async handleSigInt() {
-    console.log('Received shutdown signal, closing RabbitMQ connections...');
+    logger.info('Received shutdown signal, closing RabbitMQ connections...');
     await this.disconnect();
-    console.log('RabbitMQ connections closed');
+    logger.info('RabbitMQ connections closed');
   }
 
   /**
@@ -449,7 +449,7 @@ class RabbitMQNotificationService {
       autoDelete: true
     });
 
-    console.log(`Created reply queue: ${replyTo}`);
+    logger.info(`Created reply queue: ${replyTo}`);
 
     // Set up a consumer for the reply queue
     const responsePromises = new Map();
@@ -560,7 +560,7 @@ class RabbitMQNotificationService {
     // Bind the queue to the exchange
     await requestChannel.bindQueue(queueName, this.config.exchange, type);
 
-    console.log(`Created request handler for type: ${type} on queue: ${queueName}`);
+    logger.info(`Created request handler for type: ${type} on queue: ${queueName}`);
 
     // Set prefetch count to control concurrency
     await requestChannel.prefetch(10);
@@ -582,7 +582,7 @@ class RabbitMQNotificationService {
         const content = message.content.toString();
         const request = JSON.parse(content);
 
-        console.log(`Received request of type: ${type}, correlationId: ${correlationId}`);
+        logger.info(`Received request of type: ${type}, correlationId: ${correlationId}`);
 
         // Call the handler
         const response = await handler(request.data, {
@@ -605,7 +605,7 @@ class RabbitMQNotificationService {
 
         requestChannel.ack(message);
       } catch (error) {
-        console.error(`Error handling request of type ${type}:`, error);
+        logger.error(`Error handling request of type ${type}:`, error);
 
         // Send error response
         requestChannel.sendToQueue(
@@ -624,14 +624,14 @@ class RabbitMQNotificationService {
       }
     }, { noAck: false });
 
-    console.log(`Started request handler for type: ${type} with consumer tag: ${consumerTag}`);
+    logger.info(`Started request handler for type: ${type} with consumer tag: ${consumerTag}`);
 
     // Return a function to close the handler
     return {
       close: async () => {
         await requestChannel.cancel(consumerTag);
         await requestChannel.close();
-        console.log(`Closed request handler for type: ${type}`);
+        logger.info(`Closed request handler for type: ${type}`);
       }
     };
   }
