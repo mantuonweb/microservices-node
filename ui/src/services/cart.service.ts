@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 export interface CartItem {
   productId: string;
@@ -15,10 +16,15 @@ export interface CartItem {
 export class CartService {
   private cartItems: CartItem[] = [];
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
-  
-  constructor() {
+  keyName = 'cart';
+  constructor(private authService: AuthService) {
+
+  }
+  init() {
+    this.keyName = this.keyName + this.authService.currentUserValue?.email;
     // Load cart from localStorage if available
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = localStorage.getItem(this.keyName);
+
     if (savedCart) {
       this.cartItems = JSON.parse(savedCart);
       this.cartSubject.next(this.cartItems);
@@ -49,7 +55,7 @@ export class CartService {
 
   addToCart(item: CartItem): void {
     const existingItemIndex = this.cartItems.findIndex(i => i.productId === item.productId);
-    
+
     if (existingItemIndex > -1) {
       // Item exists, update quantity
       this.cartItems[existingItemIndex].quantity += item.quantity;
@@ -57,7 +63,7 @@ export class CartService {
       // New item, add to cart
       this.cartItems.push(item);
     }
-    
+
     this.updateCart();
   }
 
@@ -86,8 +92,8 @@ export class CartService {
   private updateCart(): void {
     // Update the BehaviorSubject
     this.cartSubject.next([...this.cartItems]);
-    
+
     // Save to localStorage
-    localStorage.setItem('cart', JSON.stringify(this.cartItems));
+    localStorage.setItem(this.keyName, JSON.stringify(this.cartItems));
   }
 }

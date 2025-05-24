@@ -48,7 +48,7 @@ export class NotificationService implements OnDestroy {
             return this.connectionStatus.asObservable();
         }
 
-        this.http.post(`${this.apiUrl}/${endpoint}`, {})
+        this.http.post(`${this.apiUrl}${endpoint}`, {})
             .pipe(
                 catchError(error => {
                     console.error('Failed to initialize SSE connection:', error);

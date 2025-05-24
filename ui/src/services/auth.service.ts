@@ -9,11 +9,20 @@ export interface User {
   id: string;
   username: string;
   token: string;
+  email?: string;
+  roles?: string[];
 }
 
 export interface LoginCredentials {
   username: string;
   password: string;
+}
+
+export interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+  roles?: string[];
 }
 
 @Injectable({
@@ -83,8 +92,8 @@ export class AuthService {
     return this.currentUserValue?.token || (this.currentUserValue as unknown as any)?.user?.token || null;
   }
 
-  // Register new user
-  register(user: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, user);
+  // Register new user with extended data
+  register(userData: RegisterData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, userData);
   }
 }

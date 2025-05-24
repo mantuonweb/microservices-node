@@ -8,7 +8,7 @@ import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -18,10 +18,13 @@ export class AppComponent {
   public isLoggedIn = toSignal(this.authService?.currentUser?.pipe(map(item => !!item)));
   public cartService = inject(CartService);
   cartItemsCount = toSignal(this.cartService.getCartItemsCount());
-  noticationCount:any = toSignal(this.notification.list().pipe(map(item => item.length)));
+  noticationCount: any = toSignal(this.notification.list().pipe(map(item => item.length)));
   constructor() {
-    this.authService?.currentUser?.pipe(map(item => !!item)).subscribe(()=>{
-      this.notification.init();
+    this.authService?.currentUser?.pipe(map(item => !!item)).subscribe((item) => {
+      if (item) {
+        this.notification.init();
+        this.cartService.init();
+      }
     })
   }
 

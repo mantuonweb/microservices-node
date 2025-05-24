@@ -14,14 +14,11 @@
                 class="form-control" 
                 id="username" 
                 placeholder="Enter your username"
-                formControlName="username">
-              @if (f['username'].touched && f['username'].invalid) {
-                <div class="text-danger mt-1">
-                  @if (f['username'].errors?.['required']) {
-                    <small>Username is required</small>
-                  }
-                </div>
-              }
+                formControlName="username"
+                [ngClass]="{ 'is-invalid': f['username'].touched && f['username'].errors }">
+              <div *ngIf="f['username'].touched && f['username'].errors?.['required']" class="invalid-feedback">
+                Username is required
+              </div>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
@@ -30,25 +27,33 @@
                 class="form-control" 
                 id="password" 
                 placeholder="Enter your password"
-                formControlName="password">
-              @if (f['password'].touched && f['password'].invalid) {
-                <div class="text-danger mt-1">
-                  @if (f['password'].errors?.['required']) {
-                    <small>Password is required</small>
-                  }
-                  @if (f['password'].errors?.['minlength']) {
-                    <small>Password must be at least 6 characters</small>
-                  }
-                </div>
-              }
+                formControlName="password"
+                [ngClass]="{ 'is-invalid': f['password'].touched && f['password'].errors }">
+              <div *ngIf="f['password'].touched && f['password'].errors?.['required']" class="invalid-feedback">
+                Password is required
+              </div>
+              <div *ngIf="f['password'].touched && f['password'].errors?.['minlength']" class="invalid-feedback">
+                Password must be at least 6 characters
+              </div>
+            </div>
+           
+            <!-- Error message display -->
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
             </div>
            
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+              <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                Login
+              </button>
+              <a routerLink="/signup" class="btn btn-link">Sign Up</a>
             </div>
           </form>
         </div>
-     
+        <div class="card-footer text-center">
+          <p class="mb-0">Don't have an account? <a routerLink="/signup">Sign Up</a></p>
+        </div>
       </div>
     </div>
   </div>
