@@ -36,6 +36,9 @@ class ApiGateway {
       },
       'notification-service': {
         path: '/api/notifications'
+      },
+      'query-service': {
+        path: '/api/query'
       }
     };
 

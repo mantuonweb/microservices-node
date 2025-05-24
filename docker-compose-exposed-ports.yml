@@ -242,6 +242,56 @@ services:
         condition: service_started
     networks:
       - microservice-network
+  query-service:
+    build:
+      context: ./query-manager
+      dockerfile: Dockerfile
+    container_name: ms-query-service
+    ports:
+      - "3032:3032"
+    environment:
+      - NODE_ENV=dev
+      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+    volumes:
+      - ./query-manager:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+      payment-service:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+      product-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
+    networks:
+      - microservice-network
+  
+  redis:
+    image: redis:latest
+    container_name: ms-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - microservice-network
   loki:
     image: grafana/loki:latest
     container_name: ms-loki
@@ -297,6 +347,7 @@ volumes:
   rabbitmq_data:
   rabbitmq_logs:
   grafana-storage:
+  redis_data:
 
 networks:
   microservice-network:
