@@ -1,16 +1,16 @@
 <div class="main-container container-fluid p-0 grid-layout">
   <header class="grid-header">
+    @if(isLoggedIn()) {
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
         <a class="navbar-brand nav-link" routerLink="/products" routerLinkActive="active">
           <i class="bi bi-house-fill fs-5"></i>
         </a>
-        <a class="navbar-brand" routerLink="/products">Microservices Demo</a>
+        <a class="navbar-brand" routerLink="/products">MSA</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        @if(isLoggedIn()) {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item me-3">
@@ -47,7 +47,8 @@
                 </li>
                 <!-- If there are notifications, show them -->
                 @if(noticationCount() > 0) {
-                <li><a class="dropdown-item" routerLink="/orders" (click)="clearNotification()">{{noticationCount()}} Order placed</a></li>
+                <li><a class="dropdown-item" routerLink="/orders" (click)="clearNotification()">{{noticationCount()}}
+                    Order placed</a></li>
                 } @else {
                 <li><span class="dropdown-item text-muted">No new notifications</span></li>
                 }
@@ -68,11 +69,10 @@
             </li>
           </ul>
         </div>
-        }
       </div>
     </nav>
+    }
   </header>
-
   <div class="container-fluid grid-content">
     <div class="row content">
       <!-- Left Sidebar -->

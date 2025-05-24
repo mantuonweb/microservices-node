@@ -1,9 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+$main:#6a503e;
+// Override Bootstrap variables for green theme
+$primary: $main;  // Bootstrap green color
+$success: #218838;  // Darker green for success
+$link-color: $main;
+$component-active-bg: #28a745;
+$progress-bar-bg: #28a745;
+$pagination-active-bg: $main;
+$custom-control-indicator-checked-bg: $main;
+$custom-range-thumb-bg: $main;
+$nav-pills-link-active-bg: $main;
+$dropdown-link-active-bg: $main;
+
+// Import Bootstrap (variables must be defined before this import)
+@import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
-html,body,app-root {
+html, body, app-root {
     height: 100vh;
 }
 .container {
     min-width: 100% !important;
+}
+.nav-link.active {
+    background-color: $primary !important;
 }

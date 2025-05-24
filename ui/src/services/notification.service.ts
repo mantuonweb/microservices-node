@@ -31,7 +31,7 @@ export class NotificationService implements OnDestroy {
 
     private readonly apiUrl = `${environment.apiUrl}/notifications`;
 
-    constructor(private http: HttpClient , private authService: AuthService) {
+    constructor(private http: HttpClient, private authService: AuthService) {
     }
 
     /**
@@ -134,7 +134,7 @@ export class NotificationService implements OnDestroy {
                 this.clearReconnectTimer();
             };
 
-            this.eventSource.onerror = (error:any) => {
+            this.eventSource.onerror = (error: any) => {
                 this.handleConnectionError(endpoint);
             };
 
@@ -144,14 +144,15 @@ export class NotificationService implements OnDestroy {
             this.handleConnectionError(endpoint);
         }
 
-    }    /**
+    }    
+    /**
      * Handle incoming SSE messages
      */
     private handleEventMessage(event: MessageEvent): void {
         try {
             const data = JSON.parse(event.data);
-            if(!(data.event == 'order.created' || data.event == 'order.updated')){
-               return; 
+            if (!(data.event == 'order.created' || data.event == 'order.updated')) {
+                return;
             }
             const notification: NotificationEvent = {
                 id: data.id || crypto.randomUUID(),
