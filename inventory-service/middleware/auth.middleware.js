@@ -74,6 +74,24 @@ class AuthMiddleware {
           return res.status(401).json({ error: 'No authorization token provided' });
         }
 
+        // Extract Zipkin tracing headers
+        const zipkinHeaders = {};
+        const tracingHeaders = [
+          'x-request-id',
+          'x-b3-traceid',
+          'x-b3-spanid',
+          'x-b3-parentspanid',
+          'x-b3-sampled',
+          'x-b3-flags',
+          'x-ot-span-context'
+        ];
+        
+        tracingHeaders.forEach(header => {
+          if (req.headers[header]) {
+            zipkinHeaders[header] = req.headers[header];
+          }
+        });
+
         // Forward the token to the auth service for validation using axios
         logger.debug(`Validating token with auth service at ${authServiceInstance}/api/auth/profile`);
         const response = await axios({
@@ -81,7 +99,8 @@ class AuthMiddleware {
           url: `${authServiceInstance}/api/auth/profile`,
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'Authorization': token,
+            ...zipkinHeaders // Forward Zipkin tracing headers
           },
           timeout: 5000 // 5 second timeout
         });

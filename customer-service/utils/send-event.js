@@ -54,8 +54,27 @@ class EventSender {
       // Create config object with headers for axios
       const config = { headers: {} };
 
-      // Add headers to the request config
+      // Add authorization header to the request config
       config.headers["authorization"] = headers.authorization;
+      
+      // Forward Zipkin tracing headers if they exist
+      const zipkinHeaders = [
+        'x-b3-traceid',
+        'x-b3-spanid',
+        'x-b3-parentspanid',
+        'x-b3-sampled',
+        'x-b3-flags',
+        'x-request-id',
+        'x-ot-span-context'
+      ];
+      
+      zipkinHeaders.forEach(header => {
+        const headerLower = header.toLowerCase();
+        if (headers[headerLower]) {
+          config.headers[headerLower] = headers[headerLower];
+        }
+      });
+      
       const response = await axios.post(`${serviceUrl}/${realm}`, event, config);
       return response.data;
     } catch (error) {

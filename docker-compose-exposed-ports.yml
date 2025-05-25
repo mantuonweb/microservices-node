@@ -339,7 +339,7 @@ services:
       - "9000:9000"
     environment:
       - NODE_ENV=development
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
+      - ZIPKIN_URL=http://ms-zipkin:9411
     volumes:
       - ./api-gateway:/usr/src/app
     restart: unless-stopped

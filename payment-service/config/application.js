@@ -3,7 +3,8 @@ const cors = require('cors');
 const paymentRoutes = require('../routes/payment.routes');
 const mongoClient = require('../utils/MongoConnectionClient');
 const AuthMiddleware = require('../middleware/auth.middleware');
-
+const ZipkinHelper = require('../utils/ZipkinHelper');
+const SERVICE_NAME = 'payment-service';
 const configureApp = () => {
     const app = express();
     const PORT = process.env.PORT || 3007;
@@ -13,6 +14,9 @@ const configureApp = () => {
     app.use(new AuthMiddleware().authenticate());
     // Initialize MongoDB connection
     mongoClient.getInstance().connect();
+    // Initialize Zipkin using the helper class
+    const zipkinHelper = new ZipkinHelper(SERVICE_NAME);
+    zipkinHelper.initialize(app);
     // Configure routes
     app.use('/api/payments', paymentRoutes);
 

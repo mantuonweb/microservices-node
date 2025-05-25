@@ -4,6 +4,8 @@ const queryRoutes = require('../routes/query.routes');
 const AuthMiddleware = require('../middleware/auth.middleware');
 const RedisClient = require('../lib/RedisClient');
 const notificationService = require('../lib/notification-manager');
+const ZipkinHelper = require('../utils/ZipkinHelper');
+const SERVICE_NAME = 'query-service';
 const configureApp = () => {
   const app = express();
   const PORT = process.env.PORT || 3001;
@@ -20,7 +22,9 @@ const configureApp = () => {
     console.error('Error initializing Redis client:', error);
   }
   manageNotifications();
-
+  // Initialize Zipkin using the helper class
+  const zipkinHelper = new ZipkinHelper(SERVICE_NAME);
+  zipkinHelper.initialize(app);
   // Configure routes
   app.use('/api/query', queryRoutes);
 

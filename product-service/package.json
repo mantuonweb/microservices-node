@@ -18,7 +18,11 @@
     "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3",
     "winston-loki": "^6.1.3",
-    "winston-mongodb": "^6.0.0"
+    "winston-mongodb": "^6.0.0",
+     "zipkin": "^0.22.0",
+    "zipkin-context-cls": "^0.22.0",
+    "zipkin-instrumentation-express": "^0.22.0",
+    "zipkin-transport-http": "^0.22.0"
   },
   "scripts": {
     "start": "node server.js",

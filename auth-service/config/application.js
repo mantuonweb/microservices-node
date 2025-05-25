@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('../routes/auth.routes');
 const mongoClient = require('../utils/MongoConnectionClient');
+const ZipkinHelper = require('../utils/ZipkinHelper');
+
+const SERVICE_NAME = 'auth-service';
 
 const configureApp = () => {
     const app = express();
@@ -9,6 +12,11 @@ const configureApp = () => {
     // Configure middleware
     app.use(express.json());
     app.use(cors());
+    
+    // Initialize Zipkin using the helper class
+    const zipkinHelper = new ZipkinHelper(SERVICE_NAME);
+    zipkinHelper.initialize(app);
+    
     // Initialize MongoDB connection
     mongoClient.getInstance().connect();
     // Configure routes

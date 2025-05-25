@@ -11,6 +11,16 @@ class EventSender {
       promisify: true,
     });
     this.eventServiceUrl = {};
+    // Define Zipkin headers that should be propagated
+    this.zipkinHeaders = [
+      'x-b3-traceid',
+      'x-b3-spanid',
+      'x-b3-parentspanid',
+      'x-b3-sampled',
+      'x-b3-flags',
+      'x-request-id',
+      'x-ot-span-context'
+    ];
   }
 
   async getServiceUrl(serviceId) {
@@ -54,8 +64,20 @@ class EventSender {
       // Create config object with headers for axios
       const config = { headers: {} };
 
-      // Add headers to the request config
-      config.headers["authorization"] = headers.authorization;
+      // Add authorization header
+      if (headers.authorization) {
+        config.headers["authorization"] = headers.authorization;
+      }
+      
+      // Forward Zipkin tracing headers if they exist
+      this.zipkinHeaders.forEach(header => {
+        const headerValue = headers[header] || headers[header.toLowerCase()];
+        if (headerValue) {
+          config.headers[header.toLowerCase()] = headerValue;
+          logger.debug(`Forwarding tracing header: ${header}`);
+        }
+      });
+
       if (method) {
         const axiosMethod = axios[method];
         const response = await axiosMethod(`${serviceUrl}/${realm}`, event, config);

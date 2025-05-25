@@ -54,15 +54,32 @@ class EventSender {
       // Create config object with headers for axios
       const config = { headers: {} };
 
-      // Add headers to the request config
+      // Add authorization header to the request config
       config.headers["authorization"] = headers.authorization;
+      
+      // Add B3 distributed tracing headers if they exist
+      const tracingHeaders = [
+        'x-b3-traceid',
+        'x-b3-spanid',
+        'x-b3-parentspanid',
+        'x-b3-sampled',
+        'x-b3-flags'
+      ];
+      
+      tracingHeaders.forEach(header => {
+        if (headers[header]) {
+          config.headers[header] = headers[header];
+        }
+      });
+
       if (method) {
         if (method === 'get') {
-          const response = await axios.get(`${serviceUrl}/${realm}`,config);
+          const response = await axios.get(`${serviceUrl}/${realm}`, config);
           return response.data;
         } else {
           const axiosMethod = axios[method];
-          const response = await axiosMethod(`${serviceUrl}/${realm}`, config);
+          // Pass the event data for non-GET methods
+          const response = await axiosMethod(`${serviceUrl}/${realm}`, event, config);
           return response.data;
         }
       } else {
@@ -70,7 +87,7 @@ class EventSender {
         return response.data;
       }
     } catch (error) {
-      logger.error('Error sending event');
+      logger.error(`Error sending event to ${serviceId}/${realm}: ${error.message}`);
       throw error;
     }
   }

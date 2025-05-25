@@ -7,12 +7,98 @@ const logger = require('./utils/logger');
 const cors = require('cors');
 const os = require('os');
 
+// Zipkin imports
+const { Tracer, BatchRecorder, jsonEncoder: { JSON_V2 } } = require('zipkin');
+const CLSContext = require('zipkin-context-cls');
+const { HttpLogger } = require('zipkin-transport-http');
+const zipkinMiddleware = require('zipkin-instrumentation-express').expressMiddleware;
+
+// Add these functions before the ApiGateway class definition
+function createTracingProxy(tracer, options) {
+  const { target, pathRewrite, ...otherOptions } = options;
+  
+  return createProxyMiddleware({
+    target,
+    pathRewrite,
+    changeOrigin: true,
+    ...otherOptions,
+    onProxyReq: (proxyReq, req, res) => {
+      // Add request ID
+      proxyReq.setHeader('X-Gateway-Request-ID', Date.now().toString());
+      // Forward all original headers
+      Object.keys(req.headers).forEach(header => {
+        proxyReq.setHeader(header, req.headers[header]);
+      });
+      
+      // Check if Zipkin trace headers exist, if not create them
+      if (!req.headers['x-b3-traceid']) {
+        // Generate trace IDs in the correct format for Zipkin
+        const { traceId, spanId } = generateZipkinIds();
+        
+        // Add the trace headers to both the proxy request and the original request
+        proxyReq.setHeader('x-b3-traceid', traceId);
+        proxyReq.setHeader('x-b3-spanid', spanId);
+        proxyReq.setHeader('x-b3-sampled', '1');
+        
+        req.headers['x-b3-traceid'] = traceId;
+        req.headers['x-b3-spanid'] = spanId;
+        req.headers['x-b3-sampled'] = '1';
+        
+        logger.info(`Created new trace ID: ${traceId} for request to ${req.path}`);
+      } else {
+        // Ensure all existing Zipkin B3 headers are properly propagated
+        const zipkinHeaders = [
+          'x-b3-traceid',
+          'x-b3-spanid',
+          'x-b3-parentspanid',
+          'x-b3-sampled',
+          'x-b3-flags'
+        ];
+        
+        zipkinHeaders.forEach(header => {
+          if (req.headers[header]) {
+            proxyReq.setHeader(header, req.headers[header]);
+          }
+        });
+        console.log(req.headers, 'req.headers after')
+        logger.info(`Propagating existing trace ID: ${req.headers['x-b3-traceid']} for request to ${req.path}`);
+      }
+      
+      // Call the original onProxyReq if provided
+      if (options.onProxyReq) {
+        options.onProxyReq(proxyReq, req, res);
+      }
+    }
+  });
+}
+
+// Generate Zipkin compatible trace and span IDs
+function generateZipkinIds() {
+  // Zipkin trace IDs are 16 or 32 hex characters (64 or 128 bits)
+  // Span IDs are 16 hex characters (64 bits)
+  
+  // For compatibility with the format you showed, we'll use this approach:
+  const timestamp = Date.now().toString(16).padStart(12, '0');
+  const randomPart = Math.floor(Math.random() * 0xFFFFFFFFFFFF).toString(16).padStart(12, '0');
+  
+  // Combine timestamp and random parts for a 24-character trace ID
+  const traceId = timestamp + randomPart;
+  
+  // For span ID, use a different random value (16 chars)
+  const spanId = Math.floor(Math.random() * 0xFFFFFFFFFFFFFFFF).toString(16).padStart(16, '0');
+  
+  return { traceId, spanId };
+}
+
 class ApiGateway {
   constructor() {
     this.app = express();
     this.PORT = process.env.PORT || 9000;
     this.SERVICE_NAME = 'api-gateway';
     this.serviceId = `${this.SERVICE_NAME}-${this.PORT}-${os.hostname()}`;
+
+    // Initialize Zipkin
+    this.initZipkin();
 
     // Service configuration object
     this.serviceConfig = {
@@ -67,6 +153,25 @@ class ApiGateway {
     process.on('SIGINT', () => this.shutdown());
 
     this.init();
+  }
+
+  initZipkin() {
+    // Create a Zipkin tracer
+    const zipkinUrl = process.env.ZIPKIN_URL || 'http://localhost:9411';
+    const recorder = new BatchRecorder({
+      logger: new HttpLogger({
+        endpoint: `${zipkinUrl}/api/v2/spans`,
+        jsonEncoder: JSON_V2
+      })
+    });
+
+    const ctxImpl = new CLSContext('zipkin');
+    this.tracer = new Tracer({ ctxImpl, recorder, localServiceName: this.SERVICE_NAME });
+    
+    // Add Zipkin middleware to express
+    this.app.use(zipkinMiddleware({ tracer: this.tracer }));
+    
+    logger.info(`Zipkin tracing initialized with endpoint: ${zipkinUrl}`);
   }
 
   init() {
@@ -216,23 +321,13 @@ class ApiGateway {
       // Use cached proxy or create new one
       const cacheKey = `${serviceName}-${target}`;
       if (!this.proxyCache[cacheKey]) {
-        this.proxyCache[cacheKey] = createProxyMiddleware({
+        this.proxyCache[cacheKey] = createTracingProxy(this.tracer, {
           target,
-          changeOrigin: true,
           pathRewrite: {
             [`^${pathPrefix}`]: pathPrefix,
           },
           cookieDomainRewrite: {
             '*': '', // This rewrites cookie domains from the target to the current domain
-          },
-          onProxyReq: (proxyReq, req, res) => {
-            // Add request ID
-            proxyReq.setHeader('X-Gateway-Request-ID', Date.now().toString());
-
-            // Forward all original headers
-            Object.keys(req.headers).forEach(header => {
-              proxyReq.setHeader(header, req.headers[header]);
-            });
           },
           onError: (err, req, res) => {
             res.status(500).json({ error: `Service ${serviceName} error: ${err.message}` });

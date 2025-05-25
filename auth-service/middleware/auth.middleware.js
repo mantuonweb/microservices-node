@@ -2,6 +2,17 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 const Token = require('../models/token.model');
 
+// Zipkin B3 propagation headers
+const ZIPKIN_HEADERS = [
+  'x-request-id',
+  'x-b3-traceid',
+  'x-b3-spanid',
+  'x-b3-parentspanid',
+  'x-b3-sampled',
+  'x-b3-flags',
+  'x-ot-span-context'
+];
+
 class AuthMiddleware {
   constructor() {
     this.verifyToken = this.verifyToken.bind(this);
@@ -13,6 +24,17 @@ class AuthMiddleware {
       AuthMiddleware.instance = new AuthMiddleware();
     }
     return AuthMiddleware.instance;
+  }
+
+  // Extract Zipkin headers from request
+  extractZipkinHeaders(req) {
+    const zipkinHeaders = {};
+    ZIPKIN_HEADERS.forEach(header => {
+      if (req.headers[header]) {
+        zipkinHeaders[header] = req.headers[header];
+      }
+    });
+    return zipkinHeaders;
   }
 
   async verifyToken(req, res, next) {
@@ -46,6 +68,9 @@ class AuthMiddleware {
         roles: user.roles
       };
       
+      // Extract and store Zipkin headers in the request for forwarding
+      req.zipkinHeaders = this.extractZipkinHeaders(req);
+      
       next();
     } catch (error) {
       console.error('Authentication error:', error);
@@ -67,6 +92,15 @@ class AuthMiddleware {
       
       next();
     };
+  }
+
+  // Helper method to forward Zipkin headers to downstream services
+  forwardZipkinHeaders(req) {
+    if (!req.zipkinHeaders) {
+      return {};
+    }
+    
+    return req.zipkinHeaders;
   }
 }
 module.exports = AuthMiddleware
