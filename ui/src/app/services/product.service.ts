@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 })
 export class ProductService {
   private apiUrl = `${environment.apiUrl}/products`;
+  private apiUrlFetch = `${environment.apiUrl}/query/products`;
 
   constructor(private http: HttpClient) { }
 
@@ -15,7 +16,7 @@ export class ProductService {
    * Get all products from the backend
    */
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    return this.http.get<Product[]>(this.apiUrlFetch);
   }
 
   /**
