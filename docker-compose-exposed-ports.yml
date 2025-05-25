@@ -61,6 +61,7 @@ services:
     environment:
       - NODE_ENV=dev
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+      - ZIPKIN_URL=http://ms-zipkin:9411
     volumes:
       - ./config-service:/usr/src/app
     restart: unless-stopped
@@ -81,6 +82,7 @@ services:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./product-service:/usr/src/app
     restart: unless-stopped
@@ -105,6 +107,7 @@ services:
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./order-service:/usr/src/app
     restart: unless-stopped
@@ -130,6 +133,7 @@ services:
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./customer-service:/usr/src/app
     restart: unless-stopped
@@ -155,6 +159,7 @@ services:
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./payment-service:/usr/src/app
     restart: unless-stopped
@@ -180,6 +185,7 @@ services:
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./inventory-service:/usr/src/app
     restart: unless-stopped
@@ -204,6 +210,7 @@ services:
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./auth-service:/usr/src/app
     restart: unless-stopped
@@ -228,6 +235,7 @@ services:
     environment:
       - NODE_ENV=dev
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./notification-service:/usr/src/app
     restart: unless-stopped
@@ -252,6 +260,7 @@ services:
     environment:
       - NODE_ENV=dev
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./query-manager:/usr/src/app
     restart: unless-stopped
@@ -330,6 +339,7 @@ services:
       - "9000:9000"
     environment:
       - NODE_ENV=development
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./api-gateway:/usr/src/app
     restart: unless-stopped
@@ -342,6 +352,24 @@ services:
       - notification-service
     networks:
       - microservice-network
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: ms-zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      - STORAGE_TYPE=mem
+    restart: unless-stopped
+    networks:
+      - microservice-network
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9411/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
 volumes:
   mongodb_data:
   rabbitmq_data:
