@@ -19,7 +19,7 @@ class ProductController {
       const filteredData = {
         _id: data.id || data._id, // Include id if provided
         name: data.name,
-        amount: data.price
+        price: data.price
       };
 
       const product = new Product(filteredData);
