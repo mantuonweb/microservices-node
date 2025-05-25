@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const actuator = require('express-actuator');
 const productRoutes = require('../routes/product.routes');
 const logger = require('../utils/logger');
 const mongoClient = require('../utils/MongoConnectionClient');
@@ -14,8 +15,9 @@ const configureApp = () => {
   // Configure middleware
   app.use(express.json());
   app.use(cors());
+  app.use(actuator('/management'));
   app.use(new AuthMiddleware().authenticate());
-  
+
   // Initialize MongoDB connection
   mongoClient.getInstance().connect();
   // Initialize Zipkin using the helper class

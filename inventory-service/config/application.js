@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const actuator = require('express-actuator');
 const inventoryRoutes = require('../routes/inventory.routes');
 const productRoutes = require('../routes/product.routes');
 const mongoClient = require('../utils/MongoConnectionClient');
@@ -14,6 +15,7 @@ const configureApp = () => {
   // Configure middleware
   app.use(express.json());
   app.use(cors());
+  app.use(actuator('/management'));
   app.use(new AuthMiddleware().authenticate());
   // Initialize MongoDB connection
   mongoClient.getInstance().connect();

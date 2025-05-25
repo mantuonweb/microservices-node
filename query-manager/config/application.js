@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const actuator = require('express-actuator');
 const queryRoutes = require('../routes/query.routes');
 const AuthMiddleware = require('../middleware/auth.middleware');
 const RedisClient = require('../lib/RedisClient');
@@ -13,6 +14,7 @@ const configureApp = () => {
   // Configure middleware
   app.use(express.json());
   app.use(cors());
+  app.use(actuator('/management'));
   app.use(new AuthMiddleware().authenticate());
   try {
     const redisClient = RedisClient.getInstance();
