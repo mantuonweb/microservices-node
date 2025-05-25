@@ -20,7 +20,7 @@ class NotificationController {
         connectedClients: this.clients.size
       });
     }
-    
+
     // If it's an initialization request
     if (req.method === 'POST' && req.path.endsWith('/init')) {
       if (this.isListening) {
@@ -29,30 +29,40 @@ class NotificationController {
           message: 'Notification service already initialized'
         });
       }
-      
+
       try {
         // Connect to the notification service
         await notificationService.getInstance().connect();
-        
+
         // Register handler for order.created event
         notificationService.getInstance().registerHandler('order.created', (notification) => {
           logger.info(`Order created notification received: ${JSON.stringify(notification.data)}`);
-          
-          // Broadcast to all connected clients
-          this.clients.forEach((client) => {
+          const email = notification?.data?.customer?.email;
+          if (email) {
+            const client = this.clients.get(email);
             client.write(`data: ${JSON.stringify({
               event: 'order.created',
               data: notification.data,
               timestamp: new Date().toISOString()
             })}\n\n`);
-          });
+          }
         });
-        
+
+        setInterval(() => {
+          this.clients.forEach((client) => {
+            client.write(`data: ${JSON.stringify({
+              event: 'status',
+              data: 'healthy',
+              timestamp: new Date().toISOString()
+            })}\n\n`);
+          });
+        }, 5000);
+
         // Start listening for events
         await notificationService.getInstance().startListening();
         this.isListening = true;
         logger.info('Notification service initialized successfully');
-        
+
         return res.status(200).json({
           success: true,
           message: 'Notification service initialized successfully',
@@ -66,7 +76,7 @@ class NotificationController {
         });
       }
     }
-    
+
     // If it's an SSE connection request
     if (req.method === 'GET' && req.path.endsWith('/events')) {
       // Check if service is initialized
@@ -76,35 +86,34 @@ class NotificationController {
           message: 'Notification service not initialized'
         });
       }
-      
+
       // Set headers for SSE
       res.setHeader('Content-Type', 'text/event-stream');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Connection', 'keep-alive');
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.flushHeaders();
-      
-      const clientId = 'client_' + new Date;
+      const clientId = (req?.user?.email) ?? (new Date().getTime() + 'notifications');
       logger.info(`New SSE client connected: ${clientId}`);
-      
+
       // Store client
       this.clients.set(clientId, res);
-      
+
       // Send initial connection message
       res.write(`data: ${JSON.stringify({
         event: 'connection',
         message: 'Connected to notification service'
       })}\n\n`);
-      
+
       // Handle client disconnection
       req.on('close', () => {
         this.clients.delete(clientId);
         logger.info(`SSE client disconnected: ${clientId}`);
       });
-      
+
       return; // Keep connection open
     }
-    
+
     // If it's not a recognized request
     return res.status(404).json({
       success: false,
