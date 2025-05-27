@@ -39,14 +39,18 @@ if (isMongoLogging) {
 
 // Add Loki transport for visualization
 if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'dev') {
-  logger.add(new LokiTransport({
-    host: process.env.LOKI_URL || 'http://ms-loki:3100',
-    labels: { job: 'order-service' },
-    json: true,
-    format: format.json(),
-    replaceTimestamp: true,
-    onConnectionError: (err) => console.error(err)
-  }));
+  try {
+    logger.add(new LokiTransport({
+      host: process.env.LOKI_URL || 'http://ms-loki:3100',
+      labels: { job: 'order-service' },
+      json: true,
+      format: format.json(),
+      replaceTimestamp: true,
+      onConnectionError: (err) => console.error(err)
+    }));
+  } catch (error) {
+    console.error('Error adding Loki transport:', error);
+  }
 }
 
 module.exports = logger;
