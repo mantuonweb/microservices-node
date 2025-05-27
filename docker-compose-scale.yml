@@ -1,0 +1,57 @@
+services:
+  # Keep all other services the same, but modify product-service and customer-service
+  
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    # Remove container_name to allow scaling
+    # Remove external port mapping, only expose internally
+    expose:
+      - "3001"
+    environment:
+      - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
+    volumes:
+      - ./product-service:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+    networks:
+      - microservice-network
+  
+  customer-service:
+    build:
+      context: ./customer-service
+      dockerfile: Dockerfile
+    # Remove container_name to allow scaling
+    # Remove external port mapping, only expose internally
+    expose:
+      - "3002"
+    environment:
+      - NODE_ENV=dev
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
+      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
+    volumes:
+      - ./customer-service:/usr/src/app
+    restart: unless-stopped
+    depends_on:
+      consul:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      config-service:
+        condition: service_started
+    networks:
+      - microservice-network

@@ -1,0 +1,1327 @@
+{
+	"info": {
+		"_postman_id": "0075ada8-9676-448c-968f-ed842dc91510",
+		"name": "Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28851115"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Logon",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"mantuonweb\",\r\n  \"password\": \"test@123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/login",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/profile",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"mantuonweb\",\r\n  \"email\": \"mantuonweb@gmail.com\",\r\n  \"password\": \"test@123\",\r\n  \"roles\": [\"user\", \"admin\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/register",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/auth/profile",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random 64-bit trace ID (16 hex characters)",
+							"function generateTraceId() {",
+							"    let traceId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        traceId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return traceId;",
+							"}",
+							"",
+							"// Generate a random 64-bit span ID (16 hex characters)",
+							"function generateSpanId() {",
+							"    let spanId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        spanId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return spanId;",
+							"}",
+							"",
+							"// Generate Zipkin headers",
+							"const traceId = generateTraceId();",
+							"const spanId = generateSpanId();",
+							"const parentSpanId = null; // Set to null for the first span or provide a parent span ID",
+							"",
+							"// Set the Zipkin headers",
+							"pm.request.headers.add({ key: 'X-B3-TraceId', value: traceId });",
+							"pm.request.headers.add({ key: 'X-B3-SpanId', value: spanId });",
+							"",
+							"// Only add parent span ID if it exists",
+							"if (parentSpanId) {",
+							"    pm.request.headers.add({ key: 'X-B3-ParentSpanId', value: parentSpanId });",
+							"}",
+							"",
+							"// Set sampling to 1 to ensure the trace is recorded",
+							"pm.request.headers.add({ key: 'X-B3-Sampled', value: '1' });",
+							"",
+							"// Optional: Log the generated IDs for debugging",
+							"console.log('Generated Zipkin headers:');",
+							"console.log('X-B3-TraceId:', traceId);",
+							"console.log('X-B3-SpanId:', spanId);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Get data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/customers",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"customers"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Post data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Mantu\",\n    \"lastName\": \"Nigam\",\n    \"email\": \"test@gmail.com\",\n    \"username\": \"test\",\n    \"phone\": \"5551234567\",\n    \"address\": {\n        \"street\": \"123 Main Street\",\n        \"city\": \"New York\",\n        \"state\": \"NY\",\n        \"zipCode\": \"10001\",\n        \"country\": \"USA\"\n    },\n    \"createdAt\": \"2025-04-14T04:24:56.745Z\",\n    \"updatedAt\": \"2025-04-14T04:24:56.745Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/customers",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"customers"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random 64-bit trace ID (16 hex characters)",
+							"function generateTraceId() {",
+							"    let traceId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        traceId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return traceId;",
+							"}",
+							"",
+							"// Generate a random 64-bit span ID (16 hex characters)",
+							"function generateSpanId() {",
+							"    let spanId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        spanId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return spanId;",
+							"}",
+							"",
+							"// Generate Zipkin headers",
+							"const traceId = generateTraceId();",
+							"const spanId = generateSpanId();",
+							"const parentSpanId = null; // Set to null for the first span or provide a parent span ID",
+							"",
+							"// Set the Zipkin headers",
+							"pm.request.headers.add({ key: 'X-B3-TraceId', value: traceId });",
+							"pm.request.headers.add({ key: 'X-B3-SpanId', value: spanId });",
+							"",
+							"// Only add parent span ID if it exists",
+							"if (parentSpanId) {",
+							"    pm.request.headers.add({ key: 'X-B3-ParentSpanId', value: parentSpanId });",
+							"}",
+							"",
+							"// Set sampling to 1 to ensure the trace is recorded",
+							"pm.request.headers.add({ key: 'X-B3-Sampled', value: '1' });",
+							"",
+							"// Optional: Log the generated IDs for debugging",
+							"console.log('Generated Zipkin headers:');",
+							"console.log('X-B3-TraceId:', traceId);",
+							"console.log('X-B3-SpanId:', spanId);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Event",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"mantu\",\r\n  \"password\": \"test@123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/events/sync",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"sync"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Inventory List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/inventories",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"inventories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Inventory",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": \"6832bb3fd89b9e5440b7faff\",\r\n  \"quantity\": 899999999,\r\n  \"lastUpdated\": \"2023-07-15T10:30:45.000Z\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/inventories",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"inventories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\":\"6832be3051167a261c61e81f\",\r\n    \"quantity\":77878787878\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/inventories/6832be3051167a261c61e81f",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"inventories",
+								"6832be3051167a261c61e81f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-multi",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"productId\": \"6832bb3fd89b9e5440b7faff\",\r\n        \"quantity\": 1\r\n    },\r\n    {\r\n         \"productId\": \"6820918b0f5500be853bfad6\",\r\n        \"quantity\": 1\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/inventories/update-multiple-quantities",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"inventories",
+								"update-multiple-quantities"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random 64-bit trace ID (16 hex characters)",
+							"function generateTraceId() {",
+							"    let traceId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        traceId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return traceId;",
+							"}",
+							"",
+							"// Generate a random 64-bit span ID (16 hex characters)",
+							"function generateSpanId() {",
+							"    let spanId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        spanId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return spanId;",
+							"}",
+							"",
+							"// Generate Zipkin headers",
+							"const traceId = generateTraceId();",
+							"const spanId = generateSpanId();",
+							"const parentSpanId = null; // Set to null for the first span or provide a parent span ID",
+							"",
+							"// Set the Zipkin headers",
+							"pm.request.headers.add({ key: 'X-B3-TraceId', value: traceId });",
+							"pm.request.headers.add({ key: 'X-B3-SpanId', value: spanId });",
+							"",
+							"// Only add parent span ID if it exists",
+							"if (parentSpanId) {",
+							"    pm.request.headers.add({ key: 'X-B3-ParentSpanId', value: parentSpanId });",
+							"}",
+							"",
+							"// Set sampling to 1 to ensure the trace is recorded",
+							"pm.request.headers.add({ key: 'X-B3-Sampled', value: '1' });",
+							"",
+							"// Optional: Log the generated IDs for debugging",
+							"console.log('Generated Zipkin headers:');",
+							"console.log('X-B3-TraceId:', traceId);",
+							"console.log('X-B3-SpanId:', spanId);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Order List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/orders",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"customer\": {\r\n    \"name\": \"Mantu Nigam\",\r\n    \"email\": \"mantuonweb@gmail.com\",\r\n    \"address\": \"123 Main Street, Anytown, USA\"\r\n  },\r\n  \"mode\":\"CREDIT_CARD\",\r\n  \"products\": [\r\n    {\r\n      \"id\": \"68297e24b7dbc8c79d883a3f\",\r\n      \"quantity\": 2\r\n    },\r\n    {\r\n      \"id\": \"6828a403179b1511edc47c0e\",\r\n      \"quantity\": 2\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/orders",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"iPad 98t\",\n    \"price\": 99.992,\n    \"description\": \"iPad with great features\",\n    \"_id\": \"682b6febc46e69dabcc7ea2e\",\n    \"__v\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/orders/products",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "inventory add product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"iPad 98t\",\n    \"price\": 99.992,\n    \"description\": \"iPad with great features\",\n    \"_id\": \"682b6febc46e69dabcc7ea2e\",\n    \"__v\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/inventories/products",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"inventories",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random 64-bit trace ID (16 hex characters)",
+							"function generateTraceId() {",
+							"    let traceId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        traceId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return traceId;",
+							"}",
+							"",
+							"// Generate a random 64-bit span ID (16 hex characters)",
+							"function generateSpanId() {",
+							"    let spanId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        spanId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return spanId;",
+							"}",
+							"",
+							"// Generate Zipkin headers",
+							"const traceId = generateTraceId();",
+							"const spanId = generateSpanId();",
+							"const parentSpanId = null; // Set to null for the first span or provide a parent span ID",
+							"",
+							"// Set the Zipkin headers",
+							"pm.request.headers.add({ key: 'X-B3-TraceId', value: traceId });",
+							"pm.request.headers.add({ key: 'X-B3-SpanId', value: spanId });",
+							"",
+							"// Only add parent span ID if it exists",
+							"if (parentSpanId) {",
+							"    pm.request.headers.add({ key: 'X-B3-ParentSpanId', value: parentSpanId });",
+							"}",
+							"",
+							"// Set sampling to 1 to ensure the trace is recorded",
+							"pm.request.headers.add({ key: 'X-B3-Sampled', value: '1' });",
+							"",
+							"// Optional: Log the generated IDs for debugging",
+							"console.log('Generated Zipkin headers:');",
+							"console.log('X-B3-TraceId:', traceId);",
+							"console.log('X-B3-SpanId:', spanId);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "List Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/products",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Samsung Galaxy 23\",\r\n  \"price\": 89.992,\r\n  \"description\": \"Speedster of performace\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/products",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random 64-bit trace ID (16 hex characters)",
+							"function generateTraceId() {",
+							"    let traceId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        traceId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return traceId;",
+							"}",
+							"",
+							"// Generate a random 64-bit span ID (16 hex characters)",
+							"function generateSpanId() {",
+							"    let spanId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        spanId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return spanId;",
+							"}",
+							"",
+							"// Generate Zipkin headers",
+							"const traceId = generateTraceId();",
+							"const spanId = generateSpanId();",
+							"const parentSpanId = null; // Set to null for the first span or provide a parent span ID",
+							"",
+							"// Set the Zipkin headers",
+							"pm.request.headers.add({ key: 'X-B3-TraceId', value: traceId });",
+							"pm.request.headers.add({ key: 'X-B3-SpanId', value: spanId });",
+							"",
+							"// Only add parent span ID if it exists",
+							"if (parentSpanId) {",
+							"    pm.request.headers.add({ key: 'X-B3-ParentSpanId', value: parentSpanId });",
+							"}",
+							"",
+							"// Set sampling to 1 to ensure the trace is recorded",
+							"pm.request.headers.add({ key: 'X-B3-Sampled', value: '1' });",
+							"",
+							"// Optional: Log the generated IDs for debugging",
+							"console.log('Generated Zipkin headers:');",
+							"console.log('X-B3-TraceId:', traceId);",
+							"console.log('X-B3-SpanId:', spanId);"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"orderId\":\"68220d0fba7b9ffb14840581\",\"customerId\":\"mantu.nigam@gmail.com.com\",\"amount\":441.964,\"paymentMethod\":\"CREDIT_CARD\",\"transactionId\":\"tx1747062032045\"}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{gateway_url}}/api/payments",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/payments",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random 64-bit trace ID (16 hex characters)",
+							"function generateTraceId() {",
+							"    let traceId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        traceId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return traceId;",
+							"}",
+							"",
+							"// Generate a random 64-bit span ID (16 hex characters)",
+							"function generateSpanId() {",
+							"    let spanId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        spanId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return spanId;",
+							"}",
+							"",
+							"// Generate Zipkin headers",
+							"const traceId = generateTraceId();",
+							"const spanId = generateSpanId();",
+							"const parentSpanId = null; // Set to null for the first span or provide a parent span ID",
+							"",
+							"// Set the Zipkin headers",
+							"pm.request.headers.add({ key: 'X-B3-TraceId', value: traceId });",
+							"pm.request.headers.add({ key: 'X-B3-SpanId', value: spanId });",
+							"",
+							"// Only add parent span ID if it exists",
+							"if (parentSpanId) {",
+							"    pm.request.headers.add({ key: 'X-B3-ParentSpanId', value: parentSpanId });",
+							"}",
+							"",
+							"// Set sampling to 1 to ensure the trace is recorded",
+							"pm.request.headers.add({ key: 'X-B3-Sampled', value: '1' });",
+							"",
+							"// Optional: Log the generated IDs for debugging",
+							"console.log('Generated Zipkin headers:');",
+							"console.log('X-B3-TraceId:', traceId);",
+							"console.log('X-B3-SpanId:', spanId);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Query-Manager",
+			"item": [
+				{
+					"name": "All Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/query/order-by-email/mantuonweb@gmail.com",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"query",
+								"order-by-email",
+								"mantuonweb@gmail.com"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "All Orders",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-B3-TraceId",
+										"value": "{{$guid}}",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-B3-SpanId",
+										"value": "{{$guid}}",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-B3-Sampled",
+										"value": "1",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{gateway_url}}/api/query/order-by-email/mantuonweb@gmail.com",
+									"host": [
+										"{{gateway_url}}"
+									],
+									"path": [
+										"api",
+										"query",
+										"order-by-email",
+										"mantuonweb@gmail.com"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Expose-Headers",
+									"value": "*"
+								},
+								{
+									"key": "RateLimit-Policy",
+									"value": "100;w=60"
+								},
+								{
+									"key": "RateLimit-Limit",
+									"value": "100"
+								},
+								{
+									"key": "RateLimit-Remaining",
+									"value": "98"
+								},
+								{
+									"key": "RateLimit-Reset",
+									"value": "45"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "13267"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"33d3-dBYiSa8KebToTrI2jfFHLn8HI1A\""
+								},
+								{
+									"key": "date",
+									"value": "Mon, 26 May 2025 11:57:53 GMT"
+								},
+								{
+									"key": "connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "keep-alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"123 Main Street, Anytown, USA\"\n        },\n        \"_id\": \"68297e54fcf1ac68620a2f17\",\n        \"products\": [\n            {\n                \"id\": \"68297e24b7dbc8c79d883a3f\",\n                \"name\": \"iPad 98\",\n                \"quantity\": 2,\n                \"_id\": \"68297e54fcf1ac68620a2f18\",\n                \"price\": 99.992,\n                \"description\": \"iPad with great features\"\n            },\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 2,\n                \"_id\": \"68297e54fcf1ac68620a2f19\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 399.968,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-18T06:29:40.964Z\",\n        \"updatedAt\": \"2025-05-18T06:29:41.019Z\",\n        \"__v\": 0,\n        \"paymentId\": \"68297e54bcf9f1d8fc3033f9\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1747549782999\",\n            \"processedAt\": \"2025-05-18T06:29:43.001Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"123 Main Street, Anytown, USA\"\n        },\n        \"_id\": \"682b77fcc8dc46f9263e673a\",\n        \"products\": [\n            {\n                \"id\": \"68297e24b7dbc8c79d883a3f\",\n                \"name\": \"iPad 98\",\n                \"quantity\": 2,\n                \"_id\": \"682b77fcc8dc46f9263e673b\",\n                \"price\": 99.992,\n                \"description\": \"iPad with great features\"\n            },\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 2,\n                \"_id\": \"682b77fcc8dc46f9263e673c\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 399.968,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-19T18:27:08.831Z\",\n        \"updatedAt\": \"2025-05-19T18:27:08.910Z\",\n        \"__v\": 0,\n        \"paymentId\": \"682b77fca006d5008f409056\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1747679230868\",\n            \"processedAt\": \"2025-05-19T18:27:10.868Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"683140aa925ecb98cd0d4990\",\n        \"products\": [\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 1,\n                \"_id\": \"683140aa925ecb98cd0d4991\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-24T03:44:42.613Z\",\n        \"updatedAt\": \"2025-05-24T03:44:42.717Z\",\n        \"__v\": 0,\n        \"paymentId\": \"683140aae07ae5266c5a3a70\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1748058284663\",\n            \"processedAt\": \"2025-05-24T03:44:44.666Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6831422dfb21ecceb71becc2\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6831422dfb21ecceb71becc3\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            },\n            {\n                \"id\": \"6828b4004828271cfaa748ee\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 1,\n                \"_id\": \"6831422dfb21ecceb71becc4\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 199.984,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-24T03:51:09.616Z\",\n        \"updatedAt\": \"2025-05-24T03:51:09.681Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6831422df941173e7bbd0917\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"tx_1748058671646\",\n            \"processedAt\": \"2025-05-24T03:51:11.647Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"68314602fb21ecceb71becf0\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"68314602fb21ecceb71becf1\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"UPI\",\n        \"createdAt\": \"2025-05-24T04:07:30.583Z\",\n        \"updatedAt\": \"2025-05-24T04:07:30.609Z\",\n        \"__v\": 0,\n        \"paymentId\": \"68314602f941173e7bbd091a\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"UPI\",\n            \"transactionId\": \"tx_1748059652598\",\n            \"processedAt\": \"2025-05-24T04:07:32.601Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"68314a5cfb21ecceb71bed6a\",\n        \"products\": [\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 2,\n                \"_id\": \"68314a5cfb21ecceb71bed6b\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 199.984,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-24T04:26:04.769Z\",\n        \"updatedAt\": \"2025-05-24T04:26:04.809Z\",\n        \"__v\": 0,\n        \"paymentId\": \"68314a5cf941173e7bbd091d\",\n        \"payment\": {\n            \"status\": \"FAILED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"N/A\",\n            \"processedAt\": \"2025-05-24T04:26:06.796Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832941c0823ff7214664600\",\n        \"products\": [\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 1,\n                \"_id\": \"6832941c0823ff7214664601\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-25T03:53:00.764Z\",\n        \"updatedAt\": \"2025-05-25T03:53:00.830Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832941c132557e6a4f440e2\",\n        \"payment\": {\n            \"status\": \"FAILED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"N/A\",\n            \"processedAt\": \"2025-05-25T03:53:02.795Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b2fc2dea70c094b0db99\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6832b2fc2dea70c094b0db9a\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-25T06:04:44.432Z\",\n        \"updatedAt\": \"2025-05-25T06:04:44.499Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b2fcd39ff946cbdfe7d4\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"tx_1748153086468\",\n            \"processedAt\": \"2025-05-25T06:04:46.468Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b4d62dea70c094b0dbaa\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6832b4d62dea70c094b0dbab\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-25T06:12:38.111Z\",\n        \"updatedAt\": \"2025-05-25T06:12:38.148Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b4d6d39ff946cbdfe7d7\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1748153560128\",\n            \"processedAt\": \"2025-05-25T06:12:40.130Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b5cb2dea70c094b0dbaf\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 2,\n                \"_id\": \"6832b5cb2dea70c094b0dbb0\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 199.984,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-25T06:16:43.768Z\",\n        \"updatedAt\": \"2025-05-25T06:16:43.807Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b5cbd39ff946cbdfe7da\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"tx_1748153805789\",\n            \"processedAt\": \"2025-05-25T06:16:45.790Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Jai Chand\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b6902dea70c094b0dbb4\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6832b6902dea70c094b0dbb5\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-25T06:20:00.318Z\",\n        \"updatedAt\": \"2025-05-25T06:20:00.359Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b690d39ff946cbdfe7dd\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"tx_1748154002339\",\n            \"processedAt\": \"2025-05-25T06:20:02.340Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b70d2dea70c094b0dbb9\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6832b70d2dea70c094b0dbba\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-25T06:22:05.080Z\",\n        \"updatedAt\": \"2025-05-25T06:22:05.113Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b70dd39ff946cbdfe7e0\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"tx_1748154127099\",\n            \"processedAt\": \"2025-05-25T06:22:07.101Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b74c2dea70c094b0dbbe\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6832b74c2dea70c094b0dbbf\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-25T06:23:08.047Z\",\n        \"updatedAt\": \"2025-05-25T06:23:08.075Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b74cd39ff946cbdfe7e3\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"tx_1748154190064\",\n            \"processedAt\": \"2025-05-25T06:23:10.065Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b7662dea70c094b0dbc3\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6832b7662dea70c094b0dbc4\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"GPAY\",\n        \"createdAt\": \"2025-05-25T06:23:34.678Z\",\n        \"updatedAt\": \"2025-05-25T06:23:34.706Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b766d39ff946cbdfe7e6\",\n        \"payment\": {\n            \"status\": \"FAILED\",\n            \"method\": \"GPAY\",\n            \"transactionId\": \"N/A\",\n            \"processedAt\": \"2025-05-25T06:23:36.692Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832b8a8227598195e4f9a1e\",\n        \"products\": [\n            {\n                \"id\": \"6828a505179b1511edc47c11\",\n                \"name\": \"iPhone\",\n                \"quantity\": 1,\n                \"_id\": \"6832b8a8227598195e4f9a1f\",\n                \"price\": 99.992,\n                \"description\": \"Just a phone.\"\n            },\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 1,\n                \"_id\": \"6832b8a8227598195e4f9a20\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 199.984,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-25T06:28:56.218Z\",\n        \"updatedAt\": \"2025-05-25T06:28:56.223Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832b8a8d39ff946cbdfe7e9\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1748154538241\",\n            \"processedAt\": \"2025-05-25T06:28:58.242Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832bae6a3319cd1cb59ddc4\",\n        \"products\": [\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 1,\n                \"_id\": \"6832bae6a3319cd1cb59ddc5\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-25T06:38:30.353Z\",\n        \"updatedAt\": \"2025-05-25T06:38:30.361Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832bae6fafdcc5f9f785777\",\n        \"payment\": {\n            \"status\": \"FAILED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"N/A\",\n            \"processedAt\": \"2025-05-25T06:38:32.405Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832bcee2414eaa6f0ca3270\",\n        \"products\": [\n            {\n                \"id\": \"6832bb3fd89b9e5440b7faff\",\n                \"name\": \"Samsung Galaxy 25\",\n                \"quantity\": 1,\n                \"_id\": \"6832bcee2414eaa6f0ca3271\",\n                \"price\": 105.992,\n                \"description\": \"Monster of performace\"\n            }\n        ],\n        \"totalAmount\": 105.56,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-25T06:47:10.331Z\",\n        \"updatedAt\": \"2025-05-25T06:47:10.405Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832bceebea141cc39423d6f\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1748155632365\",\n            \"processedAt\": \"2025-05-25T06:47:12.365Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832bdb6fe793ff5a1c5cff2\",\n        \"products\": [\n            {\n                \"id\": \"6832bd8c51167a261c61e81b\",\n                \"name\": \"Samsung Galaxy 24\",\n                \"quantity\": 2,\n                \"_id\": \"6832bdb6fe793ff5a1c5cff3\",\n                \"price\": 102.992,\n                \"description\": \"Speedster of performace\"\n            }\n        ],\n        \"totalAmount\": 205.984,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-25T06:50:30.783Z\",\n        \"updatedAt\": \"2025-05-25T06:50:30.841Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832bdb6bea141cc39423d72\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1748155832814\",\n            \"processedAt\": \"2025-05-25T06:50:32.816Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832f02080c5a14ae298c79c\",\n        \"products\": [\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 2,\n                \"_id\": \"6832f02080c5a14ae298c79d\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 199.984,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-25T10:25:36.711Z\",\n        \"updatedAt\": \"2025-05-25T10:25:36.775Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832f0206133297be1551282\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1748168738744\",\n            \"processedAt\": \"2025-05-25T10:25:38.745Z\"\n        }\n    },\n    {\n        \"customer\": {\n            \"name\": \"Mantu Nigam\",\n            \"email\": \"mantuonweb@gmail.com\",\n            \"address\": \"F3 Sangam vihar\\nBLOCK F-3 GALI NO 6\"\n        },\n        \"_id\": \"6832f0db80c5a14ae298c7e9\",\n        \"products\": [\n            {\n                \"id\": \"6828a403179b1511edc47c0e\",\n                \"name\": \"Wireless Headphones 4\",\n                \"quantity\": 1,\n                \"_id\": \"6832f0db80c5a14ae298c7ea\",\n                \"price\": 99.992,\n                \"description\": \"Premium wireless headphones with noise cancellation and 20-hour battery life.\"\n            }\n        ],\n        \"totalAmount\": 99.992,\n        \"mode\": \"CREDIT_CARD\",\n        \"createdAt\": \"2025-05-25T10:28:43.247Z\",\n        \"updatedAt\": \"2025-05-25T10:28:43.280Z\",\n        \"__v\": 0,\n        \"paymentId\": \"6832f0db6133297be1551286\",\n        \"payment\": {\n            \"status\": \"COMPLETED\",\n            \"method\": \"CREDIT_CARD\",\n            \"transactionId\": \"tx_1748168925267\",\n            \"processedAt\": \"2025-05-25T10:28:45.269Z\"\n        }\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{gateway_token_m}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/api/query/products",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"api",
+								"query",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random 64-bit trace ID (16 hex characters)",
+							"function generateTraceId() {",
+							"    let traceId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        traceId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return traceId;",
+							"}",
+							"",
+							"// Generate a random 64-bit span ID (16 hex characters)",
+							"function generateSpanId() {",
+							"    let spanId = '';",
+							"    const hexChars = '0123456789abcdef';",
+							"    for (let i = 0; i < 16; i++) {",
+							"        spanId += hexChars.charAt(Math.floor(Math.random() * 16));",
+							"    }",
+							"    return spanId;",
+							"}",
+							"",
+							"// Generate Zipkin headers",
+							"const traceId = generateTraceId();",
+							"const spanId = generateSpanId();",
+							"const parentSpanId = null; // Set to null for the first span or provide a parent span ID",
+							"",
+							"// Set the Zipkin headers",
+							"pm.request.headers.add({ key: 'X-B3-TraceId', value: traceId });",
+							"pm.request.headers.add({ key: 'X-B3-SpanId', value: spanId });",
+							"",
+							"// Only add parent span ID if it exists",
+							"if (parentSpanId) {",
+							"    pm.request.headers.add({ key: 'X-B3-ParentSpanId', value: parentSpanId });",
+							"}",
+							"",
+							"// Set sampling to 1 to ensure the trace is recorded",
+							"pm.request.headers.add({ key: 'X-B3-Sampled', value: '1' });",
+							"",
+							"// Optional: Log the generated IDs for debugging",
+							"console.log('Generated Zipkin headers:');",
+							"console.log('X-B3-TraceId:', traceId);",
+							"console.log('X-B3-SpanId:', spanId);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
