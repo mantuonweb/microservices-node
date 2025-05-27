@@ -61,7 +61,6 @@ services:
     environment:
       - NODE_ENV=dev
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
-      - ZIPKIN_URL=http://ms-zipkin:9411
     volumes:
       - ./config-service:/usr/src/app
     restart: unless-stopped
@@ -75,14 +74,13 @@ services:
     build:
       context: ./product-service
       dockerfile: Dockerfile
-    container_name: ms-product-service
+    # container_name: ms-product-service
     ports:
-      - "3001:3001"
+      - "3001-3500"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./product-service:/usr/src/app
     restart: unless-stopped
@@ -95,19 +93,23 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
   order-service:
     build:
       context: ./order-service
       dockerfile: Dockerfile
-    container_name: ms-order-service
+    # container_name: ms-order-service
     ports:
-      - "3003:3003"
+      - "3003-3500"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
+      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
     volumes:
       - ./order-service:/usr/src/app
     restart: unless-stopped
@@ -120,6 +122,10 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
   
@@ -127,13 +133,12 @@ services:
     build:
       context: ./customer-service
       dockerfile: Dockerfile
-    container_name: ms-customer-service
+    # container_name: ms-customer-service
     ports:
-      - "3002:3002"
+      - "3002-3500"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./customer-service:/usr/src/app
     restart: unless-stopped
@@ -146,6 +151,10 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
   
@@ -153,13 +162,12 @@ services:
     build:
       context: ./payment-service
       dockerfile: Dockerfile
-    container_name: ms-payment-service
+    # container_name: ms-payment-service
     ports:
-      - "3007:3007"
+      - "3007-3500"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./payment-service:/usr/src/app
     restart: unless-stopped
@@ -172,6 +180,10 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
 
@@ -179,13 +191,12 @@ services:
     build:
       context: ./inventory-service
       dockerfile: Dockerfile
-    container_name: ms-inventory-service
+    # container_name: ms-inventory-service
     ports:
-      - "3006:3006"
+      - "3006-3500"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./inventory-service:/usr/src/app
     restart: unless-stopped
@@ -198,19 +209,22 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
     networks:
       - microservice-network
   auth-service:
     build:
       context: ./auth-service
       dockerfile: Dockerfile
-    container_name: ms-auth-service
+    # container_name: ms-auth-service
     ports:
-      - "3005:3005"
+      - "3005-3500"
     environment:
       - NODE_ENV=dev
       - CONFIG_SERVER_URL=http://ms-config-service:4000
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
     volumes:
       - ./auth-service:/usr/src/app
     restart: unless-stopped
@@ -223,21 +237,22 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
+      api-gateway:
+        condition: service_started
     networks:
       - microservice-network
-  notification-service:
+  event-service:
     build:
-      context: ./notification-service
+      context: ./events-service
       dockerfile: Dockerfile
-    container_name: ms-notification-service
+    # container_name: ms-events-service
     ports:
-      - "3030:3030"
+      - "3009-3500"
     environment:
       - NODE_ENV=dev
-      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
+      - CONFIG_SERVER_URL=http://ms-config-service:4000
     volumes:
-      - ./notification-service:/usr/src/app
+      - ./events-service:/usr/src/app
     restart: unless-stopped
     depends_on:
       consul:
@@ -248,57 +263,6 @@ services:
         condition: service_healthy
       config-service:
         condition: service_started
-    networks:
-      - microservice-network
-  query-service:
-    build:
-      context: ./query-manager
-      dockerfile: Dockerfile
-    container_name: ms-query-service
-    ports:
-      - "3032:3032"
-    environment:
-      - NODE_ENV=dev
-      - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
-      - ZIPKIN_URL=http://ms-zipkin:9411/api/v2/spans
-    volumes:
-      - ./query-manager:/usr/src/app
-    restart: unless-stopped
-    depends_on:
-      consul:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      config-service:
-        condition: service_started
-      payment-service:
-        condition: service_started
-      inventory-service:
-        condition: service_started
-      order-service:
-        condition: service_started
-      product-service:
-        condition: service_started
-      notification-service:
-        condition: service_started
-    networks:
-      - microservice-network
-  
-  redis:
-    image: redis:latest
-    container_name: ms-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
     networks:
       - microservice-network
   loki:
@@ -328,8 +292,6 @@ services:
       - order-service
       - customer-service
       - inventory-service
-      - auth-service
-      - notification-service
   api-gateway:
     build:
       context: ./api-gateway
@@ -339,43 +301,16 @@ services:
       - "9000:9000"
     environment:
       - NODE_ENV=development
-      - ZIPKIN_URL=http://ms-zipkin:9411
     volumes:
       - ./api-gateway:/usr/src/app
     restart: unless-stopped
-    depends_on:
-      - config-service
-      - product-service
-      - order-service
-      - customer-service
-      - inventory-service
-      - notification-service
     networks:
       - microservice-network
-
-  zipkin:
-    image: openzipkin/zipkin:latest
-    container_name: ms-zipkin
-    ports:
-      - "9411:9411"
-    environment:
-      - STORAGE_TYPE=mem
-    restart: unless-stopped
-    networks:
-      - microservice-network
-    healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9411/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-
 volumes:
   mongodb_data:
   rabbitmq_data:
   rabbitmq_logs:
   grafana-storage:
-  redis_data:
 
 networks:
   microservice-network:
