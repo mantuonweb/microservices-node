@@ -24,7 +24,7 @@ class AuthMiddleware {
       logger.info(`Authentication request for path: ${req.path}, method: ${req.method}`);
     
       // Skip authentication for the auth service itself and health endpoint
-      if (req.path.startsWith('/api/auth') || req.path === '/health') {
+      if (req.path.startsWith('/api/auth') || req.path === '/health' || req.path.startsWith('/management') ) {
         logger.info(`Skipping authentication for public path: ${req.path}`);
         return next();
       }

@@ -25,7 +25,11 @@ export class LoginComponent implements OnInit {
     });
     this.authService.currentUser.subscribe(user => {
       if (user) {
-        this.router.navigate(['/products']);
+        if (this.authService.isAdmin()) {
+          this.router.navigate(['/product-manager']);
+        } else {
+          this.router.navigate(['/products']);
+        }
       }
     });
   }
@@ -37,7 +41,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.errorMessage = ''; // Clear previous errors
-    
+
     // Stop here if form is invalid
     if (this.loginForm.invalid) {
       // Set error messages for invalid form
@@ -52,19 +56,23 @@ export class LoginComponent implements OnInit {
     }
 
     this.isLoading = true;
-    
+
     // Example of how you might call an auth service
     this.authService.login(this.loginForm.value)
       .subscribe({
         next: (user: any) => {
           console.log('Login successful', user);
           this.isLoading = false;
-          this.router.navigate(['/products']);
+          if (this.authService.isAdmin()) {
+            this.router.navigate(['/product-manager']);
+          } else {
+            this.router.navigate(['/products']);
+          }
         },
         error: (error: any) => {
           console.error('Login failed', error);
           this.isLoading = false;
-          
+
           // Set appropriate error message based on the error
           if (error.status === 401) {
             this.errorMessage = 'Invalid username or password';

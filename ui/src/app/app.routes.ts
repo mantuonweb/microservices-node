@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuard } from './services/auth.guard';
+import { AdminAuthGuard } from './services/auth.guard.admin';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,11 @@ export const routes: Routes = [
     path: 'products',
     canActivate: [AuthGuard],
     loadComponent: () => import('./components/products/products.component').then(m => m.ProductsComponent)
+  },
+  {
+    path: 'product-manager',
+    canActivate: [AdminAuthGuard],
+    loadComponent: () => import('./components/products-manager/products.component').then(m => m.ProductsComponent)
   },
   {
     path: 'place-order',

@@ -57,7 +57,7 @@ export class OrdersComponent implements OnInit {
 
   constructor(private orderService: OrderService, private authService: AuthService, private router: Router) {
     this.authService.profile().pipe(takeUntilDestroyed()).subscribe((user: any) => {
-      this.orderService.getOrders(user.email).subscribe((orders: Order[]) => {
+      this.orderService.getFullOrders(user.email).subscribe((orders: Order[]) => {
         this.orders = orders.sort((a: any, b: any) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );

@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AdminAuthGuard implements CanActivate {
   
   constructor(
     private authService: AuthService,
@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (this.authService.isAuthenticated() && !this.authService.isAdmin()) {
+    if (this.authService.isAuthenticated() && this.authService.isAdmin()) {
       return true;
     }
     

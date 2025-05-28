@@ -30,8 +30,14 @@ export class AppComponent {
 
   logout() {
     this.authService.logout();
+    this.clearNotification();
+  }
+  isAdmin() {
+    return this.authService.isAdmin();
   }
   clearNotification() {
     this.notification.clear();
+    this.notification.clearEvents();
+    this.notification.disconnect();
   }
 }

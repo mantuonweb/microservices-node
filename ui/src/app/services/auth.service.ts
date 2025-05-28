@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface User {
@@ -32,7 +32,7 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
   private apiUrl = environment.apiUrl + '/auth';
-  private userProfile:any = null;
+  private userProfile: any = null;
   constructor(
     private http: HttpClient,
     private router: Router
@@ -41,6 +41,7 @@ export class AuthService {
     this.currentUserSubject = new BehaviorSubject<User | null>(
       storedUser ? JSON.parse(storedUser) : null
     );
+    this.userProfile = JSON.parse(storedUser??'{}');
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -52,9 +53,20 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/login`, credentials)
       .pipe(
         tap((user: any) => {
-          localStorage.setItem('currentUser', JSON.stringify(user.user));
           this.currentUserSubject.next(user);
-          return user;
+        }),
+        switchMap((loginResponse: any) => {
+          return this.profile().pipe(
+            map((profileData: any) => {
+              // Combine login and profile data
+              const user = {
+                ...loginResponse.user,
+                ...profileData
+              };
+              localStorage.setItem('currentUser', JSON.stringify(user));
+              return user;
+            })
+          );
         }),
         catchError(error => {
           console.error('Login error:', error);
@@ -64,14 +76,14 @@ export class AuthService {
   }
 
   profile(): Observable<User> {
-    if(this.userProfile) {
+    if (this.userProfile) {
       return of(this.userProfile)
     }
     return this.http.get<User>(`${this.apiUrl}/profile`)
       .pipe(
         map((user: any) => {
-          if(user.user) {
-             this.userProfile = user?.user;
+          if (user.user) {
+            this.userProfile = user?.user;
           }
           return user?.user;
         }),
@@ -84,14 +96,20 @@ export class AuthService {
 
   logout(): void {
     // Remove user from local storage
-    localStorage.removeItem('currentUser');
-    this.userProfile = null;
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.http.post<User>(`${this.apiUrl}/logout`, null).subscribe(() => {
+      localStorage.removeItem('currentUser');
+      this.userProfile = null;
+      this.currentUserSubject.next(null);
+      this.router.navigate(['/login']);
+    });
   }
 
   isAuthenticated(): boolean {
     return !!this.currentUserValue;
+  }
+
+  isAdmin():boolean {
+    return this.userProfile?.roles?.includes('admin') || false;
   }
 
   // Get the auth token
