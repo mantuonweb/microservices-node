@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../models/product.model';
-import { CartItem, CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-products-manager',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 
-  imports:[ FormsModule]
+  imports: [FormsModule]
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
@@ -20,7 +20,7 @@ export class ProductsComponent implements OnInit {
   searchTerm: string = '';
   filteredProducts: any[] = [];
   allProducts: any[] = [];
-  constructor(private productService: ProductService, private cartService: CartService) { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -28,100 +28,92 @@ export class ProductsComponent implements OnInit {
 
   loadProducts(): void {
     this.loading = true;
-    this.productService.getProducts().subscribe({
-      next: (data:any) => {
-        this.allProducts = data;
-        this.products = [...this.allProducts];
 
-        // Sync with cart items
-        this.cartService.getCartItems().subscribe((cartItems:any) => {
-          // Update product quantities and addedToCart flags based on cart contents
-          this.products.forEach(product => {
-            const cartItem = cartItems.find((item:any) => item.productId === product._id);
-            if (cartItem) {
-              product.quantity = cartItem.quantity;
-              product.addedToCart = true;
-            } else {
-              product.quantity = 1; // Default quantity
-              product.addedToCart = false;
-            }
-          });
+    // Using forkJoin to execute both requests in parallel and wait for both to complete
+    forkJoin({
+      inventories: this.productService.getInventories(),
+      products: this.productService.getAllProducts()
+    }).subscribe({
+      next: (result) => {
+        // Here you can access both responses
+        const inventories = result.inventories;
+        this.allProducts = result.products;
+
+        // You can merge or process the data as needed
+        // For example, you might want to enrich products with inventory data
+        this.products = this.allProducts.map(product => {
+          const inventory = inventories.find((inv: any) => inv.productId === product._id);
+          return {
+            ...product,
+            quantity: inventory ? (inventory as any)?.quantity : 0,
+            originalQuantity: inventory ? (inventory as any)?.quantity : 0
+          };
         });
 
         this.loading = false;
       },
-      error: (err:any) => {
+      error: (err: any) => {
         this.error = 'Failed to load products. Please try again later.';
-        console.error('Error fetching products:', err);
+        console.error('Error fetching data:', err);
         this.loading = false;
       }
     });
   }
-  /**
-   * Increases the quantity of a product
-   */
+
   increaseQuantity(product: any): void {
+    // Initialize quantity if it doesn't exist
     if (!product.quantity) {
       product.quantity = 1;
     }
+
+    // Increment quantity
     product.quantity++;
   }
 
-  /**
-   * Decreases the quantity of a product (minimum 1)
-   */
-  decreaseQuantity(product: any): void {
-    if (!product.quantity) {
-      product.quantity = 1;
-    }
-    if (product.quantity > 1) {
-      product.quantity--;
-    }
-  }
+  addProduct(product: any): void {
+    // Use the quantity value (default to 1 if not set)
+    const quantityToAdd = product.quantity || 1;
+    this.productService.updateProductInventory(product._id, quantityToAdd).subscribe(
+      (updatedProduct: any) => {
+        // Update the product's quantity in the UI
 
-  /**
-   * Adds the product to cart with the selected quantity
-   */
-  addToCart(product: any): void {
-    const quantity = product.quantity || 1;
-    const cartItem: CartItem = {
-      productId: product._id,
-      name: product.name,
-      price: product.price,
-      quantity: quantity,
-      description: product.description
-    };
-    this.cartService.addToCart(cartItem);
-    product.addedToCart = true;
-    this.toastMessage = `Added ${quantity} ${quantity > 1 ? 'items' : 'item'} of ${product.name} to cart`;
-    this.showAddedToast = true;
-    setTimeout(() => {
-      this.hideToast();
-    }, 3000);
+        this.showAddedToast = true;
+        const quantity = product.quantity - product.originalQuantity;
+        this.toastMessage = `Added ${quantity} ${quantity > 1 ? 'items' : 'item'} of ${product.name} to Inventory`;
+        product.quantity = updatedProduct.quantity;
+        product.originalQuantity = updatedProduct.quantity;
+        setTimeout(() => {
+          this.hideToast();
+        }, 3000);
+      },
+      (error: any) => {
+        console.error('Error updating product quantity:', error);
+      }
+    );
   }
-
   hideToast(): void {
     this.showAddedToast = false;
   }
-  deleteProduct(product: any) {
-    this.cartService.removeFromCart(product._id);
-  }
   // Add these methods to handle search
-searchProducts() {
-  if (!this.searchTerm.trim()) {
-    this.products = [...this.allProducts];
-    return;
-  }
-  
-  const term = this.searchTerm.toLowerCase().trim();
-  this.products = this.allProducts.filter(product => 
-    product.name.toLowerCase().includes(term) || 
-    product.description.toLowerCase().includes(term)
-  );
-}
+  searchProducts() {
+    if (!this.searchTerm.trim()) {
+      this.products = [...this.allProducts];
+      return;
+    }
 
-clearSearch() {
-  this.searchTerm = '';
-  this.products = [...this.allProducts];
-}
+    const term = this.searchTerm.toLowerCase().trim();
+    this.products = this.allProducts.filter(product =>
+      product.name.toLowerCase().includes(term) ||
+      product.description.toLowerCase().includes(term)
+    );
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.products = [...this.allProducts];
+  }
+  checkQuantity(product: any): boolean {
+    console.log(product?.originalQuantity > product?.quantity);
+    return (product?.originalQuantity > product?.quantity)
+  }
 }

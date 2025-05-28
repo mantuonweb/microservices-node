@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class ProductService {
   private apiUrl = `${environment.apiUrl}/products`;
   private apiUrlFetch = `${environment.apiUrl}/query/products`;
-
+  private apiInventoryUrl = `${environment.apiUrl}/inventories`;
   constructor(private http: HttpClient) { }
 
   /**
@@ -18,6 +18,21 @@ export class ProductService {
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrlFetch);
   }
+
+  /**
+ * Get all products from the backend
+ */
+  getAllProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.apiUrl);
+  }
+
+  /**
+* Get all products from the backend
+*/
+  getInventories(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.apiInventoryUrl);
+  }
+
 
   /**
    * Get a single product by ID
@@ -38,6 +53,12 @@ export class ProductService {
    */
   updateProduct(id: string, product: Partial<Product>): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+  }
+
+  updateProductInventory(id: string, quantity:number): Observable<Product> {
+    return this.http.put<Product>(`${this.apiInventoryUrl}/${id}`, {
+      quantity: quantity
+    });
   }
 
   /**

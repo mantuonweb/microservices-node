@@ -25,7 +25,7 @@
     <div class="toast show bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header bg-success text-white">
         <strong class="me-auto">Success</strong>
-        <button type="button" class="btn-close btn-close-white" (click)="hideToast()"></button>
+        <button type="button"  class="btn-close btn-close-white" (click)="hideToast()"></button>
       </div>
       <div class="toast-body">
         {{ toastMessage }}
@@ -41,12 +41,30 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <h5 class="card-title">{{ product.name }}</h5>
-              <button class="btn btn-sm text-success" [disabled]="!product.addedToCart" (click)="deleteProduct(product)" title="Delete product">
+              <button class="btn btn-sm text-success" [disabled]="checkQuantity(product)" (click)="addProduct(product)" title="Add product to Inventory">
                 <i class="bi bi-plus"></i>
               </button>
             </div>
             <h6 class="card-subtitle mb-2 text-muted">₹{{ product.price.toFixed(2) }}</h6>
             <p class="card-text">{{ product.description }}</p>
+            
+            <!-- Quantity control -->
+            <div class="d-flex align-items-center mt-3">
+              <label for="quantity-{{product._id}}" class="me-2">Quantity:</label>
+              <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button" (click)="increaseQuantity(product)">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+                <input 
+                  type="number" 
+                  id="quantity-{{product._id}}"
+                  class="form-control text-center" 
+                  [(ngModel)]="product.quantity" 
+                  min="1"
+                  style="max-width: 200px;"
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
