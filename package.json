@@ -7,7 +7,7 @@
     "docker:stop": "docker compose -f docker-compose.yml down",
     "docker:multi-start": "docker-compose -f docker-compose-scaled.yml up -d --scale product-service=2 --scale customer-service=2",
     "docker:multi-stop": "docker-compose -f docker-compose-scaled.yml down",
-    "docker:start-cloud": "docker compose -f docker-compose-cloud.yml up -d --build",
+    "docker:start-cloud": "docker compose -f docker-compose-cloud.yml up -d",
     "docker:stop-cloud": "docker compose -f docker-compose-cloud.yml down",
     "docker:build-customer": "docker-compose -f docker-compose.yml up -d --build customer-service",
     "docker:build-notification": "docker-compose -f docker-compose.yml up -d --build notification-service",
