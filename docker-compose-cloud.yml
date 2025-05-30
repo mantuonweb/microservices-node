@@ -62,7 +62,7 @@ services:
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -86,7 +86,7 @@ services:
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -115,7 +115,7 @@ services:
       - CONFIG_SERVER_URL=http://ms-config-service:4000
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -144,7 +144,7 @@ services:
       - CONFIG_SERVER_URL=http://ms-config-service:4000
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -173,7 +173,7 @@ services:
       - CONFIG_SERVER_URL=http://ms-config-service:4000
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -202,7 +202,7 @@ services:
       - CONFIG_SERVER_URL=http://ms-config-service:4000
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -231,7 +231,7 @@ services:
       - CONFIG_SERVER_URL=http://ms-config-service:4000
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -260,7 +260,7 @@ services:
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
@@ -289,7 +289,7 @@ services:
       - RABBITMQ_URL=amqp://guest:guest@ms-rabbitmq:5672
       - ZIPKIN_URL=http://ms-zipkin:9411
       - LOKI_URL=http://ms-loki:3100
-    restart: unless-stopped
+    restart: always
     depends_on:
       consul:
         condition: service_healthy
