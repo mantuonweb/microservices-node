@@ -6,7 +6,6 @@ const paymentTransactionRoutes = require('../routes/payment-transaction.routes')
 const mongoClient = require('../utils/MongoConnectionClient');
 const AuthMiddleware = require('../middleware/auth.middleware');
 const ZipkinHelper = require('../utils/ZipkinHelper');
-const PaymentScheduler = require('../utils/PaymentScheduler');
 const SERVICE_NAME = 'payment-service';
 
 const configureApp = () => {
@@ -30,24 +29,6 @@ const configureApp = () => {
     app.get('/health', (req, res) => {
         res.status(200).json({ status: 'OK', service: 'Payment Service' });
     });
-
-    // Initialize payment schedulers after MongoDB connection is established
-    mongoClient.mongooseIntance.connection.once('open', () => {
-        // Example: Process pending payments every 30 minutes
-        const pendingPaymentProcessor = new PaymentScheduler({
-            collectionName: 'paymenttransactions',
-            cronExpression: '*/30 * * * *',
-            processorFunction: async (document) => {
-                // Process the payment document
-                // This is where you'd implement your payment processing logic
-                console.log(`Processing payment: ${document._id}`);
-                // Example: Call payment gateway, update status, etc.
-                return Promise.resolve(true);
-            }
-        });
-        pendingPaymentProcessor.start();
-    });
-
     return { app, PORT };
 };
 
