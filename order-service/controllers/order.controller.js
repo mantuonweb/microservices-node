@@ -187,7 +187,7 @@ class OrderController {
         hasDataSyncIssue = true;
       }
       const orderEventData = { traces, events };
-      logger.error('Save Event:', orderEventData);
+      logger.info('Save Event:', orderEventData);
       await sendTransactionalEvent(orderEventData, payRes, status, transactionId, savedOrder._id, req, hasDataSyncIssue);
       res.status(201).json(savedOrder);
     } catch (error) {
