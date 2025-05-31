@@ -33,11 +33,10 @@ const configureApp = () => {
 
     // Initialize payment schedulers after MongoDB connection is established
     mongoClient.mongooseIntance.connection.once('open', () => {
-        console.log(`Processing records from ${process.env.MONGODB_URL}`);
-        // Example: Process pending payments every 15 minutes
+        // Example: Process pending payments every 30 minutes
         const pendingPaymentProcessor = new PaymentScheduler({
             collectionName: 'paymenttransactions',
-            cronExpression: '*/1 * * * *',
+            cronExpression: '*/30 * * * *',
             processorFunction: async (document) => {
                 // Process the payment document
                 // This is where you'd implement your payment processing logic
