@@ -44,6 +44,9 @@ const PaymentTransactionSchema = new mongoose.Schema({
   paymentId: {
     type: String,
     index: true
+  },
+  processed: {
+    type: Boolean
   }
 });
 
@@ -51,7 +54,7 @@ const PaymentTransactionSchema = new mongoose.Schema({
 PaymentTransactionSchema.index({ orderId: 1, status: 1 });
 
 // Update the updatedAt timestamp before saving
-PaymentTransactionSchema.pre('save', function(next) {
+PaymentTransactionSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
   next();
 });

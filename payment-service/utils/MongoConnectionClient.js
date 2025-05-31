@@ -3,6 +3,7 @@ const logger = require('./logger');
 
 class MongoConnectionClient {
   static instance = null;
+  static mongooseIntance = mongoose;
   constructor() {
     this.mongoURI = process.env.MONGODB_URL;
     this.options = {
