@@ -14,7 +14,7 @@ class PaymentTransactionController {
         status,
         retry,
         metadata,
-        paymentData
+        paymentId
       } = req.body;
 
       const newTransaction = new PaymentTransaction({
@@ -23,7 +23,7 @@ class PaymentTransactionController {
         status,
         retry,
         metadata,
-        paymentData
+        paymentId
       });
 
       const savedTransaction = await newTransaction.save();

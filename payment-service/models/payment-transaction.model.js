@@ -41,9 +41,9 @@ const PaymentTransactionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     default: {}
   },
-  paymentData: {
-    type: mongoose.Schema.Types.Mixed,
-
+  paymentId: {
+    type: String,
+    index: true
   }
 });
 

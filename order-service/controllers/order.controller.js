@@ -183,9 +183,9 @@ class OrderController {
         logger.error('Error publishing notification:', notificationError);
         events.push('order-notification-update-failed');
       }
-      const orderEventData = { savedOrder, traces, events };
+      const orderEventData = { traces, events };
       logger.error('Save Event:', orderEventData);
-      await sendTransactionalEvent(orderEventData, payment, status, transactionId, savedOrder._id, req);
+      await sendTransactionalEvent(orderEventData, payRes, status, transactionId, savedOrder._id, req);
       res.status(201).json(savedOrder);
     } catch (error) {
       logger.error('Error creating order:', error);
@@ -372,12 +372,8 @@ process.on('uncaughtException', (error) => {
 module.exports = withCircuitBreaker(OrderController, createCircuitBreaker);
 
 
-async function sendTransactionalEvent(savedOrder, payment, status, transactionId, orderId, req) {
-  let payTranRes;
-  try {
-    payTranRes = await eventManager
-      .getInstance()
-      .sendEvent('payment-service', 'api/payments/transactions', {
+async function sendTransactionalEvent(metadata, payment, status, transactionId, orderId, req) {
+  const data = {
         orderId: orderId.toString(),
         txId: transactionId,
         status: status,
@@ -385,9 +381,15 @@ async function sendTransactionalEvent(savedOrder, payment, status, transactionId
           count: 0,
           maxAttempts: 3
         },
-        metadata: savedOrder,
-        paymentData: payment
-      }, req.headers);
+        metadata,
+        paymentId: payment?.paymentId
+      };
+  console.log(data,'payment');
+  let payTranRes;
+  try {
+    payTranRes = await eventManager
+      .getInstance()
+      .sendEvent('payment-service', 'api/payments/transactions', data, req.headers);
   }
   catch (paymentTransactionError) {
     logger.error('Payment service transaction order error: ', paymentTransactionError);
