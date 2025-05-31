@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const actuator = require('express-actuator');
 const paymentRoutes = require('../routes/payment.routes');
+const paymentTransactionRoutes = require('../routes/payment-transaction.routes');
 const mongoClient = require('../utils/MongoConnectionClient');
 const AuthMiddleware = require('../middleware/auth.middleware');
 const ZipkinHelper = require('../utils/ZipkinHelper');
@@ -21,6 +22,7 @@ const configureApp = () => {
     zipkinHelper.initialize(app);
     // Configure routes
     app.use('/api/payments', paymentRoutes);
+    app.use('/api/payments/transactions', paymentTransactionRoutes);
 
     // Health Check
     app.get('/health', (req, res) => {

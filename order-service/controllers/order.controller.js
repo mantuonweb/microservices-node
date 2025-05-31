@@ -108,18 +108,20 @@ class OrderController {
 
       const order = new Order(req.body);
       const savedOrder = await order.save();
-
+      let status = 'INITIATED';
+      let events = ['order-created'];
+      let traces = [req.headers["x-b3-traceid"]];
       // Prepare payment data
+      const transactionId = 'tx' + (new Date().getTime().toString());
       const payment = {
         orderId: savedOrder._id.toString(),
         customerId: reqOrder.customer.email,
         amount: savedOrder.totalAmount,
         paymentMethod: reqOrder.mode,
-        transactionId: 'tx' + (new Date().getTime().toString()),
+        transactionId: transactionId,
       };
+      events.push('payment-created');
       logger.info('Payment data:', payment);
-
-      // Send payment event with error handling
       let payRes;
       try {
         payRes = await eventManager
@@ -130,14 +132,13 @@ class OrderController {
           logger.error('Payment service returned invalid response', payRes);
           throw new Error('Failed to process payment');
         }
+        status = 'COMPLETED';
+        events.push('payment-updated');
       } catch (paymentError) {
         logger.error('Payment service error:', paymentError);
         // Rollback the order creation
-        await Order.findByIdAndDelete(savedOrder._id);
-        return res.status(503).json({
-          error: 'Payment service unavailable',
-          message: 'Order creation failed due to payment processing error'
-        });
+        status = 'PROCESSING';
+        events.push('payment-failed');
       }
 
       // Update inventory
@@ -151,29 +152,40 @@ class OrderController {
         if (!updateInventory || updateInventory.error) {
           throw new Error(updateInventory?.error || 'Inventory update failed');
         }
+        events.push('inventory-updated');
       } catch (inventoryError) {
         logger.error('Inventory service error:', inventoryError);
         // We don't rollback here as payment is already processed, but we log the issue
         logger.warn('Order created but inventory update failed. Manual intervention may be required.');
+        events.push('inventory-update-success');
       }
 
       // Update the order with the payment ID
       try {
         savedOrder.paymentId = payRes.paymentId;
         await savedOrder.save();
+        events.push('order-payment-update-success');
       } catch (updateError) {
         logger.error('Error updating order with payment ID:', updateError);
         // Order and payment exist but linking failed - needs manual intervention
         logger.warn('Order and payment created but linking failed. Manual intervention required.');
+        events.push('order-payment-update-failed');
       }
 
       logger.info('Order created successfully');
       try {
-        await NotificationService.getInstance().connect();
-        await NotificationService.getInstance().publishNotification('order.created', savedOrder);
+        if (status = 'COMPLETED') {
+          await NotificationService.getInstance().connect();
+          await NotificationService.getInstance().publishNotification('order.created', savedOrder);
+          events.push('order-notification-update-success');
+        }
       } catch (notificationError) {
         logger.error('Error publishing notification:', notificationError);
+        events.push('order-notification-update-failed');
       }
+      const orderEventData = { savedOrder, traces, events };
+      logger.error('Save Event:', orderEventData);
+      await sendTransactionalEvent(orderEventData, payment, status, transactionId, savedOrder._id, req);
       res.status(201).json(savedOrder);
     } catch (error) {
       logger.error('Error creating order:', error);
@@ -358,3 +370,27 @@ process.on('uncaughtException', (error) => {
 });
 
 module.exports = withCircuitBreaker(OrderController, createCircuitBreaker);
+
+
+async function sendTransactionalEvent(savedOrder, payment, status, transactionId, orderId, req) {
+  let payTranRes;
+  try {
+    payTranRes = await eventManager
+      .getInstance()
+      .sendEvent('payment-service', 'api/payments/transactions', {
+        orderId: orderId.toString(),
+        txId: transactionId,
+        status: status,
+        retry: {
+          count: 0,
+          maxAttempts: 3
+        },
+        metadata: savedOrder,
+        paymentData: payment
+      }, req.headers);
+  }
+  catch (paymentTransactionError) {
+    logger.error('Payment service transaction order error: ', paymentTransactionError);
+  }
+  return payTranRes;
+}
