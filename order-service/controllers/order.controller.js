@@ -67,7 +67,7 @@ class OrderController {
       const products = [];
       const reqOrder = req.body;
       let price = 0;
-
+      let hasDataSyncIssue = false;
       if (reqOrder.products.length > 0) {
         for (const product of reqOrder.products) {
           if (!product.id) {
@@ -157,7 +157,8 @@ class OrderController {
         logger.error('Inventory service error:', inventoryError);
         // We don't rollback here as payment is already processed, but we log the issue
         logger.warn('Order created but inventory update failed. Manual intervention may be required.');
-        events.push('inventory-update-success');
+        events.push('inventory-update-failed');
+        hasDataSyncIssue = true;
       }
 
       // Update the order with the payment ID
@@ -170,6 +171,7 @@ class OrderController {
         // Order and payment exist but linking failed - needs manual intervention
         logger.warn('Order and payment created but linking failed. Manual intervention required.');
         events.push('order-payment-update-failed');
+        hasDataSyncIssue = true;
       }
 
       logger.info('Order created successfully');
@@ -182,10 +184,11 @@ class OrderController {
       } catch (notificationError) {
         logger.error('Error publishing notification:', notificationError);
         events.push('order-notification-update-failed');
+        hasDataSyncIssue = true;
       }
       const orderEventData = { traces, events };
       logger.error('Save Event:', orderEventData);
-      await sendTransactionalEvent(orderEventData, payRes, status, transactionId, savedOrder._id, req);
+      await sendTransactionalEvent(orderEventData, payRes, status, transactionId, savedOrder._id, req, hasDataSyncIssue);
       res.status(201).json(savedOrder);
     } catch (error) {
       logger.error('Error creating order:', error);
@@ -372,19 +375,19 @@ process.on('uncaughtException', (error) => {
 module.exports = withCircuitBreaker(OrderController, createCircuitBreaker);
 
 
-async function sendTransactionalEvent(metadata, payment, status, transactionId, orderId, req) {
+async function sendTransactionalEvent(metadata, payment, status, transactionId, orderId, req, hasDataSyncIssue) {
   const data = {
-        orderId: orderId.toString(),
-        txId: transactionId,
-        status: status,
-        retry: {
-          count: 0,
-          maxAttempts: 3
-        },
-        metadata,
-        paymentId: payment?.paymentId
-      };
-  console.log(data,'payment');
+    orderId: orderId.toString(),
+    txId: transactionId,
+    status: status,
+    retry: {
+      count: 0,
+      maxAttempts: 3
+    },
+    metadata,
+    paymentId: payment?.paymentId,
+    hasDataSyncIssue
+  };
   let payTranRes;
   try {
     payTranRes = await eventManager

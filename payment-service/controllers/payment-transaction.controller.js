@@ -14,7 +14,8 @@ class PaymentTransactionController {
         status,
         retry,
         metadata,
-        paymentId
+        paymentId,
+        hasDataSyncIssue
       } = req.body;
 
       const newTransaction = new PaymentTransaction({
@@ -23,9 +24,10 @@ class PaymentTransactionController {
         status,
         retry,
         metadata,
-        paymentId
+        paymentId,
+        hasDataSyncIssue
       });
-
+      console.log(newTransaction, 'newTransaction');
       const savedTransaction = await newTransaction.save();
       
       return res.status(201).json({

@@ -45,6 +45,10 @@ const PaymentTransactionSchema = new mongoose.Schema({
     type: String,
     index: true
   },
+  hasDataSyncIssue: {
+    type: Boolean,
+    default: false
+  },
   processed: {
     type: Boolean
   }
