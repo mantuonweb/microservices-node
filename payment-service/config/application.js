@@ -6,6 +6,7 @@ const paymentTransactionRoutes = require('../routes/payment-transaction.routes')
 const mongoClient = require('../utils/MongoConnectionClient');
 const AuthMiddleware = require('../middleware/auth.middleware');
 const ZipkinHelper = require('../utils/ZipkinHelper');
+const { startScheduler } = require('../schedulers/transaction-scheduler');
 const SERVICE_NAME = 'payment-service';
 
 const configureApp = () => {
@@ -18,6 +19,7 @@ const configureApp = () => {
     app.use(new AuthMiddleware().authenticate());
     // Initialize MongoDB connection
     mongoClient.getInstance().connect();
+    startScheduler();
     // Initialize Zipkin using the helper class
     const zipkinHelper = new ZipkinHelper(SERVICE_NAME);
     zipkinHelper.initialize(app);

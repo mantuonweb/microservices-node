@@ -27,7 +27,6 @@ class PaymentTransactionController {
         paymentId,
         hasDataSyncIssue
       });
-      console.log(newTransaction, 'newTransaction');
       const savedTransaction = await newTransaction.save();
       
       return res.status(201).json({
