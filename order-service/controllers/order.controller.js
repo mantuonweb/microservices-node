@@ -186,7 +186,7 @@ class OrderController {
         events.push('order-notification-update-failed');
         hasDataSyncIssue = true;
       }
-      const orderEventData = { traces, events };
+      const orderEventData = { order: { customerEmail: savedOrder?.customer?.email, products: savedOrder?.products }, traces, events };
       logger.info('Save Event:', orderEventData);
       await sendTransactionalEvent(orderEventData, payRes, status, transactionId, savedOrder._id, req, hasDataSyncIssue);
       res.status(201).json(savedOrder);
