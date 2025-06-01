@@ -1,7 +1,8 @@
 const { fork } = require('child_process');
 const path = require('path');
-const PaymentTransaction = require('../models/payment-transaction.model');
 const mongoClient = require('../utils/MongoConnectionClient');
+const transactionProcessor = require('../services/transaction-processor');
+
 // Start the scheduler
 function startScheduler() {
     console.log('Starting transaction scheduler (30 min interval)');
@@ -9,8 +10,8 @@ function startScheduler() {
     // Run immediately on start
     runScheduledTask();
 
-    // Schedule to run every 5 minutes
-    setInterval(runScheduledTask, 5 * 60 * 1000);
+    // Schedule to run every 2 minutes
+    setInterval(runScheduledTask, 2 * 60 * 1000);
 }
 
 // Run the scheduled task in a separate process
@@ -36,34 +37,13 @@ function runScheduledTask() {
 async function workerProcess() {
     try {
         mongoClient.getInstance().connect();
-        // Find pending transactions
-        const pendingTransactions = await PaymentTransaction.find({
-            $or: [
-                { status: 'PROCESSING' },
-                { hasDataSyncIssue: true }
-            ]
-        });
-
-        process.send(`Processing ${pendingTransactions.length} transactions`);
-
-        // Process each transaction
-        for (const tx of pendingTransactions) {
-            try {
-                // Your transaction processing logic here
-
-                // Update transaction status
-                tx.retry.count += 1;
-                tx.status = 'COMPLETED'; // or 'FAILED' based on your logic
-                await tx.save();
-            } catch (err) {
-                // Increment retry count
-                tx.retry.count += 1;
-                tx.retry.lastAttemptAt = new Date();
-                await tx.save();
-            }
-        }
-
-        process.send('Processing completed');
+        
+        process.send('Starting transaction processing');
+        
+        // Use the transaction processor service
+        const stats = await transactionProcessor.getInstance().processPendingTransactions();
+        
+        process.send(`Processing completed: ${stats.processed} transactions processed, ${stats.completed} completed, ${stats.failed} failed`);
     } catch (error) {
         process.send(`Error: ${error.message}`);
     }

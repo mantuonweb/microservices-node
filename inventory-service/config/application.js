@@ -6,7 +6,7 @@ const productRoutes = require('../routes/product.routes');
 const mongoClient = require('../utils/MongoConnectionClient');
 const AuthMiddleware = require('../middleware/auth.middleware');
 const ZipkinHelper = require('../utils/ZipkinHelper');
-
+const NotificationHandler = require('../utils/NotificationHandler');
 const SERVICE_NAME = 'inventory-service';
 
 const configureApp = () => {
@@ -23,6 +23,11 @@ const configureApp = () => {
   // Initialize Zipkin using the helper class
   const zipkinHelper = new ZipkinHelper(SERVICE_NAME);
   zipkinHelper.initialize(app);
+  
+  // Initialize notification handler
+  const notificationHandler = new NotificationHandler();
+  notificationHandler.initialize();
+  
   // Configure routes
   app.use('/api/inventories', inventoryRoutes);
   app.use('/api/inventories/products', productRoutes);
@@ -32,4 +37,5 @@ const configureApp = () => {
   });
   return { app, PORT };
 };
+
 module.exports = configureApp;
