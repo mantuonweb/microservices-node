@@ -184,5 +184,8 @@ export class OrdersComponent implements OnInit {
     // Clean up the URL object
     URL.revokeObjectURL(url);
   }
+  retry(order:any) {
+    
+  }
 
 }

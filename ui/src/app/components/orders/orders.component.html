@@ -13,7 +13,11 @@
           <h5 class="mb-0">Order #{{ order._id.substring(order._id.length - 8) }}</h5>
           <small>Placed on: {{ formatDate(order.createdAt) }}</small>
         </div>
-        <span class="badge bg-light text-dark" role="button" (click)="showPaymentDetails(order)">{{ paymentMethods[order.mode].label }}</span>
+        @if(order.paymentId) {
+          <span class="badge bg-light text-dark" role="button" (click)="showPaymentDetails(order)">{{ paymentMethods[order.mode].label }}</span>
+        } @else {
+          <span class="badge bg-danger text-white">Error</span>
+        }
       </div>
       
       <div class="card-body">
@@ -56,9 +60,15 @@
       </div>
       
       <div class="card-footer text-end">
-        <button class="btn btn-sm btn-outline-primary" (click)="exportSingleOrder(order)">
-          <i class="bi bi-download me-1"></i>Export
-        </button>
+        @if(order.paymentId) {
+          <button class="btn btn-sm btn-outline-primary" (click)="exportSingleOrder(order)">
+            <i class="bi bi-download me-1"></i>Export
+          </button>
+        } @else {
+          <button class="btn btn-sm btn-outline-primary" (click)="retry(order)">
+            <i class="bi bi-arrow-repeat me-1"></i>Retry
+          </button>
+        }
       </div>
     </div>
   }
